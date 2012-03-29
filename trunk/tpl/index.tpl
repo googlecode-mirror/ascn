@@ -1,3 +1,3 @@
 <h1>page Index</h1>
 
-<a href="{$smarty.const.WWW_ROOT}jouer.php">Aller &agrave; jouer</a>
+<a href="jouer.php" class="ajaxload">Aller &agrave; jouer</a>

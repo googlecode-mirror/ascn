@@ -30,10 +30,15 @@ abstract class Page {
 	 * @var String nom du gabarit, par default le nom de cette page + '.tpl'
 	 */
 	private $gabarit=null;
+	
+	
+	private $ajax=false;
 
 	
 	public function __construct() {
 		$this->name=strtolower(basename(get_class($this), '.php'));
+		
+		$this->ajax=isValue('ajax');
 		
 		$this->init();
 	}
@@ -93,7 +98,10 @@ abstract class Page {
 	}
 	
 	public function run() {
-		$this->gabarit->display();
+		if($this->ajax)
+			print $this->fetch();
+		else
+			$this->gabarit->display();
 	}
 	
 	/**
