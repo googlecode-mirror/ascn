@@ -30,7 +30,7 @@ function smarty_function_module($params) {
 		$ret.='
 				<script type="text/javascript">
 					$(function () {
-						'.$name.'_init();
+						'.$name.'.init();
 					});
 				</script>
 			</div>

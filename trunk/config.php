@@ -48,7 +48,7 @@ require_once DIR_MODEL.'Joueur.php';
 
 // autoload model et controllers
 function __autoload($class_name) {
-	//print $class_name.' - ';
+	
 	if(file_exists(DIR_MODEL.$class_name.'.php')) {
 		require_once DIR_MODEL.$class_name.'.php';
 	} else if(file_exists(DIR_CTRL.$class_name.'.php')) {
@@ -69,7 +69,6 @@ function env() {
 }
 
 function smarty()	{ return env()->smarty;	}
-/*
 function page()		{ return env()->page;	}
 
 function joueur()	{ return env()->joueur;	}
@@ -77,6 +76,7 @@ function partie()	{ return env()->partie;	}
 function slot()		{ return env()->slot;	}
 
 function module()	{ return env()->module;	}
+/*
 function jeu()		{ return env()->jeu;	}
 */
 

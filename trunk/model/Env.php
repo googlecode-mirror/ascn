@@ -144,27 +144,17 @@ class Env {
 	
 	/**
 	 * 
-	 * Requiert d'être dans un dossier de jeu, ou Slot.
+	 * Requiert Slot.
 	 */
 	private function initJeu() {
-		if(streq(getDirName(2), DIRNAME_GAMES)) {
-			$this->singleton_jeu=Appli::importClass('jeu:'.getDirName(1));
-		} else if(partie()) {
-			$this->singleton_jeu=Appli::importClass('jeu:'.queryValue('
-				select jeu_name
-				from partie natural join jeu
-				where partie_id='.partie()->getID()
-			));
-		}
+		
 	}
 	
-	/**
-	 * @deprecated à refaire
-	 * Requiert d'être dans un dossier de module.
-	 */
-	private function initModule() {
-		if(streq(getDirName(2), DIRNAME_MODULES)) {
-			$this->singleton_module=Appli::importClass('module:'.getDirName(1));
+	
+	public function initModule($module_name=null) {
+		if(!is_null($module_name)) {
+			require_once DIR_MODULES.$module_name.'/'.$module_name.'.php';
+			$this->singleton_module=new $module_name();
 		}
 	}
 	
@@ -239,21 +229,6 @@ class Env {
 	public function unsetJoueur() {
 		$this->singleton_joueur=null;
 		$this->is_joueur=true;
-	}
-	
-	public function initAppli($appli) {
-		$a=explode(':', $appli);
-		if(count($a)==2) switch($a[0]) {
-			case 'jeu':
-				$this->singleton_jeu=Appli::importClass($appli);
-				$this->is_jeu=true;
-				break;
-				
-			case 'module':
-				$this->singleton_module=Appli::importClass($appli);
-				$this->is_module=true;
-				break;
-		}
 	}
 	
 	
