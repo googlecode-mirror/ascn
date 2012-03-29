@@ -39,28 +39,25 @@ define('WWW_MODULES', WWW_ROOT.DIRNAME_MODULES.'/');
 
 
 
-// includes
+// chargement modèles
 require_once DIR_MODEL.'fx.php';
 require_once DIR_MODEL.'DB.php';
-require_once DIR_MODEL.'DBItem.php';
-require_once DIR_MODEL.'Page.php';
-require_once DIR_MODEL.'Gabarit.php';
-require_once DIR_MODEL.'Env.php';
-/*
-require_once DIR_MODEL.'Partie.php';
-require_once DIR_MODEL.'Appli.php';
-require_once DIR_MODEL.'Module.php';
-require_once DIR_MODEL.'Jeu.php';
+
+// probleme autoload :
 require_once DIR_MODEL.'Joueur.php';
-require_once DIR_MODEL.'Slot.php';
-require_once DIR_MODEL.'AJAXResponse.php';
-*/
 
+// autoload model et controllers
+function __autoload($class_name) {
+	//print $class_name.' - ';
+	if(file_exists(DIR_MODEL.$class_name.'.php')) {
+		require_once DIR_MODEL.$class_name.'.php';
+	} else if(file_exists(DIR_CTRL.$class_name.'.php')) {
+		require_once DIR_CTRL.$class_name.'.php';
+	} else {
+		throw new Exception('Classe '.$class_name.' non trouvée');
+	}
+}
 
-// includes controllers
-require_once DIR_CTRL.'Standard.php';
-require_once DIR_CTRL.'Index.php';
-require_once DIR_CTRL.'Jouer.php';
 
 
 

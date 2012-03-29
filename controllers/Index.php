@@ -2,7 +2,6 @@
 
 
 
-
 class Index extends Page {
 	
 	public function preprocess() {
