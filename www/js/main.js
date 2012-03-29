@@ -56,6 +56,22 @@ function overrideAjaxButton() {
 
 
 
+/**
+ * Modules
+ */
+var Modules=new Object();
+Modules.refresh=function(module_name) {
+	$.ajax({
+		url: 'modules/'+module_name+'/index.php',
+		success: function(r) {
+			$('#'+module_name).html(r);
+			overrideAjaxButton();
+		}
+	});
+}
+
+
+
 
 
 

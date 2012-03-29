@@ -22,7 +22,7 @@
 				<div id="header">
 				
 					<h1>{$site_name}</h1>
-					{*module name='userview'*}
+					{module name='userview'}
 					
 				</div>
 				<div id="body">
