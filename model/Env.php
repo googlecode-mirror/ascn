@@ -146,8 +146,11 @@ class Env {
 	 * 
 	 * Requiert Slot.
 	 */
-	private function initJeu() {
-		
+	public function initJeu($jeu_name=null) {
+		if(!is_null($jeu_name)) {
+			require_once DIR_GAMES.$jeu_name.'/'.$jeu_name.'.php';
+			$this->singleton_jeu=new $jeu_name();
+		}
 	}
 	
 	

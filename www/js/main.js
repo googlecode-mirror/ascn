@@ -8,15 +8,20 @@ $(function() {
 
 function hash(h) {
 	h && (window.location.hash=h);
-	return window.location.hash;
+	return window.location.hash.substring(1);
 }
 
 
-function ajaxLoad(hash) {
+function ajaxLoad(hash, data) {
 	if(hash) {
+
+		if(!data) var data=new Object();
+		
+		data.ajax='';
+		
 		$.ajax({
-			url: hash.substring(1),
-			data: 'ajax',
+			url: hash,
+			data: data,
 			success: function(r) {
 				$('#body').html(r);
 				overrideAjaxButton();
@@ -42,7 +47,7 @@ $(window).hashchange(function() {
 
 function overrideAjaxButton() {
 	
-	// lien ajax
+	// ajaxload : charger le contenu d'une page
 	$('a.ajaxload')
 		.click(function () {
 			hash($(this).attr('href'));
@@ -52,18 +57,44 @@ function overrideAjaxButton() {
 		.removeClass('ajaxload');
 	
 	
+	$('form.ajaxload')
+		.submit(function () {
+			var data=new Object();
+			
+			var inputs=$(this).find('input').each(function () {
+				var input=$(this);
+				
+				var name=input.attr('name');
+				var value=input.val();
+				
+				data[name]=value;
+			});
+			
+			ajaxLoad($(this).attr('action'), data);
+			
+			return false;
+		})
+		.attr('method', 'post')
+		.removeClass('ajaxload');
 	
-	// liens modules ajax
+	
+	
+	
+	// ajaxaction : requete qui retourne du json
 	$('a.ajaxaction')
 		.click(function () {
-			var a=$(this).attr('href').split(':');
+			var a=$(this).attr('href').split('/');
 			
-			if(a.length<2) {
+			if(a.length<3) {
 				console.log('Erreur lien href : '+a[0]);
 				return false;
 			}
 			
-			Modules.action(a[0], a[1]);
+			switch(a[0]) {
+				case 'modules':	Modules.action(a[1], a[2]);break;
+				case 'games':	Jeux.action(a[1], a[2]);break;
+			}
+			
 			
 			return false;
 		})
@@ -72,9 +103,9 @@ function overrideAjaxButton() {
 	
 	$('form.ajaxaction')
 		.submit(function () {
-			var a=$(this).attr('action').split(':');
+			var a=$(this).attr('action').split('/');
 			
-			if(a.length<2) {
+			if(a.length<3) {
 				console.log('Erreur form action : '+a[0]);
 				return false;
 			}
@@ -90,10 +121,15 @@ function overrideAjaxButton() {
 				data[name]=value;
 			});
 			
-			Modules.action(a[0], a[1], data);
+			
+			switch(a[0]) {
+				case 'modules':	Modules.action(a[1], a[2], data);break;
+				case 'games':	Jeux.action(a[1], a[2], data);break;
+			}
 			
 			return false;
 		})
+		.attr('method', 'post')
 		.removeClass('ajaxaction');
 }
 
@@ -168,6 +204,75 @@ var Modules = {
 	
 	
 }
+
+
+
+
+
+/**
+ * Jeu
+ */
+var Jeux = {
+		
+	refresh: function(jeu_name, callback) {
+		$.ajax({
+			url: 'games/'+jeu_name+'/index.php',
+			success: function(r) {
+				$('#'+jeu_name).html(r);
+				callback && callback();
+				overrideAjaxButton();
+			}
+		});
+	},
+	
+	
+	
+	action: function(jeu_name, action, data) {
+		if(arguments.length<2) {
+			Jeux.refresh(jeu_name);
+			return;
+		}
+		
+		if(!data) var data=new Object();
+		
+		data.jeu_name=jeu_name;
+		data.jeu_action=action;
+		
+		$.post('action.php', data, function (r) {
+			Jeux.result(jeu_name, action, r);
+		});
+	},
+	
+	
+	
+	result: function(jeu_name, action, r) {
+		
+		if(r) {
+			try {
+				r=JSON.parse(r);
+				
+				if(r.has_error) {
+					ajaxError(r.errors);
+				}
+			} catch(e) {
+				console.groupCollapsed('www/main.js : ajaxResult() : JSON error. Data received : ...');
+				console.log(r);
+				console.groupEnd();
+				r=null;
+			}
+		} else r=null;
+		
+		
+		var fx=window[jeu_name]['ajax_'+action];
+		
+		if(typeof fx == 'function')
+			window[jeu_name]['ajax_'+action](r);
+		else
+			console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
+	}
+}
+
+
 
 
 

@@ -76,9 +76,7 @@ function partie()	{ return env()->partie;	}
 function slot()		{ return env()->slot;	}
 
 function module()	{ return env()->module;	}
-/*
 function jeu()		{ return env()->jeu;	}
-*/
 
 
 // site prefs
