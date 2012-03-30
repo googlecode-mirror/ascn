@@ -2,7 +2,7 @@
 
 class Jouer extends Page {
 	
-	public function preprocess() {
+	public function process() {
 		$this->test=getValue('p', 'erreur');
 	}
 	

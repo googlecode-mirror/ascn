@@ -84,11 +84,11 @@ abstract class Page {
 	
 	
 	
-	protected abstract function preprocess();
+	protected abstract function process();
 	
 	public function fetch() {
-		$this->gabarit->preprocess();
-		$this->preprocess();
+		$this->gabarit->process();
+		$this->process();
 		
 		smarty()->assign('page', $this);
 		

@@ -4,7 +4,7 @@
 class Standard extends Gabarit {
 	
 	
-	public function preprocess() {
+	public function process() {
 		$this->page->addCss(WWW_CSS.'general.css');
 		
 		

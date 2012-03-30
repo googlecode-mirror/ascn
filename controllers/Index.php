@@ -4,7 +4,7 @@
 
 class Index extends Page {
 	
-	public function preprocess() {
+	public function process() {
 		//$this->tictactoe_link=Appli::importClass('jeu:tictactoe')->getWWW();
 	}
 	

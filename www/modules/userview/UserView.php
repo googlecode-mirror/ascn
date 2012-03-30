@@ -5,7 +5,9 @@ class UserView extends Module {
 	
 	
 	
-	public function run() {
+	
+	
+	public function process() {
 		
 		if(is_null(joueur())) {
 			$this->display('deco.tpl');
@@ -17,9 +19,8 @@ class UserView extends Module {
 	}
 	
 	
-	
 
-	public static function ajax_connexion() {
+	public function ajax_connexion() {
 		$user=getValue('user', false);
 		$pass=getValue('pass', false);
 		
@@ -40,7 +41,7 @@ class UserView extends Module {
 	
 	
 	
-	public static function ajax_deconnexion() {
+	public function ajax_deconnexion() {
 		$res=new AJAXResponse();
 		$res->code=Joueur::deconnexion();
 		return $res;
@@ -57,7 +58,7 @@ class UserView extends Module {
 	
 	
 	
-	public static function ajax_signin_submit() {
+	public function ajax_signin_submit() {
 		$r=new AJAXResponse();
 		
 		$pseudo=getValue('pseudo');
