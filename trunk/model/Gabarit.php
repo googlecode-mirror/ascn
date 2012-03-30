@@ -15,7 +15,7 @@ abstract class Gabarit {
 		$this->page=$page;
 	}
 	
-	public abstract function preprocess();
+	public abstract function process();
 	
 	public function display() {
 		smarty()->assign('CONTENT', $this->page->fetch());

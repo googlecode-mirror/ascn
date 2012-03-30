@@ -33,6 +33,6 @@
 				{*module name='quickjoin'*}
 			</div>
 		</div>
-		{*module name='lightbox'*}
+		{module name='lightbox'}
 	</body>
 </html>

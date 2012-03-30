@@ -1,1 +1,1 @@
-<p>Bonjour {$joueur->pseudo}. (<a href="deconnexion" class="ajax appli-module:UserView">D&eacute;connexion</a>)</p>
+<p>Bonjour {$joueur->pseudo}. (<a href="userview:deconnexion" class="ajaxaction">D&eacute;connexion</a>)</p>

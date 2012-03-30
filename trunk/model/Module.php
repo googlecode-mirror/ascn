@@ -26,8 +26,11 @@ abstract class Module {
 	}
 	
 	
+	public abstract function process();
 	
-
+	public final function run() {
+		$this->process();
+	}
 	
 	
 	

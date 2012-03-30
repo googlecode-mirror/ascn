@@ -1,4 +1,4 @@
-<form method="post" action="signin_submit" class="ajax appli-module:UserView">
+<form method="post" action="userview:signin_submit" class="ajaxaction">
 	<label>Pseudo :</label>
 	<input type="text" name="pseudo" />
 	<br />
