@@ -100,7 +100,8 @@ abstract class Jeu {
 		
 		$partie=Partie::create($partie_title);
 		
-		$r->partie_id=$partie->getID();
+		$r->partie=$partie;
+		$r->jeu=jeu();
 		return $r;
 	}
 	

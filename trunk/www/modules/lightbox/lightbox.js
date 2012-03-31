@@ -23,7 +23,7 @@ var lightbox = {
 		} else {
 			$('#lightbox .lightbox-title').html(title);
 			$('#lightbox .lightbox-content').html(content);
-			overrideAjaxButton();
+			Page.overrideAjaxButton();
 			$('#lightbox').fadeIn('fast');
 		}
 	},
