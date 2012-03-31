@@ -53,7 +53,6 @@ abstract class Jeu {
 				case Partie::PREPARATION:
 					// en cours de préparation
 					$slot=partie()->rejoindre();
-					display_js_vars(array('slot_id' => $slot->getID()));
 					$slots=queryTab('
 						select * from slot natural join joueur
 						where partie_id='.partie()->getID()
