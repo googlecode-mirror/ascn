@@ -35,6 +35,8 @@ class Partie extends DBItem {
 	
 	
 	/**
+	 * 
+	 * Le joueur de l'environnement rejoind la partie /!\ SI PAS DEJA FAIT
 	 * @return Slot
 	 */
 	public function rejoindre() {
@@ -46,6 +48,13 @@ class Partie extends DBItem {
 		}
 		if(partie()->etat!=PARTIE::PREPARATION) {
 			throw new Exception('Trop tard pour rejoindre la partie. (code etat partie : '.partie()->etat.')');
+		}
+		
+		
+		$slot=$this->hasJoueur(joueur());
+		
+		if(!is_null($slot)) {
+			return $slot;
 		}
 		
 		
@@ -88,7 +97,24 @@ class Partie extends DBItem {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * 
+	 * @param Joueur $joueur à tester si il est dans la partie or not
+	 * @return Slot|null
+	 */
+	public function hasJoueur($joueur) {
+		$data=queryLine('
+			select *
+			from partie
+			natural join slot
+			natural join joueur
+			where partie_id='.$this->getID().'
+			and joueur_id='.$joueur->getID()
+		);
+		
+		return $data ? new Slot($data) : null;
+	}
 	
 	
 	

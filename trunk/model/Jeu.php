@@ -35,8 +35,6 @@ abstract class Jeu {
 	public function run() {
 		
 		smarty()->assign('jeu', jeu());
-		print_r(getValues());
-		print_r(partie());
 		
 		if(slot()) {
 			smarty()->assign('slot', slot());

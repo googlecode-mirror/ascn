@@ -2,7 +2,7 @@
 
 $(function() {
 	Page.overrideAjaxButton();
-	Page.ajaxLoad(Page.hash());
+	Page.refresh();
 });
 
 
@@ -296,6 +296,11 @@ var Page = {
 		}
 	},
 	
+	
+	refresh: function() {
+		Page.ajaxLoad(Page.hash());
+	},
+	
 	hash: function(h) {
 		h && (window.location.hash=h);
 		return window.location.hash.substring(1);
@@ -304,11 +309,25 @@ var Page = {
 
 
 	addCss: function(name, file) {
-		$('head').append('<link class="dyncss_'+name+'" rel="stylesheet" type="text/css" href="'+file+'" />');
+		if($('head .dyncss_'+name).size()==0)
+			$('head').append('<link class="dyncss_'+name+'" rel="stylesheet" type="text/css" href="'+file+'" />');
 	},
-	
 	removeCss: function(name) {
 		$('head .dyncss_'+name).remove();
+	},
+	
+	addJs: function(name, file) {
+		if(!$('#js_append').hasClass('dynjs_'+name)) {
+			$('#js_append').addClass('dynjs_'+name);
+			$('head').append('<script class="dynjs_'+name+'" src="'+file+'" type="text/javascript"></script>');
+		}
+	},
+	
+	removeJs: function(name) {
+		$('#js_append').removeClass('dynjs_'+name);
+	},
+	removeAllJs: function() {
+		$('#js_append').attr('class', '');
 	}
 }
 
