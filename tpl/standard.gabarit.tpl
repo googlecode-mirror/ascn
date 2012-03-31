@@ -17,6 +17,7 @@
 		
 	</head>
 	<body>
+		<div id="js_append"></div>
 		<div id="wrapper">
 			<div id="content">
 				<div id="header">

@@ -21,10 +21,7 @@ class DB_access extends PDO {
 	
 	public function onQuery($q) {
 		// DEBUB :
-		if(defined('SQL_DEBUG') && SQL_DEBUG) {
-			debug_print_backtrace();
-			print "\nSQL DEBUG : $q\n";
-		}
+		//print $q."<br />\n";
 	}
 	
 	
