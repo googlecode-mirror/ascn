@@ -1,139 +1,18 @@
 
 
 $(function() {
-	overrideAjaxButton();
-	ajaxLoad(hash());
+	Page.overrideAjaxButton();
+	Page.ajaxLoad(Page.hash());
 });
 
 
-function hash(h) {
-	h && (window.location.hash=h);
-	return window.location.hash.substring(1);
-}
 
-
-function ajaxLoad(hash, data) {
-	if(hash) {
-
-		if(!data) var data=new Object();
-		
-		data.ajax='';
-		
-		$.ajax({
-			url: hash,
-			data: data,
-			success: function(r) {
-				$('#body').html(r);
-				overrideAjaxButton();
-			},
-			error: function(r) {
-				lightbox.show('Oups !', '<p>Ceci est un lien mort...</p>');
-			}
-		});
-	}
-}
 
 
 
 $(window).hashchange(function() {
-	ajaxLoad(hash());
+	Page.ajaxLoad(Page.hash());
 });
-
-
-
-
-
-
-
-function overrideAjaxButton() {
-	
-	// ajaxload : charger le contenu d'une page
-	$('a.ajaxload')
-		.click(function () {
-			hash($(this).attr('href'));
-			
-			return false;
-		})
-		.removeClass('ajaxload');
-	
-	
-	$('form.ajaxload')
-		.submit(function () {
-			var data=new Object();
-			
-			var inputs=$(this).find('input').each(function () {
-				var input=$(this);
-				
-				var name=input.attr('name');
-				var value=input.val();
-				
-				data[name]=value;
-			});
-			
-			ajaxLoad($(this).attr('action'), data);
-			
-			return false;
-		})
-		.attr('method', 'post')
-		.removeClass('ajaxload');
-	
-	
-	
-	
-	// ajaxaction : requete qui retourne du json
-	$('a.ajaxaction')
-		.click(function () {
-			var a=$(this).attr('href').split('/');
-			
-			if(a.length<3) {
-				console.log('Erreur lien href : '+a[0]);
-				return false;
-			}
-			
-			switch(a[0]) {
-				case 'modules':	Modules.action(a[1], a[2]);break;
-				case 'games':	Jeux.action(a[1], a[2]);break;
-			}
-			
-			
-			return false;
-		})
-		.removeClass('ajaxaction');
-	
-	
-	$('form.ajaxaction')
-		.submit(function () {
-			var a=$(this).attr('action').split('/');
-			
-			if(a.length<3) {
-				console.log('Erreur form action : '+a[0]);
-				return false;
-			}
-			
-			var data=new Object();
-			
-			var inputs=$(this).find('input').each(function () {
-				var input=$(this);
-				
-				var name=input.attr('name');
-				var value=input.val();
-				
-				data[name]=value;
-			});
-			
-			
-			switch(a[0]) {
-				case 'modules':	Modules.action(a[1], a[2], data);break;
-				case 'games':	Jeux.action(a[1], a[2], data);break;
-			}
-			
-			return false;
-		})
-		.attr('method', 'post')
-		.removeClass('ajaxaction');
-}
-
-
 
 
 
@@ -151,7 +30,7 @@ var Modules = {
 			success: function(r) {
 				$('#'+module_name).html(r);
 				callback && callback();
-				overrideAjaxButton();
+				Page.overrideAjaxButton();
 			}
 		});
 	},
@@ -197,10 +76,17 @@ var Modules = {
 		
 		var fx=window[module_name]['ajax_'+action];
 		
-		if(typeof fx == 'function')
+		
+		try {
 			window[module_name]['ajax_'+action](r);
-		else
-			console.log('JS function '+module_name+'.ajax_'+action+'() non trouvee...');
+		} catch(e) {
+			try {
+				window['Modules']['ajax_'+action](r);
+			} catch(e) {
+				console.log('JS function '+module_name+'.ajax_'+action+'() non trouvee...');
+				console.log('JS function Modules.ajax_'+action+'() non trouvee...');
+			}
+		}
 	}
 	
 	
@@ -265,13 +151,27 @@ var Jeux = {
 		} else r=null;
 		
 		
-		var fx=window[jeu_name]['ajax_'+action];
-		
-		
-		if(typeof fx == 'function')
+		try {
 			window[jeu_name]['ajax_'+action](r);
-		else
-			console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
+		} catch(e) {
+			try {
+				window['Jeux']['ajax_'+action](r);
+			} catch(e) {
+				console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
+				console.log('JS function Jeux.ajax_'+action+'() non trouvee...');
+			}
+		}
+	},
+	
+	
+	
+	
+	ajax_creer_partie: function(r) {
+		if(r.hasError) {
+			lightbox.show('Erreur lors de la cr&eacute;ation de partie', '...');
+		} else {
+			Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id);
+		}
 	}
 }
 
@@ -283,6 +183,126 @@ var Jeux = {
  * Page
  */
 var Page = {
+
+
+	overrideAjaxButton: function() {
+		
+		// ajaxload : charger le contenu d'une page
+		$('a.ajaxload')
+			.click(function () {
+				Page.hash($(this).attr('href'));
+				
+				return false;
+			})
+			.removeClass('ajaxload');
+		
+		
+		$('form.ajaxload')
+			.submit(function () {
+				var data=new Object();
+				
+				var inputs=$(this).find('input').each(function () {
+					var input=$(this);
+					
+					var name=input.attr('name');
+					var value=input.val();
+					
+					data[name]=value;
+				});
+				
+				ajaxLoad($(this).attr('action'), data);
+				
+				return false;
+			})
+			.attr('method', 'post')
+			.removeClass('ajaxload');
+		
+		
+		
+		
+		// ajaxaction : requete qui retourne du json
+		$('a.ajaxaction')
+			.click(function () {
+				var a=$(this).attr('href').split('/');
+				
+				if(a.length<3) {
+					console.log('Erreur lien href : '+a[0]);
+					return false;
+				}
+				
+				switch(a[0]) {
+					case 'modules':	Modules.action(a[1], a[2]);break;
+					case 'games':	Jeux.action(a[1], a[2]);break;
+				}
+				
+				
+				return false;
+			})
+			.removeClass('ajaxaction');
+		
+		
+		$('form.ajaxaction')
+			.submit(function () {
+				var a=$(this).attr('action').split('/');
+				
+				if(a.length<3) {
+					console.log('Erreur form action : '+a[0]);
+					return false;
+				}
+				
+				var data=new Object();
+				
+				var inputs=$(this).find('input').each(function () {
+					var input=$(this);
+					
+					var name=input.attr('name');
+					var value=input.val();
+					
+					data[name]=value;
+				});
+				
+				
+				switch(a[0]) {
+					case 'modules':	Modules.action(a[1], a[2], data);break;
+					case 'games':	Jeux.action(a[1], a[2], data);break;
+				}
+				
+				return false;
+			})
+			.attr('method', 'post')
+			.removeClass('ajaxaction');
+	},
+	
+	
+
+	ajaxLoad: function(hash, data) {
+		if(hash) {
+
+			if(!data) var data=new Object();
+			
+			data.ajax='';
+			
+			$.ajax({
+				url: hash,
+				data: data,
+				success: function(r) {
+					$('#body').html(r);
+					Page.overrideAjaxButton();
+				},
+				error: function(r) {
+					lightbox.show('Oups !', '<p>Ceci est un lien mort...</p>');
+				}
+			});
+		}
+	},
+	
+	hash: function(h) {
+		h && (window.location.hash=h);
+		return window.location.hash.substring(1);
+	},
+
+
+
 	addCss: function(name, file) {
 		$('head').append('<link class="dyncss_'+name+'" rel="stylesheet" type="text/css" href="'+file+'" />');
 	},

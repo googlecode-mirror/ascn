@@ -150,6 +150,18 @@ class Env {
 		if(!is_null($jeu_name)) {
 			require_once DIR_GAMES.$jeu_name.'/'.$jeu_name.'.php';
 			$this->singleton_jeu=new $jeu_name();
+			return;
+		}
+		
+		if($jeu_id=getValue('jeu', false)) {
+			$res=queryLine('
+				select *
+				from jeu
+				where jeu_id='.$jeu_id
+			);
+			
+			$this->singleton_jeu=new DBItem('jeu', $res);
+			return;
 		}
 	}
 	
