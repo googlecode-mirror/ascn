@@ -49,7 +49,7 @@ class UserView extends Module {
 	
 	
 	
-	public static function ajax_signin() {
+	public function ajax_signin() {
 		$r=new AJAXResponse();
 		$r->html=smarty()->fetch(DIR_MODULES.'userview/createuser.tpl');
 		return $r;

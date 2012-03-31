@@ -6,6 +6,7 @@ function addslashesSimpleQuote($s) {
 }
 
 
+// Gestion GET et POST
 function getValue($var, $default=null) {
 	if(isset($_GET[$var])) {
 		return $_GET[$var];
@@ -28,7 +29,16 @@ function getValues() {
 function debugValue() {
 	print_r(getValues());
 }
+// ======================
 
+
+function appli_dir($appli_type) {
+	$a=array(
+		'jeu'	=> DIRNAME_GAMES,
+		'module'=> DIRNAME_MODULES
+	);
+	return $a[$appli_type];
+}
 
 
 

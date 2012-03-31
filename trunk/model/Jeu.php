@@ -36,6 +36,7 @@ abstract class Jeu {
 		
 		smarty()->assign('jeu', jeu());
 		print_r(getValues());
+		print_r(partie());
 		
 		if(slot()) {
 			smarty()->assign('slot', slot());
@@ -86,6 +87,22 @@ abstract class Jeu {
 		
 	}
 
+	
+	
+	// Ajax actions :
+	public function ajax_creer_partie() {
+		// Formulaire de création de partie recu
+		$r=new AJAXResponse();
+		
+		$jeu_id=addslashes(getValue('jeu_id'));
+		$jeu_name=addslashes(getValue('jeu_name'));
+		$partie_title=addslashes(getValue('partie_title'));
+		
+		$partie=Partie::create($partie_title);
+		
+		$r->partie_id=$partie->getID();
+		return $r;
+	}
 	
 	
 	

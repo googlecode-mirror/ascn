@@ -45,6 +45,8 @@ require_once DIR_MODEL.'DB.php';
 
 // probleme autoload :
 require_once DIR_MODEL.'Joueur.php';
+require_once DIR_MODEL.'Partie.php';
+require_once DIR_MODEL.'Slot.php';
 
 // autoload model et controllers
 function __autoload($class_name) {
