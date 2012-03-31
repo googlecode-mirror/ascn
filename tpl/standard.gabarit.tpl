@@ -22,6 +22,7 @@
 				<div id="header">
 				
 					<h1>{$site_name}</h1>
+					<a href="index.php" class="ajaxload">Home</a>
 					{module name='userview'}
 					
 				</div>

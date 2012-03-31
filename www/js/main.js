@@ -166,8 +166,9 @@ var Modules = {
 		
 		if(!data) var data=new Object();
 		
-		data.module_name=module_name;
-		data.module_action=action;
+		data.appli_type='module';
+		data.appli_name=module_name;
+		data.appli_action=action;
 		
 		$.post('action.php', data, function (r) {
 			Modules.result(module_name, action, r);
@@ -235,8 +236,9 @@ var Jeux = {
 		
 		if(!data) var data=new Object();
 		
-		data.jeu_name=jeu_name;
-		data.jeu_action=action;
+		data.appli_type='jeu';
+		data.appli_name=jeu_name;
+		data.appli_action=action;
 		
 		$.post('action.php', data, function (r) {
 			Jeux.result(jeu_name, action, r);
@@ -264,6 +266,7 @@ var Jeux = {
 		
 		
 		var fx=window[jeu_name]['ajax_'+action];
+		
 		
 		if(typeof fx == 'function')
 			window[jeu_name]['ajax_'+action](r);
