@@ -90,7 +90,7 @@ var Modules = {
 	}
 	
 	
-}
+};
 
 
 
@@ -173,7 +173,7 @@ var Jeux = {
 			Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id);
 		}
 	}
-}
+};
 
 
 
@@ -329,7 +329,52 @@ var Page = {
 	removeAllJs: function() {
 		$('#js_append').attr('class', '');
 	}
-}
+};
+
+
+
+
+
+/**
+ * Actualizer
+ */
+var Actualizer=function(callback, timeout, url, dontstartnow) {
+	if(!callback) throw 'Actualizer::callback est requis';
+	this.callback=callback;
+	this.timeout=timeout ? timeout : 1500;
+	this.url=url ? url : Page.hash();
+	
+	this.started=false;
+	
+	this.actu=function() {
+		if(this.started) {
+			this.callback();
+			setTimeout(this.actu, this.timeout);
+		}
+	};
+	
+	this.start=function() {
+		if(!this.started) {
+			this.started=true;
+			this.actu();
+		}
+	};
+	
+	this.stop=function() {
+		if(this.started) {
+			this.started=false;
+		}
+	};
+	
+	
+	this.isStarted=function() {
+		return this.started;
+	};
+	
+	
+	!dontstartnow && this.start();
+	
+};
 
 
 
