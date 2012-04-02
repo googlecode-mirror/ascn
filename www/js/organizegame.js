@@ -4,7 +4,12 @@
 
 
 $(function () {
-	setInterval(updateOrganizeRequest, 2000);
+	var refresh_organize=setInterval(updateOrganizeRequest, 2000);
+	
+	$(window).hashchange(function() {
+		clearInterval(refresh_organize);
+	});
+
 });
 
 

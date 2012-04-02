@@ -3,7 +3,6 @@
 $(function() {
 	Page.overrideAjaxButton();
 	Page.refresh();
-	Page.values=false;
 });
 
 
@@ -13,10 +12,14 @@ $(function() {
 
 $(window).hashchange(function() {
 	Page.ajaxLoad(Page.hash());
+	Page.values=false;
 });
 
 
 
+function ajaxError(r) {
+	alert('Erreur requete : '+r);
+}
 
 
 
@@ -65,6 +68,7 @@ var Modules = {
 				
 				if(r.has_error) {
 					ajaxError(r.errors);
+					return;
 				}
 			} catch(e) {
 				console.groupCollapsed('www/main.js : ajaxResult() : JSON error. Data received : ...');
@@ -140,6 +144,7 @@ var Jeux = {
 				
 				if(r.has_error) {
 					ajaxError(r.errors);
+					return;
 				}
 			} catch(e) {
 				console.groupCollapsed('www/main.js : ajaxResult() : JSON error. Data received : ...');
@@ -343,18 +348,9 @@ var Page = {
 	},
 	
 	addJs: function(name, file) {
-		if(!$('#js_append').hasClass('dynjs_'+name)) {
-			$('#js_append').addClass('dynjs_'+name);
-			$('head').append('<script class="dynjs_'+name+'" src="'+file+'" type="text/javascript"></script>');
-		}
-	},
-	
-	removeJs: function(name) {
-		$('#js_append').removeClass('dynjs_'+name);
-	},
-	removeAllJs: function() {
-		$('#js_append').attr('class', '');
+		$('head').append('<script class="dynjs_'+name+'" src="'+file+'" type="text/javascript"></script>');
 	}
+	
 };
 
 
