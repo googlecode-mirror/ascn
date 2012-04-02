@@ -86,17 +86,17 @@ class Env {
 	
 	/**
 	 * 
-	 * Requiert Slot ou getValue('partie');
+	 * Requiert getValue('partie'); ou Slot
 	 */
 	private function initPartie() {
-		if(slot()) {
+		if($partie_id=getValue('partie', false)) {
+			$partie=$partie_id;
+		} else if(slot()) {
 			$partie=queryLine('
 				select *
 				from partie
 				where partie_id='.slot()->partie_id.'
 			');
-		} else if($partie_id=getValue('partie', false)) {
-			$partie=$partie_id;
 		} else return;
 		
 		$this->singleton_partie=new Partie($partie);

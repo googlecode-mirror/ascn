@@ -7,7 +7,7 @@ $(function () {
 <h2>Organize {$jeu->name}</h2>
 
 
-<ol>
+<ol class="liste-joueurs">
 {foreach from=$slots item=slot}
 	<li>
 		{$slot.joueur_pseudo}
