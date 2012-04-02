@@ -36,6 +36,25 @@ class Partie extends DBItem {
 	
 	/**
 	 * 
+	 * @param Joueur $joueur
+	 * @return Slot qu'occupe le joueur dans cette partie.
+	 */
+	public function getSlot($joueur) {
+		$data=queryValue('
+			select *
+			from partie
+			natural join slot
+			natural join joueur
+			where joueur_id='.$joueur->getID().'
+			and partie_id='.$this->getID()
+		);
+		
+		return new Slot($data);
+	}
+	
+	
+	/**
+	 * 
 	 * Le joueur de l'environnement rejoind la partie /!\ SI PAS DEJA FAIT
 	 * @return Slot
 	 */
@@ -95,6 +114,33 @@ class Partie extends DBItem {
 		
 		$this->updateSlots();
 	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * Lancer la partie
+	 */
+	public function lancer() {
+		if(!joueur()) {
+			throw new Exception('Joueur n\'est pas def dans l\'env');
+		}
+		
+		if($this->etat!=Partie::PREPARATION) {
+			throw new Exception('La partie n\'est pas en cours de préparation');
+		}
+		if(intval($this->host)!=joueur()->getID()) {
+			throw new Exception("Vous n'êtes pas l'hôte de cette partie...");
+		}
+		
+		
+		$this->etat=Partie::EN_COURS;
+		$this->save();
+	}
+	
+	
+	
 	
 	
 	/**

@@ -7,7 +7,7 @@ class TicTacToe extends Jeu {
 	
 	
 	
-	protected function process() {
+	public function process() {
 		self::load();
 		
 		
