@@ -4,7 +4,9 @@ $(function() {
 });
 </script>
 
-<h2>Organize {$jeu->name}</h2>
+<h2>Pr&eacute;paration d'une partie de {$jeu->title}</h2>
+
+<h3>Partie {$partie->title}, cr&eacute;&eacute;e par {$host->pseudo}</h3>
 
 
 <ol class="liste-joueurs">
@@ -20,6 +22,7 @@ $(function() {
 {if $isHost}
 	<form action="games/{$jeu->name}/lancer_partie" class="ajaxaction">
 		<input type="hidden" name="partie" value="{$partie->id}" />
+		<input type="hidden" name="jeu" value="{$jeu->id}" />
 		<input type="submit" value="Lancer la partie !" />
 	</form>
 {else}

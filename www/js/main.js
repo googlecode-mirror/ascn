@@ -84,7 +84,7 @@ var Modules = {
 			window[module_name]['ajax_'+action](r);
 		} catch(e) {
 			try {
-				window['Modules']['ajax_'+action](r);
+				Modules['ajax_'+action](r);
 			} catch(e) {
 				console.log('JS function '+module_name+'.ajax_'+action+'() non trouvee...');
 				console.log('JS function Modules.ajax_'+action+'() non trouvee...');
@@ -159,7 +159,7 @@ var Jeux = {
 			window[jeu_name]['ajax_'+action](r);
 		} catch(e) {
 			try {
-				window['Jeux']['ajax_'+action](r);
+				Jeux['ajax_'+action](r);
 			} catch(e) {
 				console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
 				console.log('JS function Jeux.ajax_'+action+'() non trouvee...');
@@ -176,6 +176,10 @@ var Jeux = {
 		} else {
 			Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id);
 		}
+	},
+	
+	ajax_lancer_partie: function(r) {
+		Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id+'&slot='+r.slot.id);
 	}
 };
 
