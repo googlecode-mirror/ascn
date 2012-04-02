@@ -59,6 +59,7 @@ abstract class Jeu {
 						order by slot_position
 					');
 					smarty()->assign('slots', $slots);
+					smarty()->assign('host', new Joueur(partie()->host));
 					smarty()->assign('isHost', intval($slot->joueur_id)==intval(partie()->host));
 					smarty()->display(DIR_TPL.'organizegame.tpl');
 					break;
@@ -122,6 +123,7 @@ abstract class Jeu {
 			
 			$r->partie_id=partie()->getID();
 			$r->slot=partie()->getSlot(joueur());
+			$r->jeu=jeu();
 		} catch(Exception $e) {
 			$r->addError($e->getMessage());
 		}

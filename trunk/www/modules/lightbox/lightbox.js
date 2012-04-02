@@ -39,7 +39,7 @@ var lightbox = {
 		return $('#lightbox').is(":visible");
 	}
 
-}
+};
 
 
 

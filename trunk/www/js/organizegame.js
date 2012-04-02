@@ -24,7 +24,7 @@ Modules.ajax_updateOrganize=function(r) {
 	
 	liste.html('');
 	for(var i=0;i<r.slots.length;i++) {
-		liste.append('<li>'+r.slots[i].joueur_pseudo+'</li>')
+		liste.append('<li>'+r.slots[i].joueur_pseudo+'</li>');
 	}
 };
 
