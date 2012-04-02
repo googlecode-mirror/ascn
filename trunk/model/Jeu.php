@@ -52,9 +52,11 @@ abstract class Jeu {
 					// en cours de préparation
 					$slot=partie()->rejoindre();
 					$slots=queryTab('
-						select * from slot natural join joueur
-						where partie_id='.partie()->getID()
-					);
+						select * from slot
+						natural join joueur
+						where partie_id='.partie()->getID().'
+						order by slot_position
+					');
 					smarty()->assign('slots', $slots);
 					smarty()->assign('isHost', intval($slot->joueur_id)==intval(partie()->host));
 					smarty()->display(DIR_TPL.'organizegame.tpl');
@@ -90,6 +92,11 @@ abstract class Jeu {
 	public function ajax_creer_partie() {
 		// Formulaire de création de partie recu
 		$r=new AJAXResponse();
+		
+		if(!joueur()) {
+			$r->addError('Vous n\'êtes pas connécté.');
+			return $r;
+		}
 		
 		$jeu_id=addslashes(getValue('jeu_id'));
 		$jeu_name=addslashes(getValue('jeu_name'));

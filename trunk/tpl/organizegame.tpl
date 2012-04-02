@@ -1,5 +1,5 @@
 <script type="text/javascript">
-$(function () {
+$(function() {
 	Page.addJs('organize_js', 'js/organizegame.js');
 });
 </script>
@@ -15,3 +15,11 @@ $(function () {
 {/foreach}
 </ol>
 
+{if $isHost}
+	<form action="games/{$jeu->name}/lancer_partie">
+		<input type="hidden" name="partie_id" value="{$partie->id}" />
+		<input type="submit" value="Lancer la partie !" />
+	</form>
+{else}
+	<p>Partie en cours de pr&eacute;paration...</p>
+{/if}
