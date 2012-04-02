@@ -3,6 +3,7 @@
 $(function() {
 	Page.overrideAjaxButton();
 	Page.refresh();
+	Page.values=false;
 });
 
 
@@ -69,12 +70,10 @@ var Modules = {
 				console.groupCollapsed('www/main.js : ajaxResult() : JSON error. Data received : ...');
 				console.log(r);
 				console.groupEnd();
+				
 				r=null;
 			}
 		} else r=null;
-		
-		
-		var fx=window[module_name]['ajax_'+action];
 		
 		
 		try {
@@ -305,6 +304,33 @@ var Page = {
 		h && (window.location.hash=h);
 		return window.location.hash.substring(1);
 	},
+	
+	
+	values: false,
+	getValue: function(key) {
+		if(!Page.values) {
+			Page.values={};
+			var urlPart=Page.hash().split('?');
+			if(urlPart.length>1) {
+				var gets=urlPart[1].split('&');
+				for(var i=0;i<gets.length;i++) {
+					var keyvalue=gets[i].split('=');
+					if(keyvalue.length>1) {
+						Page.values[keyvalue[0]]=keyvalue[1];
+					} else {
+						Page.values[keyvalue[0]]=false;
+					}
+				}
+			}
+		}
+		
+		
+		if(key) {
+			return Page.values[key];
+		} else {
+			return Page.values;
+		}
+	},
 
 
 
@@ -338,25 +364,31 @@ var Page = {
 /**
  * Actualizer
  */
-var Actualizer=function(callback, timeout, url, dontstartnow) {
+var Actualizer=function(url, data, callback, timeout, dontstartnow) {
 	if(!callback) throw 'Actualizer::callback est requis';
+	
+	this.url=url ? url : Page.hash();
+	this.data=data ? data : new Object();
 	this.callback=callback;
 	this.timeout=timeout ? timeout : 1500;
-	this.url=url ? url : Page.hash();
 	
 	this.started=false;
 	
-	this.actu=function() {
-		if(this.started) {
-			this.callback();
-			setTimeout(this.actu, this.timeout);
+	this.actu=function(actualizer) {
+		if(actualizer.started) {
+			$.post(url, data, function(r) {
+				actualizer.callback(r);
+				setTimeout(function() {
+					actualizer.actu(actualizer);
+				}, actualizer.timeout);
+			});
 		}
 	};
 	
 	this.start=function() {
 		if(!this.started) {
 			this.started=true;
-			this.actu();
+			this.actu(this);
 		}
 	};
 	
@@ -371,6 +403,11 @@ var Actualizer=function(callback, timeout, url, dontstartnow) {
 		return this.started;
 	};
 	
+	/* TODO
+	$(window).hashchange(function() {
+		this.stop();
+	});
+	*/
 	
 	!dontstartnow && this.start();
 	

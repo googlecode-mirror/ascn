@@ -1,11 +1,25 @@
 
+
+// Actualizer=function(url, data, callback, timeout, dontstartnow);
+
+
 $(function () {
-	//Page.hash('games/{$jeu->name}?partie={$partie->id}');
-	setTimeout(autorefresh, 2500);
+	setInterval(updateOrganizeRequest, 2000);
 });
 
 
-function autorefresh() {
-	Page.refresh();
-	setTimeout(autorefresh, 2500);
+function updateOrganizeRequest() {
+	var data=Page.getValue();
+	Modules.action('partiemgr', 'updateOrganize', data);
 }
+
+
+Modules.ajax_updateOrganize=function(r) {
+	var liste=$('.liste-joueurs');
+	
+	liste.html('');
+	for(var i=0;i<r.slots.length;i++) {
+		liste.append('<li>'+r.slots[i].joueur_pseudo+'</li>')
+	}
+};
+
