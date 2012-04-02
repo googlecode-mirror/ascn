@@ -182,7 +182,7 @@ class DBItem {
 	
 	
 	public function getID() {
-		return $this->item_id;
+		return intval($this->item_id);
 	}
 	
 	public function existsInDB() {

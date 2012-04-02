@@ -29,6 +29,7 @@ abstract class Jeu {
 	}
 	
 	
+	public abstract function process();
 	
 	
 	
@@ -111,7 +112,25 @@ abstract class Jeu {
 	
 	
 	
-	protected abstract function process();
+	
+	public function ajax_lancer_partie() {
+		// Formulaire de lancement de partie recu
+		$r=new AJAXResponse();
+		
+		try {
+			partie()->lancer();
+			
+			$r->partie_id=partie()->getID();
+			$r->slot=partie()->getSlot(joueur());
+		} catch(Exception $e) {
+			$r->addError($e->getMessage());
+		}
+		
+		return $r;
+	}
+	
+	
+	
 	
 	/**
 	 * 

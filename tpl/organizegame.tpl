@@ -15,9 +15,11 @@ $(function() {
 {/foreach}
 </ol>
 
+
+
 {if $isHost}
-	<form action="games/{$jeu->name}/lancer_partie">
-		<input type="hidden" name="partie_id" value="{$partie->id}" />
+	<form action="games/{$jeu->name}/lancer_partie" class="ajaxaction">
+		<input type="hidden" name="partie" value="{$partie->id}" />
 		<input type="submit" value="Lancer la partie !" />
 	</form>
 {else}

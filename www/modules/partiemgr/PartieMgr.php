@@ -7,6 +7,9 @@ class PartieMgr extends Module {
 	
 	
 	public function ajax_updateOrganize() {
+		$r=new AJAXResponse();
+		
+		
 		$res=queryTab('
 			select *
 			from partie
@@ -17,8 +20,9 @@ class PartieMgr extends Module {
 		');
 		
 		
-		$r=new AJAXResponse();
+		$r->partie=partie();
 		
+		// revoi tout pour garder infos sur joueur
 		$r->slots=$res;
 		
 		return $r;
