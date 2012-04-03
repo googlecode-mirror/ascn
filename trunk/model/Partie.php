@@ -40,7 +40,7 @@ class Partie extends DBItem {
 	 * @return Slot qu'occupe le joueur dans cette partie.
 	 */
 	public function getSlot($joueur) {
-		$data=queryValue('
+		$data=queryLine('
 			select *
 			from partie
 			natural join slot

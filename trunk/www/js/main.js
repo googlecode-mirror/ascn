@@ -80,16 +80,16 @@ var Modules = {
 		} else r=null;
 		
 		
-		try {
+		
+		if(window[module_name] && window[module_name]['ajax_'+action]) {
 			window[module_name]['ajax_'+action](r);
-		} catch(e) {
-			try {
-				Modules['ajax_'+action](r);
-			} catch(e) {
-				console.log('JS function '+module_name+'.ajax_'+action+'() non trouvee...');
-				console.log('JS function Modules.ajax_'+action+'() non trouvee...');
-			}
+		} else if(Modules['ajax_'+action]) {
+			Modules['ajax_'+action](r);
+		} else {
+			console.log('JS function '+module_name+'.ajax_'+action+'() non trouvee...');
+			console.log('JS function Modules.ajax_'+action+'() non trouvee...');
 		}
+		
 	}
 	
 	
@@ -155,15 +155,13 @@ var Jeux = {
 		} else r=null;
 		
 		
-		try {
+		if(window[jeu_name] && window[jeu_name]['ajax_'+action]) {
 			window[jeu_name]['ajax_'+action](r);
-		} catch(e) {
-			try {
-				Jeux['ajax_'+action](r);
-			} catch(e) {
-				console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
-				console.log('JS function Jeux.ajax_'+action+'() non trouvee...');
-			}
+		} else if(Jeux['ajax_'+action]) {
+			Jeux['ajax_'+action](r);
+		} else {
+			console.log('JS function '+jeu_name+'.ajax_'+action+'() non trouvee...');
+			console.log('JS function Jeux.ajax_'+action+'() non trouvee...');
 		}
 	},
 	
