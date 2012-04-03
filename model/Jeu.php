@@ -81,6 +81,7 @@ abstract class Jeu {
 		
 		} else {
 			// Index & formulaire création partie
+			smarty()->assign('random', rand(100000, 999999));
 			smarty()->display(DIR_TPL.'gameindex.tpl');
 		}
 		
@@ -121,7 +122,7 @@ abstract class Jeu {
 		try {
 			partie()->lancer();
 			
-			$r->partie_id=partie()->getID();
+			$r->partie=partie();
 			$r->slot=partie()->getSlot(joueur());
 			$r->jeu=jeu();
 		} catch(Exception $e) {
