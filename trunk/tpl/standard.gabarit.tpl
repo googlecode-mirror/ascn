@@ -32,7 +32,7 @@
 					{$CONTENT}
 					
 				</div>
-				{*module name='quickjoin'*}
+				{module name='quickjoin'}
 			</div>
 		</div>
 		{module name='lightbox'}

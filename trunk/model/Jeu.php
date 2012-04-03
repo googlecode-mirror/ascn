@@ -32,7 +32,11 @@ abstract class Jeu {
 	public abstract function process();
 	
 	
-	
+	/**
+	 * Processus de création, rejoindre et lancement de partie.
+	 * 
+	 * @throws Exception en cas de non définition de l'environnement.
+	 */
 	public function run() {
 		
 		smarty()->assign('jeu', jeu());
