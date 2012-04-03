@@ -27,7 +27,7 @@ abstract class Module {
 	
 	
 	public function process() {
-		
+		throw new Exception('PHP fonction '.get_class($this).'::proccess() doit être étendue');
 	}
 	
 	public final function run() {

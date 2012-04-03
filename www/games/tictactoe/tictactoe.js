@@ -5,7 +5,6 @@
 var tictactoe = {
 	
 	init: function () {
-		console.log($('.item'));
 		$('.item').click(function () {
 			var id=$(this).attr('id');
 			

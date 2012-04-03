@@ -15,6 +15,7 @@ class PartieMgr extends Module {
 			from partie
 			natural join slot
 			natural join joueur
+			natural join jeu
 			where partie_id='.partie()->getID().'
 			order by slot_position
 		');
@@ -24,6 +25,9 @@ class PartieMgr extends Module {
 		
 		// revoi tout pour garder infos sur joueur
 		$r->slots=$res;
+		
+		$r->slot=partie()->getSlot(joueur());
+		$r->jeu=new DBItem('jeu', $res[0]);
 		
 		return $r;
 	}
