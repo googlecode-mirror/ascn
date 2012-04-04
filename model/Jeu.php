@@ -2,34 +2,43 @@
 
 
 
-abstract class Jeu {
+abstract class Jeu extends DBItem {
 	
 	
-	private static $instance=null;
-	private $object=null;
 	
-	
+	/**
+	 * 
+	 * Construit une instance de DBItem à partir
+	 * du nom de la classe finalement étendue.
+	 */
 	public function __construct() {
-		$res=queryLine('
+		parent::__construct('jeu', queryLine('
 			select *
 			from jeu
 			where jeu_name=\''.strtolower(get_class($this)).'\'
-		');
-		
-		$this->object=new DBItem('jeu', $res);
+		'));
 	}
 
 	
-	public function __get($name) {
-		return $this->object->$name;
-	}
-	
-	public function getID() {
-		return $this->object->getID();
-	}
-	
-	
+	/**
+	 * 
+	 * Controlleur du template du jeu.
+	 * Attention : pas forcément appellée seulement
+	 * une seule fois au début de la partie...
+	 */
 	public abstract function process();
+	
+	/**
+	 * 
+	 * Initialiser les données de la partie lorsque
+	 * une partie de ce jeu est créée.
+	 * 
+	 * @return Object|array contenant les données initiales.
+	 * 						(avant d'être encodées en JSON)
+	 */
+	public abstract function getInitialData();
+	
+	
 	
 	
 	/**
@@ -146,6 +155,24 @@ abstract class Jeu {
 	 * @param String $tpl nom du template si autre que le defaut.
 	 */
 	public function display($tpl=null) {
+		$dir=$this->getDir();
+		$www=$this->getWWW();
+		
+		$file=$this->name.'.css';
+		if(file_exists($dir.$file)) { ?>
+			<link rel="stylesheet" type="text/css" href="<?php print $www.$file; ?>" />
+		<?php }
+		
+		$file=$this->name.'.js';
+		if(file_exists($dir.$file)) { ?>
+			<script src="<?php print $www.$file; ?>" type="text/javascript"></script>
+			<script type="text/javascript">
+				$(function () {
+					<?php print $this->name;?>.init();
+				});
+			</script>
+		<?php }
+		
 		if(is_null($tpl))
 			smarty()->display($this->getDir().$this->name.'.tpl');
 		else
@@ -155,6 +182,9 @@ abstract class Jeu {
 	
 	public function getDir() {
 		return DIR_GAMES.$this->name.'/';
+	}
+	public function getWWW() {
+		return WWW_GAMES.$this->name.'/';
 	}
 	
 	
