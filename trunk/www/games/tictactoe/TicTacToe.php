@@ -3,19 +3,18 @@
 class TicTacToe extends Jeu {
 	
 	
-	private static $grid=null;
 	
 	
 	
 	public function process() {
-		self::load();
 		
+		$this->loadData();
 		
 		$cases=array();
 		for($i=0;$i<9;$i++) {
 			$class='';
 			
-			switch(self::$grid[$i]) {
+			switch($this->grille[$i]) {
 				case 1: $class='red';	break;
 				case 2: $class='blue';	break;
 			}
@@ -33,12 +32,26 @@ class TicTacToe extends Jeu {
 	}
 	
 	
+	public function getInitialData() {
+		
+		for($i=0;$i<9;$i++) {
+			$r->grille[$i]=0;
+		}
+		
+		$this->grille=$r->grille;
+		
+		return $r;
+	}
 	
 	
 	
+	private $grille=null;
 	
-	public static function ajax_kik() {
-		self::load();
+	
+	
+	public function ajax_kik() {
+		$this->loadData();
+		
 		$x=intval(getValue('x'));
 		$y=intval(getValue('y'));
 		
@@ -47,55 +60,44 @@ class TicTacToe extends Jeu {
 		$nb_red=0;
 		$nb_blue=0;
 		for($i=0;$i<9;$i++) {
-			switch(self::$grid[$i]) {
-				case '1': $nb_red++; break;
-				case '2': $nb_blue++;break;
+			switch($this->grille[$i]) {
+				case 1: $nb_red++; break;
+				case 2: $nb_blue++;break;
 			}
 		}
 		
-		if(self::$grid[$charat]=='0' && (($nb_red-$nb_blue+1)==intval(slot()->position)))
-			self::$grid[$charat]=intval(slot()->position);
+		if($this->grille[$charat]==0 && (($nb_red-$nb_blue+1)==intval(slot()->position))) {
+			$this->grille[$charat]=intval(slot()->position);
+			$this->saveData();
+		}
 		
-		self::save();
-		
-		return self::ajax_update();
+		return $this->ajax_update();
 	}
 	
 	
 	
-	public static function ajax_update() {
-		self::load();
+	public function ajax_update() {
+		$this->loadData();
 		
 		$res=new AJAXResponse();
-		$res->grid=self::$grid;
+		$res->grid=$this->grille;
 		return $res;
 	}
 	
 	
-	
-	
-	
-	private static function save() {
-		$serial='';
-		
-		foreach(self::$grid as $g) {
-			$serial.=$g;
+	private function loadData() {
+		if(is_null($this->grille)) {
+			$data=json_decode(partie()->data);
+			$this->grille=$data->grille;
 		}
-		
-		partie()->data=$serial;
+	}
+	
+	private function saveData() {
+		$data->grille=$this->grille;
+		partie()->data=json_encode($data);
 		partie()->save();
 	}
-	private static function load() {
-		self::$grid=array();
-		
-		if(strlen(partie()->data)!=9) {
-			partie()->data='000000000';
-		}
-		
-		for($i=0;$i<9;$i++) {
-			self::$grid[]=intval(partie()->data{$i});
-		}
-	}
+	
 	
 	
 }

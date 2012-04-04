@@ -182,6 +182,7 @@ class Partie extends DBItem {
 			$p->title=$title;
 			$p->etat=Partie::PREPARATION;
 			$p->token=self::genererToken();
+			$p->data=json_encode(jeu()->getInitialData());
 		$p->save();
 		
 		return $p;

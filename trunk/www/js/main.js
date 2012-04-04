@@ -128,6 +128,8 @@ var Jeux = {
 		data.appli_type='jeu';
 		data.appli_name=jeu_name;
 		data.appli_action=action;
+		data.slot=Page.getValue('slot');
+		data.partie=Page.getValue('partie');
 		
 		$.post('action.php', data, function (r) {
 			Jeux.result(jeu_name, action, r);

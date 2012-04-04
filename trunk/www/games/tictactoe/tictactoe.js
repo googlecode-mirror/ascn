@@ -10,16 +10,23 @@ var tictactoe = {
 			
 			var s=id.split('-');
 			
-			kik(s[1], s[2]);
+			tictactoe.kik(s[1], s[2]);
 			
 		});
 		
-		//tttAction('update');
+
+		var ttt_interval=setInterval(function() {
+			tictactoe.tttAction('update');
+		}, 1000);
+		
+		$(window).hashchange(function () {
+			clearInterval(ttt_interval);
+		});
 	},
 	
 	
 	tttAction: function(action, params) {
-		ajaxAction('jeu:TicTacToe', action, params);
+		Jeux.action('tictactoe', action, params);
 	},
 	
 	
@@ -30,16 +37,16 @@ var tictactoe = {
 	
 	
 	kik: function(x, y) {
-		tttAction('kik', {x: x, y: y});
+		tictactoe.tttAction('kik', {x: x, y: y});
 	},
 	
 	
-	ajax_tictactoe_kik: function(res) {
-		ajax_tictactoe_update(res);
+	ajax_kik: function(res) {
+		tictactoe.ajax_update(res);
 	},
 	
 	
-	ajax_tictactoe_update: function(res) {
+	ajax_update: function(res) {
 		for(var i=0;i<9;i++) {
 			var classe='';
 			
@@ -48,12 +55,11 @@ var tictactoe = {
 				case 2: classe='blue';
 			}
 			
-			item(i%3, Math.floor(i/3))
+			tictactoe.item(i%3, Math.floor(i/3))
 				.children()
 				.attr('class', 'item '+classe);
 		}
 		
-		setTimeout(function() { tttAction('update'); }, 1000);
 	}
 
 

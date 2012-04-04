@@ -144,24 +144,23 @@ class Env {
 	
 	/**
 	 * 
-	 * Requiert Slot.
+	 * Requiert arg jeu_name ou getValue('jeu_name'), ou getValue('jeu') (plus long)
 	 */
 	public function initJeu($jeu_name=null) {
-		if(!is_null($jeu_name)) {
+		if(!is_null($jeu_name) || $jeu_name=getValue('jeu_name', false)) {
+			
 			require_once DIR_GAMES.$jeu_name.'/'.$jeu_name.'.php';
 			$this->singleton_jeu=new $jeu_name();
-			return;
-		}
-		
-		if($jeu_id=getValue('jeu', false)) {
-			$res=queryLine('
-				select *
+			
+		} else if($jeu_id=getValue('jeu', false)) {
+			
+			$jeu_id=intval($jeu_id);
+			$jeu_name=queryValue('
+				select jeu_name
 				from jeu
 				where jeu_id='.$jeu_id
 			);
-			
-			$this->singleton_jeu=new DBItem('jeu', $res);
-			return;
+			$this->singleton_jeu=new $jeu_name();
 		}
 	}
 	
