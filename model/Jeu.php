@@ -39,6 +39,15 @@ abstract class Jeu extends DBItem {
 	public abstract function getInitialData();
 	
 	
+	/**
+	 * 
+	 * A appeler quand le jeu est terminé.
+	 * @return ???? AJAXResponse ???? TODO
+	 */
+	public function terminer() {
+		partie()->terminer();
+	}
+	
 	
 	
 	/**

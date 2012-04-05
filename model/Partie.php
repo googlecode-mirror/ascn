@@ -142,6 +142,22 @@ class Partie extends DBItem {
 	
 	
 	
+	/**
+	 * 
+	 * Termine la partie. Les scores des slots
+	 * sont ensuite triés pour définir le vainqueur.
+	 */
+	public function terminer() {
+		if($this->etat==Partie::EN_COURS) {
+			$this->etat=Partie::TERMINEE;
+			$this->save();
+		} else {
+			throw new Exception('La partie n\'est pas en cours : '.$this->etat);
+		}
+	}
+	
+	
+	
 	
 	/**
 	 * 
