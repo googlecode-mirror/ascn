@@ -42,10 +42,14 @@ abstract class Jeu extends DBItem {
 	/**
 	 * 
 	 * A appeler quand le jeu est terminé.
-	 * @return ???? AJAXResponse ???? TODO
+	 * @return AJAXResponse TODO
 	 */
 	public function terminer() {
 		partie()->terminer();
+		$r=new AJAXResponse();
+		$r->partie_terminee=true;
+		$r->scores=partie()->getSlots();
+		return $r;
 	}
 	
 	
@@ -59,17 +63,13 @@ abstract class Jeu extends DBItem {
 		
 		smarty()->assign('jeu', jeu());
 		
-		if(slot()) {
-			smarty()->assign('slot', slot());
+		if(partie()) {
 			smarty()->assign('partie', partie());
 			
-			$this->process();
-			$this->display();
-			
-		} else if(partie()) {
-			smarty()->assign('partie', partie());
+			smarty()->assign('host', new Joueur(partie()->host));
 			
 			switch(partie()->etat) {
+				
 			
 				case Partie::PREPARATION:
 					// en cours de préparation
@@ -80,19 +80,30 @@ abstract class Jeu extends DBItem {
 						where partie_id='.partie()->getID().'
 						order by slot_position
 					');
+					
 					smarty()->assign('slots', $slots);
-					smarty()->assign('host', new Joueur(partie()->host));
 					smarty()->assign('isHost', intval($slot->joueur_id)==intval(partie()->host));
 					smarty()->display(DIR_TPL.'organizegame.tpl');
 					break;
 					
 				case Partie::EN_COURS:
-					// Erreur : en cours de jeu mais slot non défini
-					throw new Exception('Erreur : en cours de jeu mais slot non défini');
+					if(is_null(slot())) throw new Exception('Erreur : en cours de jeu mais slot non défini');
+					smarty()->assign('slot', slot());
+					$this->process();
+					$this->display();
 					break;
 				
 				case Partie::TERMINEE:
-					// terminée
+					smarty()->assign('slot', slot());
+					$slots=queryTab('
+						select * from slot
+						natural join joueur
+						where partie_id='.partie()->getID().'
+						order by slot_score desc
+					');
+					
+					smarty()->assign('slots', $slots);
+					smarty()->display(DIR_TPL.'scores.tpl');
 					break;
 					
 					

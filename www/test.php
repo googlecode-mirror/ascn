@@ -1,13 +1,11 @@
 <?php
 require_once '../config.php';
+require_once DIR_GAMES.'tictactoe/TicTacToe.php';
 
-$slot=new Slot(1);
+$grille=array(
+	1,2,2,
+	1,1,2,
+	0,2,1
+);
 
-var_dump($slot->score);
-$slot->addScore(5);
-var_dump($slot->score);
-$slot->addScore(2.5);
-var_dump($slot->score);
-$slot->addScore(1/3);
-var_dump($slot->score);
-$slot->save();
+print_r(TicTacToe::checkTicTacToe($grille));

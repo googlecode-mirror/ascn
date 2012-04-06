@@ -66,19 +66,21 @@ class TicTacToe extends Jeu {
 		}
 		
 		
-		switch($winner=self::checkTicTacToe($this->grille)) {
+		$winner=self::checkTicTacToe($this->grille);
+		switch($winner['etat']) {
 			case 0:
 				return $this->ajax_update();
 				
 			case 1:case 2:
 				$slots=partie()->getSlots();
-				$slots[$winner-1]->addScore(1);
-				$this->terminer();
-				return new AJAXResponse();
-				break;
+				$slots[$winner['etat']-1]->addScore(1, true);
+				$r=$this->terminer();
+				$r->highlight=$winner['highlight'];
+				$r->grid=$this->grille;
+				return $r;
 				
 			default:
-				throw new Exception('grille de Tic Tac Toe impossible');
+				throw new Exception('grille de Tic Tac Toe impossible : '.$winner);
 		}
 		
 		
@@ -92,6 +94,7 @@ class TicTacToe extends Jeu {
 		
 		$res=new AJAXResponse();
 		$res->grid=$this->grille;
+		$res->partie_terminee=partie()->etat==PARTIE::TERMINEE;
 		return $res;
 	}
 	
@@ -112,25 +115,66 @@ class TicTacToe extends Jeu {
 	
 	/**
 	 * 
-	 * Enter description here ...
+	 * Algo d'évaluation d'une grille de tic tac toe.
 	 * @param Array $grille a évaluer. Doit être un array de 9 int = 0:vide, 1:joueur1 ou 2:joueur2
-	 * @return integer :
-	 * 				0 : pas fini
-	 * 				1 : J1 win
-	 * 				2 : J2 win
-	 * 				-1: Erreur : grille impossible
+	 * @return Array(
+	 * 					'etat' =>
+	 * 						0 : pas fini
+	 * 						1 : J1 win
+	 * 						2 : J2 win
+	 * 						-1: Erreur : grille impossible
+	 * 					'highlight'
+	 * 						=> Array
+	 * 
 	 */
 	public static function checkTicTacToe($grille) {
 		
 		// Regarde si un joueur à joué plus que l'autre
-		list($nb_red, $nb_blue)=self::compterSignes($this->grille);
+		list($nb_red, $nb_blue)=self::compterSignes($grille);
 		$diff=$nb_red-$nb_blue;
-		if($diff<-1 || $diff>1) return -1;
+		if($diff<-1 || $diff>1) return array('etat' => -1);
+		
+		// si moins de 5 signes, pas de victoire possible.
+		if(($nb_red+$nb_blue)<5) return array('etat' => 0);
+		
+		// cherche alignements
+		$ret=array();
+		$ret['highlight']=array(0,0,0, 0,0,0, 0,0,0);
+		
+		$g=$grille;
+		
+		$coefs=array(
+			array(3,0),
+			array(3,1),
+			array(3,2),
+			array(1,0),
+			array(1,3),
+			array(1,6),
+			array(4,0),
+			array(2,2)
+		);
+		
+		foreach($coefs as $coef) {
+			list($a, $b)=$coef;
+			
+			for($x=0;$x<3;$x++) {
+				${'c'.$x}=$g[$a*$x+$b];
+			}
+			
+			if($c0==$c1 && $c1==$c2) {
+				for($x=0;$x<3;$x++) {
+					$ret['etat']=$c0;
+					$ret['highlight'][$a*$x+$b]=1;
+				}
+				
+				return $ret;
+			}
+		}
 		
 		
-		
-		return 0;
+		return array('etat' => 0);
 	}
+	
 	
 	
 	private static function compterSignes($grille) {
