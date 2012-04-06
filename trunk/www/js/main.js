@@ -180,6 +180,10 @@ var Jeux = {
 	
 	ajax_lancer_partie: function(r) {
 		Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id+'&slot='+r.slot.id);
+	},
+	
+	afficher_scores: function(r) {
+		Page.refresh();
 	}
 };
 

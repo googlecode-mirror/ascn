@@ -47,6 +47,12 @@ var tictactoe = {
 	
 	
 	ajax_update: function(res) {
+		if(res.partie_terminee) {
+			setTimeout(function() {
+				Jeux.afficher_scores(res);
+			}, 1500);
+		}
+		
 		for(var i=0;i<9;i++) {
 			var classe='';
 			

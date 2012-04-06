@@ -15,7 +15,7 @@ class Slot extends DBItem {
 	
 	
 	private function checkPartieEnCours() {
-		if(intval(partie())->etat != PARTIE::EN_COURS) {
+		if(intval(partie()->etat) != PARTIE::EN_COURS) {
 			throw new Exception('
 				Impossible de modifier les scores quand la partie n\'est pas en cours.
 				partie.etat = '.partie()->etat
