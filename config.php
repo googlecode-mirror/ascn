@@ -14,8 +14,8 @@ define('DB_user', 'root');
 define('DB_pass', '');
 
 // roots
-define('DIR_ROOT', 'C:/wamp/www/Eclipse_Workspace/ascn/trunk/');
-define('WWW_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/Eclipse_Workspace/ascn/trunk/www/');
+define('DIR_ROOT', 'C:/wamp/www/Eclipse_Workspace/ascn2/trunk/');
+define('WWW_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/Eclipse_Workspace/ascn2/trunk/www/');
 
 
 
