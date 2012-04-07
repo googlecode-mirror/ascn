@@ -8,6 +8,8 @@ $(function() {
 
 <h3>Partie {$partie->title}, cr&eacute;&eacute;e par {$host->pseudo}</h3>
 
+<p>Envoyer ce lien &agrave; vos amis pour qu'ils rejoignent cette partie :</p>
+<p>{$smarty.const.WWW_ROOT}#{$smarty.const.DIRNAME_GAMES}/{$jeu->name}?partie={$partie->id}</p>
 
 <ol class="liste-joueurs">
 {foreach from=$slots item=slot}
