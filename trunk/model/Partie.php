@@ -126,6 +126,9 @@ class Partie extends DBItem {
 		if(!joueur()) {
 			throw new Exception('Joueur n\'est pas def dans l\'env');
 		}
+		if(!jeu()) {
+			throw new Exception('Jeu n\'est pas def dans l\'env');
+		}
 		
 		if($this->etat!=Partie::PREPARATION) {
 			throw new Exception('La partie n\'est pas en cours de préparation');
@@ -133,6 +136,15 @@ class Partie extends DBItem {
 		if(intval($this->host)!=joueur()->getID()) {
 			throw new Exception("Vous n'êtes pas l'hôte de cette partie...");
 		}
+		
+		$nb_joueur=count($this->getSlots());
+		if($nb_joueur<intval(jeu()->nbjoueur_min)) {
+			throw new Exception('Pas assez de joueurs : '.jeu()->nbjoueur_min.' minimum requis.');
+		}
+		if($nb_joueur>intval(jeu()->nbjoueur_max)) {
+			throw new Exception('Trop de joueurs : '.jeu()->nbjoueur_min.' maximum possible.');
+		}
+		
 		
 		
 		$this->etat=Partie::EN_COURS;
