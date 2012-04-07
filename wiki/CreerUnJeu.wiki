@@ -1,0 +1,32 @@
+== Installation ==
+
+
+*Ajouter une entrée dans la base de données :
+:title : Nom du jeu qui sera affiché
+:name : Nom code du jeu. Pas d'espace ni majuscules
+:description : Sera affichée sous le titre
+
+*Créer un dossier dans www/games/JEUNAME
+
+=== Fichiers ===
+
+*index.php :
+<pre>
+<?php
+require_once '../../../config.php';
+env()->initJeu('JEUNAME');
+jeu()->run();
+</pre>
+
+*JEUNAME.css :
+CSS du jeu, sera inclue automatiquement
+
+*JEUNAME.js :
+Script du jeu, sera inclu automatiquement
+
+*JEUNAME.php
+Classe PHP du jeu :
+
+
+
+
