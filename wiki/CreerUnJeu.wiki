@@ -1,3 +1,5 @@
+= Créer un jeu =
+
 == Installation ==
 
 
@@ -24,9 +26,25 @@ CSS du jeu, sera inclue automatiquement
 *JEUNAME.js :
 Script du jeu, sera inclu automatiquement
 
+*JEUNAME.tpl :
+Template Smarty du jeu
+
 *JEUNAME.php
 Classe PHP du jeu :
+<pre>
+<?php
 
+class TicTacToe extends Jeu {
+	
+	public function process() {
+		// Controlleur du template smarty
+	}
 
+	public function getInitialData() {
+		// Retourne un object contenant les données
+		// initiale de la partie
+	}
+}
 
+</pre>
 
