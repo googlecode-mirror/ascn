@@ -12,11 +12,13 @@ class DB_access extends PDO {
 	public static function getPDOInstance() {
 		if(DB_access::$instance==null) {
 			DB_access::$instance=new DB_access();
+			
+			// UTF8 :
+			DB_access::$instance->querySimple("SET NAMES 'UTF8'");
 		}
 		
 		return DB_access::$instance;
 	}
-	
 	
 	
 	public function onQuery($q) {

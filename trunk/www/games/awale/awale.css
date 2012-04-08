@@ -1,3 +1,70 @@
 @CHARSET "ISO-8859-1";
 
+#body {
+	background: url(img/plateau.jpg) no-repeat 0 0;
+	height: 562px;
+}
+
+#containers {
+	margin-top: 146px;
+	margin-left: 16px;
+}
+
+
+.grenier {
+	display: inline-block;
+	width: 104px;
+	height: 228px;
+}
+
+
+#compartiments {
+	display: inline-block;
+	vertical-align: top;
+	width: 690px;
+}
+
+
+#compartiments .compartiments-line {
+	display: inline-block;
+	margin-left: 30px;
+}
+#compartiments .compartiments-line .compartiment:LAST-CHILD {
+	margin: 0;
+}
+#compartiments .compartiments-line .compartiment:FIRST-CHILD {
+	margin-right: 30px;
+}
+#compartiments #compartiments-0 {
+	margin-bottom: 58px;
+}
+
+#compartiments .compartiments-line .compartiment {
+	position: relative;
+	width: 82px;
+	height: 82px;
+	display: inline-block;
+	margin-right: 24px;
+	background-image: url(img/haricots.png);
+	background-repeat: no-repeat;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+#compartiments .compartiments-line .compartiment p.qte_txt {
+	margin-left: 18px;
+	margin-top: 60px;
+	text-align: center;
+	width: 50px;
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
 
