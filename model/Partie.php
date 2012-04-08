@@ -209,17 +209,12 @@ class Partie extends DBItem {
 			$p->host=joueur()->getID();
 			$p->title=$title;
 			$p->etat=Partie::PREPARATION;
-			$p->token=self::genererToken();
 			$p->data=json_encode(jeu()->getInitialData());
 		$p->save();
 		
 		return $p;
 	}
 	
-	
-	public static function genererToken() {
-		return md5(rand().date('h-i-s:H-i-s'));
-	}
 	
 	
 	
