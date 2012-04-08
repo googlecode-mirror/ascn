@@ -1,6 +1,10 @@
 
 
 var awale = {
+		
+	action: function(action, data) {
+		Jeux.action('awale', action, data);
+	},
 	
 	init: function() {
 		awale.compartiments=[
@@ -57,7 +61,15 @@ var awale = {
 	
 	
 	kik: function(line, num) {
-		console.log(line+' '+num);
+		var data=new Object();
+		data['line']=line;
+		data['num']=num;
+		awale.action('kik', data);
+	},
+	
+	
+	ajax_kik: function(r) {
+		console.log(r);
 	}
 	
 	
