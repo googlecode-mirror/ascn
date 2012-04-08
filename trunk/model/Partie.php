@@ -10,6 +10,7 @@ class Partie extends DBItem {
 	const TERMINEE		= 3 ;
 	
 	private $slots=array();
+	private $singleton_data=null;
 	
 	
 	public function __construct($arg=null) {
@@ -191,6 +192,17 @@ class Partie extends DBItem {
 	}
 	
 	
+	public function getData() {
+		if(is_null($this->singleton_data)) {
+			$this->singleton_data=json_decode($this->data);
+		}
+		
+		return $this->singleton_data;
+	}
+	public function setData($o) {
+		$this->data=$this->singleton_data=json_encode($o);
+		$this->save();
+	}
 	
 	
 	/**
@@ -209,7 +221,7 @@ class Partie extends DBItem {
 			$p->host=joueur()->getID();
 			$p->title=$title;
 			$p->etat=Partie::PREPARATION;
-			$p->data=json_encode(jeu()->getInitialData());
+			$p->setData(jeu()->getInitialData());
 		$p->save();
 		
 		return $p;
