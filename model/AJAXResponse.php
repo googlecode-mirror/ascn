@@ -18,4 +18,14 @@ class AJAXResponse {
 	}
 	
 	
+	
+	
+	
+	public static function error($s) {
+		$r=new AJAXResponse();
+		$r->addError($s);
+		return $r;
+	}
+	
+	
 }

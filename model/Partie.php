@@ -13,6 +13,7 @@ class Partie extends DBItem {
 	private $singleton_data=null;
 	
 	
+	
 	public function __construct($arg=null) {
 		parent::__construct('partie', $arg);
 		if(!is_null($arg)) {
@@ -200,9 +201,11 @@ class Partie extends DBItem {
 		return $this->singleton_data;
 	}
 	public function setData($o) {
-		$this->data=$this->singleton_data=json_encode($o);
+		$this->singleton_data=$o;
+		$this->data=json_encode($o);
 		$this->save();
 	}
+	
 	
 	
 	/**
