@@ -7,12 +7,7 @@ var awale = {
 	},
 	
 	init: function() {
-		awale.compartiments=[
-		               [0,0,0,0,0,0],
-		               [0,0,0,0,0,0]
-		               		];
-		
-		awale.refresh_haricots();
+		awale.action('update');
 		
 		$('.compartiment')
 			.click(function() {
@@ -23,9 +18,17 @@ var awale = {
 				
 				awale.kik(line, num);
 			});
+		
+		awale.interval=setInterval(function() {
+			awale.action('update');
+		}, 2500);
+		
+		$(window).hashchange(function() {
+			clearInterval(awale.interval);
+		});
 	},
 
-
+	
 	
 	setHaricot: function(joueur, num, qte) {
 		awale.compartiments[joueur][num]=qte;
@@ -51,6 +54,8 @@ var awale = {
 		}
 	},
 	
+	
+	
 	refresh_haricots: function() {
 		for(var i=0;i<2;i++) {
 			for(var j=0;j<6;j++) {
@@ -69,7 +74,25 @@ var awale = {
 	
 	
 	ajax_kik: function(r) {
-		console.log(r);
+		awale.ajax_update(r);
+	},
+	
+	ajax_update: function(r) {
+		if(r.partie_terminee) {
+			setTimeout(function() {
+				Jeux.afficher_scores(r);
+			}, 1500);
+			
+			awale.compartiments=r.lastdata.data.compartiments;
+			awale.refresh_haricots();
+			$('#grenier-left .score_txt').html(r.lastdata.slots[0].score);
+			$('#grenier-right .score_txt').html(r.lastdata.slots[1].score);
+		} else {
+			awale.compartiments=r.data.compartiments;
+			awale.refresh_haricots();
+			$('#grenier-left .score_txt').html(r.slots[0].score);
+			$('#grenier-right .score_txt').html(r.slots[1].score);
+		}
 	}
 	
 	
