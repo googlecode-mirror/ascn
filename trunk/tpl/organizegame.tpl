@@ -8,8 +8,6 @@ $(function() {
 
 <h3>Partie {$partie->title}, cr&eacute;&eacute;e par {$host->pseudo}</h3>
 
-<p>Envoyer ce lien &agrave; vos amis pour qu'ils rejoignent cette partie :</p>
-<p>{$smarty.const.WWW_ROOT}#{$smarty.const.DIRNAME_GAMES}/{$jeu->name}?partie={$partie->id}</p>
 
 <ol class="liste-joueurs">
 {foreach from=$slots item=slot}
@@ -19,10 +17,27 @@ $(function() {
 {/foreach}
 </ol>
 
+<hr />
 
+<p>Envoyer ce lien &agrave; vos amis pour qu'ils rejoignent cette partie :</p>
+<p>{$smarty.const.WWW_ROOT}#{$smarty.const.DIRNAME_GAMES}/{$jeu->name}?partie={$partie->id}</p>
 
 {if $isHost}
+	<hr />
 	<form action="games/{$jeu->name}/lancer_partie" class="ajaxaction">
+		<h3>Options de la partie</h3>
+		
+		{foreach from=$options item=option}
+			<p>{$option->title}</p>
+			<select name="option_{$option->id}">
+				{foreach from=$option->getValues() key=key item=value}
+					<option value="{$key}">{$value}</option>
+				{/foreach}
+			</select>
+		{/foreach}
+	
+		<hr />
+		
 		<input type="hidden" name="partie" value="{$partie->id}" />
 		<input type="hidden" name="jeu" value="{$jeu->id}" />
 		<input type="submit" value="Lancer la partie !" />

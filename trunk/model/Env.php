@@ -80,7 +80,9 @@ class Env {
 	private function initJoueur() {
 		if(isset($_SESSION['joueur_id']) && !is_null($_SESSION['joueur_id'])) {
 			$this->singleton_joueur=new Joueur(intval($_SESSION['joueur_id']));
-		}
+		} /* else {
+			$this->singleton_joueur=new Invite();
+		} */
 	}
 	
 	

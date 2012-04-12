@@ -42,7 +42,7 @@ abstract class Jeu extends DBItem {
 	/**
 	 * 
 	 * A appeler quand le jeu est terminé.
-	 * @return AJAXResponse TODO
+	 * @return AJAXResponse
 	 */
 	public function terminer() {
 		partie()->terminer();
@@ -81,6 +81,7 @@ abstract class Jeu extends DBItem {
 						order by slot_position
 					');
 					
+					smarty()->assign('options', jeu()->getOptions());
 					smarty()->assign('slots', $slots);
 					smarty()->assign('isHost', intval($slot->joueur_id)==intval(partie()->host));
 					smarty()->display(DIR_TPL.'organizegame.tpl');
@@ -165,6 +166,23 @@ abstract class Jeu extends DBItem {
 		return $r;
 	}
 	
+	
+	
+	public function getOptions() {
+		$res=queryTab('
+			select *
+			from opt
+			where jeu_id='.$this->getID()
+		);
+		
+		$options=array();
+		
+		foreach($res as $data) {
+			$options[]=new Opt($data);
+		}
+		
+		return $options;
+	}
 	
 	
 	

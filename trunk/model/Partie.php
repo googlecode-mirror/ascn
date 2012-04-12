@@ -148,7 +148,16 @@ class Partie extends DBItem {
 		}
 		
 		
+		$vals=getValues();
 		
+		foreach($vals as $key=>$value) {
+			if(startswith($key, 'option_')) {
+				$this->setOption(substr($key, 7), $value);
+			}
+		}
+		
+		
+		$this->setData(jeu()->getInitialData());
 		$this->etat=Partie::EN_COURS;
 		$this->save();
 	}
@@ -171,6 +180,58 @@ class Partie extends DBItem {
 	}
 	
 	
+	
+	// Options
+	
+	/**
+	 * 
+	 * Récuperer la valeur d'une option de la partie
+	 * @param String $key nom de l'option
+	 * @return String valeur de cette option telle
+	 * 				qu'elle a été définie au début de la partie.
+	 */
+	public function option($key) {
+		$data=queryLine('
+			select *
+			from opt
+			natural join partie_opt
+			where jeu_id='.$this->jeu_id.'
+			and opt_name=\''.addslashes($key).'\'
+			and partie_id='.$this->getID()
+		);
+		
+		$opt=new Opt($data);
+		
+		$values=$opt->getValues();
+		
+		return $values[$data['opt_value']];
+	}
+	
+	
+	public function setOption($option_id, $value_id) {
+		if($this->etat != Partie::PREPARATION) {
+			throw new Exception('Impossible de changer les options de la partie apres son lancement.');
+		}
+		
+		querySimple('
+			delete from partie_opt
+			where opt_id='.$option_id.'
+			and opt_value='.$value_id.'
+			and partie_id='.$this->getID()
+		);
+		
+		querySimple('
+			insert into partie_opt (
+				partie_id,
+				opt_id,
+				opt_value
+			) values (
+				'.$this->getID().',
+				'.$option_id.',
+				'.$value_id.'
+			)
+		');
+	}
 	
 	
 	/**
@@ -224,7 +285,6 @@ class Partie extends DBItem {
 			$p->host=joueur()->getID();
 			$p->title=$title;
 			$p->etat=Partie::PREPARATION;
-			$p->setData(jeu()->getInitialData());
 		$p->save();
 		
 		return $p;
