@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Lun 02 Avril 2012 à 22:16
+-- Généré le : Jeu 12 Avril 2012 à 23:17
 -- Version du serveur: 5.1.36
 -- Version de PHP: 5.3.0
 
@@ -28,19 +28,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `jeu` (
   `jeu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `jeu_name` varchar(64) DEFAULT NULL,
-  `jeu_title` varchar(128) DEFAULT NULL,
-  `jeu_description` varchar(512) DEFAULT NULL,
+  `jeu_name` varchar(64) CHARACTER SET latin1 DEFAULT NULL,
+  `jeu_title` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `jeu_description` varchar(512) CHARACTER SET latin1 DEFAULT NULL,
   `jeu_nbjoueur_min` int(11) DEFAULT NULL,
   `jeu_nbjoueur_max` int(11) DEFAULT NULL,
   PRIMARY KEY (`jeu_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `jeu`
 --
 
 INSERT INTO `jeu` (`jeu_id`, `jeu_name`, `jeu_title`, `jeu_description`, `jeu_nbjoueur_min`, `jeu_nbjoueur_max`) VALUES
+(2, 'awale', 'Awalé', 'Jeu africain où vous devez nourrir l''autre joueur tout en remplissant votre grenier.', 2, 2),
 (1, 'tictactoe', 'Tic Tac Toe', 'Jeu simple ou il suffit d''aligner 3 signes identique avant son adversaire.', 2, 2);
 
 -- --------------------------------------------------------
@@ -52,7 +53,7 @@ INSERT INTO `jeu` (`jeu_id`, `jeu_name`, `jeu_title`, `jeu_description`, `jeu_nb
 CREATE TABLE IF NOT EXISTS `jeu_tag` (
   `jeu_id` int(11) DEFAULT NULL,
   `tag_id` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -62,10 +63,10 @@ CREATE TABLE IF NOT EXISTS `jeu_tag` (
 
 CREATE TABLE IF NOT EXISTS `joueur` (
   `joueur_id` int(11) NOT NULL AUTO_INCREMENT,
-  `joueur_pseudo` varchar(32) NOT NULL DEFAULT 'invité',
-  `joueur_password_hash` varchar(32) NOT NULL,
+  `joueur_pseudo` varchar(32) CHARACTER SET latin1 NOT NULL DEFAULT 'invité',
+  `joueur_password_hash` varchar(32) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`joueur_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Contenu de la table `joueur`
@@ -73,7 +74,32 @@ CREATE TABLE IF NOT EXISTS `joueur` (
 
 INSERT INTO `joueur` (`joueur_id`, `joueur_pseudo`, `joueur_password_hash`) VALUES
 (1, 'julien', '098f6bcd4621d373cade4e832627b4f6'),
-(2, 'chrome', '554838a8451ac36cb977e719e9d6623c');
+(4, 'justine', '7cf2db5ec261a0fa27a502d3196a6f60'),
+(2, 'chrome', '554838a8451ac36cb977e719e9d6623c'),
+(5, 'Palmito', '078556981453bc8cc668d7b9c0e45cf3');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `opt`
+--
+
+CREATE TABLE IF NOT EXISTS `opt` (
+  `opt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `jeu_id` int(11) NOT NULL,
+  `opt_name` varchar(64) NOT NULL,
+  `opt_title` varchar(64) NOT NULL,
+  `opt_values` varchar(1024) NOT NULL,
+  PRIMARY KEY (`opt_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `opt`
+--
+
+INSERT INTO `opt` (`opt_id`, `jeu_id`, `opt_name`, `opt_title`, `opt_values`) VALUES
+(1, 2, 'nb_haricot_initial', 'Nombre initial de haricots par compartiments', '3|4|5'),
+(2, 2, 'premier_joueur', 'Premier joueur à jouer', '0:aléatoire|1:Joueur 1|2:Joueur 2');
 
 -- --------------------------------------------------------
 
@@ -85,12 +111,23 @@ CREATE TABLE IF NOT EXISTS `partie` (
   `partie_id` int(11) NOT NULL AUTO_INCREMENT,
   `jeu_id` int(11) DEFAULT NULL,
   `partie_host` int(11) DEFAULT NULL,
-  `partie_token` varchar(32) DEFAULT NULL,
-  `partie_title` varchar(64) DEFAULT NULL,
+  `partie_title` varchar(64) CHARACTER SET latin1 DEFAULT NULL,
   `partie_etat` int(4) NOT NULL DEFAULT '1' COMMENT '1 : preparation, 2 : partie en cours, 3 : terminee',
-  `partie_data` text,
+  `partie_data` text CHARACTER SET latin1,
   PRIMARY KEY (`partie_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `partie_opt`
+--
+
+CREATE TABLE IF NOT EXISTS `partie_opt` (
+  `partie_id` int(11) NOT NULL,
+  `opt_id` int(11) NOT NULL,
+  `opt_value` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,8 +140,9 @@ CREATE TABLE IF NOT EXISTS `slot` (
   `partie_id` int(11) DEFAULT NULL,
   `joueur_id` int(11) DEFAULT NULL,
   `slot_position` int(11) DEFAULT NULL,
+  `slot_score` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`slot_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -114,9 +152,9 @@ CREATE TABLE IF NOT EXISTS `slot` (
 
 CREATE TABLE IF NOT EXISTS `tag` (
   `tag_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(64) DEFAULT NULL,
+  `tag_name` varchar(64) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

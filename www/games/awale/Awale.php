@@ -17,13 +17,14 @@ class Awale extends Jeu {
 	
 	
 	public function getInitialData() {
-		$n=3;
+		$n=partie()->option('nb_haricot_initial');
 		$r->compartiments=array(
 								array($n,$n,$n,$n,$n,$n),
 								array($n,$n,$n,$n,$n,$n)
 								);
 		
-		$r->tour=rand(1, 2);
+		$first=intval(partie()->option('premier_joueur'));
+		$r->tour= $first == 0 ? rand(1, 2) : $first;
 		
 		return $r;
 	}
@@ -62,7 +63,7 @@ class Awale extends Jeu {
 			} else return AJAXResponse::error('Il n\'y a pas de haricot sur ce compartiment');
 		} else return AJAXResponse::error('Vous ne pouvez pas jouer les compartiments adverses.');
 		
-	
+		
 		
 		$tour=$this->data->tour-1;
 		$vide=true;
@@ -81,6 +82,15 @@ class Awale extends Jeu {
 			}
 			
 			slot()->addScore($ramasse, true);
+			$r=$this->terminer();
+			$r->lastdata=$this->ajax_update();
+			return $r;
+		}
+		
+		
+		$slots=partie()->getSlots();
+		$moyenne = intval(partie()->option('nb_haricot_initial'))*6;
+		if(intval($slots[0]->score)>$moyenne || intval($slots[1]->score)>$moyenne) {
 			$r=$this->terminer();
 			$r->lastdata=$this->ajax_update();
 			return $r;

@@ -41,19 +41,20 @@ function appli_dir($appli_type) {
 }
 
 
-
+// verifie si $hay commence par $needle
 function startswith($hay, $needle) {
 	return substr($hay, 0, strlen($needle)) === $needle;
 }
 
+// verifie si deux chaines sont identiques
 function streq($str1, $str2) {
 	return strcmp($str1, $str2)==0;
 }
 
 
-
+/*
 function display_js_vars($vars) {
 	smarty()->assign(array('jsvars' => $vars));
 	smarty()->display(DIR_TPL.'jsvars.tpl');
 }
-
+*/

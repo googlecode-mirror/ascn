@@ -213,14 +213,15 @@ var Page = {
 			.submit(function () {
 				var data=new Object();
 				
-				var inputs=$(this).find('input').each(function () {
-					var input=$(this);
+				var inputs=$(this).serializeArray();
+				for(var i=0;i<inputs.length;i++) {
+					var input=inputs[i];
 					
-					var name=input.attr('name');
-					var value=input.val();
+					var name=input['name'];
+					var value=input['value'];
 					
 					data[name]=value;
-				});
+				}
 				
 				ajaxLoad($(this).attr('action'), data);
 				
@@ -264,14 +265,15 @@ var Page = {
 				
 				var data=new Object();
 				
-				var inputs=$(this).find('input').each(function () {
-					var input=$(this);
+				var inputs=$(this).serializeArray();
+				for(var i=0;i<inputs.length;i++) {
+					var input=inputs[i];
 					
-					var name=input.attr('name');
-					var value=input.val();
+					var name=input['name'];
+					var value=input['value'];
 					
 					data[name]=value;
-				});
+				}
 				
 				
 				switch(a[0]) {

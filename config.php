@@ -43,10 +43,7 @@ define('WWW_MODULES', WWW_ROOT.DIRNAME_MODULES.'/');
 require_once DIR_MODEL.'fx.php';
 require_once DIR_MODEL.'DB.php';
 
-// probleme autoload :
-require_once DIR_MODEL.'Joueur.php';
-require_once DIR_MODEL.'Partie.php';
-require_once DIR_MODEL.'Slot.php';
+
 
 // autoload model et controllers
 function __autoload($class_name) {
@@ -59,6 +56,13 @@ function __autoload($class_name) {
 		throw new Exception('Classe '.$class_name.' non trouvée');
 	}
 }
+
+// fucking autoload :
+require_once DIR_MODEL.'Joueur.php';
+require_once DIR_MODEL.'Partie.php';
+require_once DIR_MODEL.'Slot.php';
+require_once DIR_MODEL.'Opt.php';
+require_once DIR_MODEL.'Invite.php';
 
 
 

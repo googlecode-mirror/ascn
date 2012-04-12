@@ -1,8 +1,8 @@
 <?php
 require_once '../config.php';
-require_once DIR_GAMES.'tictactoe/TicTacToe.php';
+require_once DIR_GAMES.'awale/Awale.php';
 
-$i=5;
+$j=new Awale();
 
 
-print ++$i;
+print_r($j->getOptionsValues());
