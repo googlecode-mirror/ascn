@@ -110,7 +110,7 @@ class Awale extends Jeu {
 		$r->data=$this->data;
 		$r->slot_position=slot()->position;
 		$r->slots=partie()->getSlots();
-		$res->partie_terminee=partie()->etat==PARTIE::TERMINEE;
+		$r->partie_terminee=partie()->etat==PARTIE::TERMINEE;
 		
 		return $r;
 	}

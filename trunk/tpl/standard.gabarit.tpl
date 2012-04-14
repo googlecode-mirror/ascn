@@ -23,15 +23,29 @@
 				<div id="content">
 					<div id="header">
 					
-						{module name='userview'}
 						
 					</div>
 					<div id="gadget">
-						<div class="nav-btn-container">
-							<div class="nav-btn home"><div class="icon"></div></div>
-							<div class="nav-btn explorer"><div class="icon"></div></div>
-							<div class="nav-btn user"><div class="icon"></div></div>
-							<div class="nav-btn help"><div class="icon"></div></div>
+						<div class="log-container">
+							<div class="log">
+								<div class="log-icon log-right"><img src="img/log-right.png" alt="loggin-left" /></div>
+								<div class="log-content" style="width: 0px">
+									{module name='userview'}
+								</div>
+								<div class="log-icon log-center"><img src="img/log-center.png" alt="loggin-left" /></div>
+								<div class="log-icon log-left"><img src="img/log-left.png" alt="loggin-left" /></div>
+							</div>
+						</div>
+						<div class="nav-btn-container clearfix">
+							<div class="nav-btn home" title="Accueil"><div class="icon"></div></div>
+							<div class="nav-btn explorer" title="Explorateur de jeux"><div class="icon"></div></div>
+							<div class="nav-btn user" title="Mon Compte"><div class="icon"></div></div>
+							<div class="nav-btn help" title="Aide"><div class="icon"></div></div>
+						</div>
+						<div class="menus-container">
+							<div class="menu">
+								{module name='quickjoin'}
+							</div>
 						</div>
 					</div>
 					<div id="body">
@@ -39,7 +53,7 @@
 						{$CONTENT}
 						
 					</div>
-					{module name='quickjoin'}
+					
 				</div>
 			</div>
 		</div>

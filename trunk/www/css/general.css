@@ -1,9 +1,26 @@
+
+
+/*
+
+bleu:		#5F9AE6;
+vert:		#5F8E62;
+
+*/
+
+
+@font-face {
+	font-family: Alabama;
+	src: url("../fonts/Alabama.ttf");
+}
+
+
+
+
 body {
 	position: relative;
 	margin: 0;
 	padding: 0;
 	font-family: Helvetica;
-	background-color: #FFE;
 }
 
 
@@ -15,7 +32,7 @@ div#wrapper {
 
 div#wrapper2 {
 	width: 1000px;
-	margin: 0 auto;
+	margin: 12px auto;
 	position: relative;
 }
 
@@ -47,15 +64,43 @@ div#body {
 
 
 
-div#gadget {
+#gadget {
 	position: absolute;
 	right: 0;
 	top: 0;
 }
-div#gadget .nav-btn-container {
+
+
+#gadget .log-container {
+	position: absolute;
+	width: 250px;
+	height: 86px;
+	right: 340px;
+	top: -8px;
+}
+#gadget .log {
+	height: 86px;
+	position: absolute;
+	right: 0;
+}
+#gadget .log-icon {
+	cursor: pointer;
+}
+#gadget .log > div {
+	display: inline-block;
+	height: 86px;
+	vertical-align: top;
+	float: right;
+}
+#gadget .log > div.log-left { width: 10px;position: relative; z-index: 10; }
+#gadget .log > div.log-center { width: 28px;position: relative; z-index: 10; }
+#gadget .log > div.log-content { overflow: hidden;text-align: right; }
+#gadget .log > div.log-right { position: relative; z-index: 10; }
+
+#gadget .nav-btn-container {
 	margin: 120px 30px 0 0;
 }
-div#gadget .nav-btn-container .nav-btn {
+#gadget .nav-btn-container .nav-btn {
 	background: url(../img/btn-gadget.png) no-repeat transparent;
 	width: 54px;
 	height: 54px;
@@ -64,51 +109,63 @@ div#gadget .nav-btn-container .nav-btn {
 	clear: right;
 	cursor: pointer;
 }
-div#gadget .nav-btn-container .nav-btn:HOVER {
+#gadget .nav-btn-container .nav-btn:HOVER {
 	background-position: -54px 0;
 }
-div#gadget .nav-btn-container .nav-btn.active{
+#gadget .nav-btn-container .nav-btn.active{
 	background-position: -162px 0;
 }
-div#gadget .nav-btn-container .nav-btn .icon {
+#gadget .nav-btn-container .nav-btn .icon {
 	background: url(../img/icon-gadget.png) no-repeat transparent;
 	width: 54px;
 	height: 54px;
 }
 
-div#gadget .nav-btn-container .home {
-	margin-right: 128px;
-}
-div#gadget .nav-btn-container .home .icon {
-	background-position: 0 0;
-}
+#gadget .nav-btn-container .home { margin-right: 128px; }
+#gadget .nav-btn-container .home .icon { background-position: 0 0; }
+#gadget .nav-btn-container .explorer { margin-right: 84px;margin-bottom: 14px; }
+#gadget .nav-btn-container .explorer .icon { background-position: -54px 0; }
+#gadget .nav-btn-container .user { margin-right: 52px; margin-bottom: 17px; }
+#gadget .nav-btn-container .user .icon { background-position: -108px 0; }
+#gadget .nav-btn-container .help { margin-right: 31px; }
+#gadget .nav-btn-container .help .icon { background-position: -162px 0; }
 
-div#gadget .nav-btn-container .explorer {
-	margin-right: 84px;
-	margin-bottom: 14px;
-}
-div#gadget .nav-btn-container .explorer .icon {
-	background-position: -54px 0;
-}
 
-div#gadget .nav-btn-container .user {
-	margin-right: 52px;
-	margin-bottom: 17px;
+#gadget .menus-container {
+	margin-top: 40px;
 }
-div#gadget .nav-btn-container .user .icon {
-	background-position: -108px 0;
+#gadget .menus-container .menu {
 }
-
-div#gadget .nav-btn-container .help {
-	margin-right: 31px;
+#gadget .menus-container .menu h3 {
+	background: url(../img/menu-h3.png) no-repeat 0 0 transparent;
+	height: 34px;
+	width: 236px;
+	margin: 0;
+	padding: 13px;
+	text-align: center;
+	color: #FFF;
+	text-shadow: 0 1px 1px #000;
+	font-family: Alabama;
 }
-div#gadget .nav-btn-container .help .icon {
-	background-position: -162px 0;
+#gadget .menus-container .menu ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
-
+#gadget .menus-container .menu ul li {
+}
 
 .scores .self {
 	background-color: #DDF;
 	font-weight: bold;
 }
 
+/* Tools */
+.cleaner { clear: both; }
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
