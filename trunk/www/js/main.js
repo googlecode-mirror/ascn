@@ -49,17 +49,25 @@ var Gadget = {
 			});
 		});
 		$('#gadget .nav-btn').click(function () {
-			$('#gadget .nav-btn').each(function () {
-				$(this).removeClass('active');
-			});
-			$(this).addClass('active');
+			Gadget.unselect();
 			Gadget.navEvent($(this));
+		});
+	},
+	
+	unselect: function() {
+		$('#gadget .nav-btn').each(function () {
+			$(this).removeClass('active');
 		});
 	},
 	
 	
 	navEvent: function(e) {
-		console.log(e);
+		e.hasClass('home') && Page.hash('index.php');
+		e.hasClass('explorer') && console.log('explorer');
+		e.hasClass('user') && console.log('user');
+		e.hasClass('help') && console.log('help');
+		
+		e.addClass('active');
 	}
 };
 
