@@ -19,20 +19,28 @@
 	<body>
 		<div id="js_append"></div>
 		<div id="wrapper">
-			<div id="content">
-				<div id="header">
-				
-					<h1>{$site_name}</h1>
-					<a href="index.php" class="ajaxload">Home</a>
-					{module name='userview'}
+			<div id="wrapper2">
+				<div id="content">
+					<div id="header">
 					
-				</div>
-				<div id="body">
-				
-					{$CONTENT}
+						{module name='userview'}
+						
+					</div>
+					<div id="gadget">
+						<div class="nav-btn-container">
+							<div class="nav-btn home"><div class="icon"></div></div>
+							<div class="nav-btn explorer"><div class="icon"></div></div>
+							<div class="nav-btn user"><div class="icon"></div></div>
+							<div class="nav-btn help"><div class="icon"></div></div>
+						</div>
+					</div>
+					<div id="body">
 					
+						{$CONTENT}
+						
+					</div>
+					{module name='quickjoin'}
 				</div>
-				{module name='quickjoin'}
 			</div>
 		</div>
 		{module name='lightbox'}

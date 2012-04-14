@@ -8,23 +8,94 @@ body {
 
 
 div#wrapper {
+	min-width: 1000px;
+	width: 100%;
 }
 
-div#content {
+div#wrapper2 {
 	width: 1000px;
 	margin: 0 auto;
-	border: dotted #DDD;
-	border-width: 0 2px;
+	position: relative;
 }
 
+
+div#content {
+	background: url(../img/gadget-bg.png) no-repeat scroll 10420px 0 transparent;
+	margin: 0 -9999px;
+	padding: 0 9999px;
+	width: 1000px;
+	min-height: 600px;
+}
+
+
+
+
+div#header {
+	background: url(../img/ascn-title.png) no-repeat 25px 70px transparent;
+	min-height: 150px;
+}
 
 
 
 div#body {
-	background-color: #FFF;
 	border: 1px solid #CCC;
 	margin: 24px;
 	padding: 8px;
+}
+
+
+
+
+div#gadget {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+div#gadget .nav-btn-container {
+	margin: 120px 30px 0 0;
+}
+div#gadget .nav-btn-container .nav-btn {
+	background: url(../img/btn-gadget.png) no-repeat transparent;
+	width: 54px;
+	height: 54px;
+	display: block;
+	float: right;
+	clear: right;
+}
+div#gadget .nav-btn-container .nav-btn .icon {
+	background: url(../img/icon-gadget.png) no-repeat transparent;
+	width: 54px;
+	height: 54px;
+}
+
+div#gadget .nav-btn-container .home {
+	margin-right: 128px;
+}
+div#gadget .nav-btn-container .home .icon {
+	background-position: 0 0;
+}
+
+div#gadget .nav-btn-container .explorer {
+	margin-right: 84px;
+	margin-bottom: 14px;
+}
+div#gadget .nav-btn-container .explorer .icon {
+	background-position: -54px 0;
+}
+
+div#gadget .nav-btn-container .user {
+	margin-right: 52px;
+	margin-bottom: 17px;
+}
+div#gadget .nav-btn-container .user .icon {
+	background-position: -108px 0;
+}
+
+div#gadget .nav-btn-container .help {
+	margin-right: 31px;
+}
+div#gadget .nav-btn-container .help .icon {
+	background-position: -162px 0;
 }
 
 
