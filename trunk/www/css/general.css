@@ -10,6 +10,7 @@ body {
 div#wrapper {
 	min-width: 1000px;
 	width: 100%;
+	overflow-x: hidden;
 }
 
 div#wrapper2 {
@@ -61,6 +62,13 @@ div#gadget .nav-btn-container .nav-btn {
 	display: block;
 	float: right;
 	clear: right;
+	cursor: pointer;
+}
+div#gadget .nav-btn-container .nav-btn:HOVER {
+	background-position: -54px 0;
+}
+div#gadget .nav-btn-container .nav-btn.active{
+	background-position: -162px 0;
 }
 div#gadget .nav-btn-container .nav-btn .icon {
 	background: url(../img/icon-gadget.png) no-repeat transparent;

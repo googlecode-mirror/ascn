@@ -1,8 +1,14 @@
 
 
+
+
+
+
+
 $(function() {
 	Page.overrideAjaxButton();
 	Page.refresh();
+	Gadget.init();
 });
 
 
@@ -20,6 +26,44 @@ $(window).hashchange(function() {
 function ajaxError(r) {
 	alert('Erreur requete : '+r);
 }
+
+
+
+
+
+var Gadget = {
+	init: function() {
+		$('#gadget .nav-btn').mousedown(function () {
+			$(this).css({
+				backgroundPosition: '-108px 0'
+			});
+		});
+		$('#gadget .nav-btn').mouseup(function () {
+			$(this).css({
+				backgroundPosition: ''
+			});
+		});
+		$('#gadget .nav-btn').mouseleave(function () {
+			$(this).css({
+				backgroundPosition: ''
+			});
+		});
+		$('#gadget .nav-btn').click(function () {
+			$('#gadget .nav-btn').each(function () {
+				$(this).removeClass('active');
+			});
+			$(this).addClass('active');
+			Gadget.navEvent($(this));
+		});
+	},
+	
+	
+	navEvent: function(e) {
+		console.log(e);
+	}
+};
+
+
 
 
 
