@@ -17,7 +17,17 @@ var quickjoin = {
 			Modules.action('quickjoin', 'update');
 		});
 		
+		$('.log-icon').click(function() {
+			if(quickjoin.open) quickjoin.form_close();
+			else quickjoin.form_open();
+			
+			quickjoin.open = !quickjoin.open;
+		});
+		
+		
 	},
+	
+	open: false,
 	
 	ajax_update: function(r) {
 		var liste=$('ul#quickjoin-list');
@@ -34,6 +44,32 @@ var quickjoin = {
 		};
 		
 		Page.overrideAjaxButton();
+	},
+	
+	
+	form_open: function() {
+		$('.log-content')
+			.animate({
+				width: '170px'
+			});
+			
+		$('.log-center')
+			.animate({
+				opacity: '0'
+			});
+			
+	},
+	
+	form_close: function() {
+		$('.log-content')
+			.animate({
+				width: '0px'
+			});
+			
+		$('.log-center')
+			.animate({
+				opacity: '1'
+			});
 	}
 };
 

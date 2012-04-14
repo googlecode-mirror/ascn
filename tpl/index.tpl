@@ -1,4 +1,4 @@
-<h1>page Index</h1>
+<h1>Accueil</h1>
 
 <a href="games/tictactoe" class="ajaxload">Aller sur la page du TicTacToe</a>
 <br />

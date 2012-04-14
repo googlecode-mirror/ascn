@@ -1,10 +1,6 @@
 
 
 
-
-
-
-
 $(function() {
 	Page.overrideAjaxButton();
 	Page.refresh();
@@ -37,15 +33,30 @@ var Gadget = {
 			$(this).css({
 				backgroundPosition: '-108px 0'
 			});
+			$(this).children('.icon').css({
+				position: 'relative',
+				right: '1px',
+				top: '1px'
+			});
 		});
 		$('#gadget .nav-btn').mouseup(function () {
 			$(this).css({
 				backgroundPosition: ''
 			});
+			$(this).children('.icon').css({
+				position: '',
+				right: '',
+				top: ''
+			});
 		});
 		$('#gadget .nav-btn').mouseleave(function () {
 			$(this).css({
 				backgroundPosition: ''
+			});
+			$(this).children('.icon').css({
+				position: '',
+				right: '',
+				top: ''
 			});
 		});
 		$('#gadget .nav-btn').click(function () {
@@ -63,9 +74,9 @@ var Gadget = {
 	
 	navEvent: function(e) {
 		e.hasClass('home') && Page.hash('index.php');
-		e.hasClass('explorer') && console.log('explorer');
-		e.hasClass('user') && console.log('user');
-		e.hasClass('help') && console.log('help');
+		e.hasClass('explorer') && Page.hash('games-explorer.php');
+		e.hasClass('user') && Page.hash('mon-compte.php');
+		e.hasClass('help') && Page.hash('aide.php');
 		
 		e.addClass('active');
 	}
