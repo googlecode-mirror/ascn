@@ -36,6 +36,9 @@
 								<div class="log-icon log-left"><img src="img/log-left.png" alt="loggin-left" /></div>
 							</div>
 						</div>
+						<div class="ping-container">
+							{module name='ping'}
+						</div>
 						<div class="nav-btn-container clearfix">
 							<div class="nav-btn home" title="Accueil"><div class="icon"></div></div>
 							<div class="nav-btn explorer" title="Explorateur de jeux"><div class="icon"></div></div>

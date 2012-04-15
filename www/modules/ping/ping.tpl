@@ -1,0 +1,1 @@
+<div class="ping" style="background-position: 0 0"></div>
