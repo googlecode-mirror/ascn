@@ -25,23 +25,23 @@ body {
 
 
 div#wrapper {
-	min-width: 1000px;
+	min-width: 1075px;
 	width: 100%;
 	overflow-x: hidden;
 }
 
 div#wrapper2 {
-	width: 1000px;
+	width: 1075px;
 	margin: 12px auto;
 	position: relative;
 }
 
 
 div#content {
-	background: url(../img/gadget-bg.png) no-repeat scroll 10420px 0 transparent;
+	background: url(../img/gadget-bg.png) no-repeat scroll 10494px 0 transparent;
 	margin: 0 -9999px;
 	padding: 0 9999px;
-	width: 1000px;
+	width: 1075px;
 	min-height: 600px;
 }
 
@@ -55,10 +55,10 @@ div#header {
 
 
 
+
 div#body {
 	border: 1px solid #CCC;
-	margin: 24px;
-	padding: 8px;
+	width: 800px;
 }
 
 
