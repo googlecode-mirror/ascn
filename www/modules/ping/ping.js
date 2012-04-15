@@ -40,7 +40,7 @@ var ping = {
 			ping.eval_start_time = new Date().getTime();
 			
 			$.ajax({
-				url: '/',
+				url: 'modules/ping/ping_echo.html',
 				type: 'GET',
 				timeout: ping.pallier_1,
 				
