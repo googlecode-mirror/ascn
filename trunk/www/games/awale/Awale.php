@@ -19,10 +19,12 @@ class Awale extends Jeu {
 	public function getInitialData() {
 		$n=partie()->option('nb_haricot_initial');
 		$r->compartiments=array(
-								array($n,$n,$n,$n,$n,$n),
-								array($n,$n,$n,$n,$n,$n)
-								);
+			array($n,$n,$n,$n,$n,$n),
+			array($n,$n,$n,$n,$n,$n)
+		);
 		
+		
+		var_dump(partie()->option('premier_joueur'));
 		$first=intval(partie()->option('premier_joueur'));
 		$r->tour= $first == 0 ? rand(1, 2) : $first;
 		
@@ -81,7 +83,7 @@ class Awale extends Jeu {
 				$this->data->compartiments[1-$tour][$i]=0;
 			}
 			
-			slot()->addScore($ramasse, true);
+			partie()->getSlotNum(3-intval(slot()->position))->addScore($ramasse, true);
 			$r=$this->terminer();
 			$r->lastdata=$this->ajax_update();
 			return $r;
@@ -89,7 +91,7 @@ class Awale extends Jeu {
 		
 		
 		$slots=partie()->getSlots();
-		$moyenne = intval(partie()->option('nb_haricot_initial'))*6;
+		$moyenne = intval(partie()->option('nb_haricot_initial'))*4;
 		if(intval($slots[0]->score)>$moyenne || intval($slots[1]->score)>$moyenne) {
 			$r=$this->terminer();
 			$r->lastdata=$this->ajax_update();
@@ -128,8 +130,10 @@ class Awale extends Jeu {
 		while($hand>0) {
 			$i++;
 			$c=self::relative($line, $num, $i);
-			$this->data->compartiments[$c[0]][$c[1]]++;
-			$hand--;
+			if(($c[0] != $line) || ($c[1] != $num)) {
+				$this->data->compartiments[$c[0]][$c[1]]++;
+				$hand--;
+			}
 		}
 		
 		$this->manger($c[0], $c[1]);
