@@ -45,7 +45,7 @@ var awale = {
 		
 		if(qte>0) {
 			$('#compartiment-'+joueur+'-'+num).css({
-				backgroundPosition: -82*(qte-1)+'px 0'
+				backgroundPosition: -70*(qte-1)+'px 0'
 			});
 		} else {
 			$('#compartiment-'+joueur+'-'+num).css({
