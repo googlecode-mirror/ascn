@@ -1,11 +1,9 @@
 
-
+/*
 $(function () {
 	
-	ping.init();
-	
 });
-
+*/
 
 
 var ping = {
@@ -40,7 +38,7 @@ var ping = {
 			ping.eval_start_time = new Date().getTime();
 			
 			$.ajax({
-				url: 'modules/ping/ping_echo.html',
+				url: 'modules/ping/ping_echo.html?'+Math.floor(Math.random()*1000000),
 				type: 'GET',
 				timeout: ping.pallier_1,
 				

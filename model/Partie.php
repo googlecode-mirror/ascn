@@ -54,6 +54,11 @@ class Partie extends DBItem {
 		return new Slot($data);
 	}
 	
+	public function getSlotNum($slot_position) {
+		$s=$this->getSlots();
+		return $s[$slot_position-1];
+	}
+	
 	
 	/**
 	 * 
@@ -204,7 +209,7 @@ class Partie extends DBItem {
 		
 		$values=$opt->getValues();
 		
-		return $values[$data['opt_value']];
+		return $data['opt_value'];
 	}
 	
 	
