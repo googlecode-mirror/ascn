@@ -171,6 +171,39 @@ div#body {
 	font-weight: bold;
 }
 
+
+
+
+
+
+/**
+ * Classes CSS standard
+ **/
+
+.std-plateau {
+	
+}
+
+.std-case {
+	display: inline-block;
+	float: left;
+}
+.std-case-noire {
+	background: #263E5B;
+}
+.std-case-blanche {
+	background: #E3EAF2;
+}
+
+
+
+
+
+
+
+
+
+
 /* Tools */
 .cleaner { clear: both; }
 .clearfix:after {
