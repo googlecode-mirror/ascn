@@ -60,6 +60,10 @@ class Partie extends DBItem {
 	}
 	
 	
+	public function getNbJoueur() {
+		return count($this->getSlots());
+	}
+	
 	/**
 	 * 
 	 * Le joueur de l'environnement rejoind la partie /!\ SI PAS DEJA FAIT
@@ -271,6 +275,7 @@ class Partie extends DBItem {
 		$this->data=json_encode($o);
 		$this->save();
 	}
+	
 	
 	
 	

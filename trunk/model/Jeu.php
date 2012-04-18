@@ -5,6 +5,10 @@
 abstract class Jeu extends DBItem {
 	
 	
+	private $extra_js=array();
+	private $extra_css=array();
+	
+	
 	
 	/**
 	 * 
@@ -168,6 +172,18 @@ abstract class Jeu extends DBItem {
 	
 	
 	
+	public function ajax_update() {
+		$r=new AJAXResponse();
+		
+		$r->partie=array(
+			'etat'	=> partie()->etat,
+			'data'	=> partie()->getData(),
+		);
+		
+		return $r;
+	}
+	
+	
 	public function getOptions() {
 		$res=queryTab('
 			select *
@@ -196,9 +212,20 @@ abstract class Jeu extends DBItem {
 		$dir=$this->getDir();
 		$www=$this->getWWW();
 		
+		
 		$file=$this->name.'.css';
 		if(file_exists($dir.$file)) { ?>
 			<link rel="stylesheet" type="text/css" href="<?php print $www.$file; ?>" />
+		<?php }
+		
+		foreach($this->extra_css as $css_file) { ?>
+			<link rel="stylesheet" type="text/css" href="<?php print $css_file; ?>" />
+		<?php }
+		
+		
+		
+		foreach($this->extra_js as $js_file) { ?>
+			<script src="<?php print $js_file; ?>" type="text/javascript"></script>
 		<?php }
 		
 		$file=$this->name.'.js';
@@ -210,6 +237,8 @@ abstract class Jeu extends DBItem {
 				});
 			</script>
 		<?php }
+		
+		
 		
 		if(is_null($tpl))
 			smarty()->display($this->getDir().$this->name.'.tpl');
@@ -225,6 +254,11 @@ abstract class Jeu extends DBItem {
 		return WWW_GAMES.$this->name.'/';
 	}
 	
-	
+	public function addJs($path) {
+		$this->extra_js[]=$path;
+	}
+	public function addCss($path) {
+		$this->extra_css[]=$path;
+	}
 	
 }

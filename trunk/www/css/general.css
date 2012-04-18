@@ -195,9 +195,9 @@ div#body {
 	background: #E3EAF2;
 }
 
-
-
-
+.draggable {
+	position: absolute;
+}
 
 
 
