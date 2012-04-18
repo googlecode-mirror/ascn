@@ -20,5 +20,25 @@
 			
 		{/section}
 	{/section}
+	
+	
+	<div id="pions">
+		{section name=joueur start=0 loop=2 step=1}
+			{assign var='joueur' value=$smarty.section.joueur.index+1}
+			{if $joueur==1}
+				{assign var='couleur' value='blanc'}
+			{else}
+				{assign var='couleur' value='noir'}
+			{/if}
+			
+			{section name=pion start=0 loop=20 step=1}
+				{assign var='pion' value=$smarty.section.pion.index}
+				
+				<div id="pion-{$joueur}-{$pion}" class="std-pion pion-{$couleur} draggable"></div>
+			{/section}
+		{/section}
+	</div>
+	
 </div>
+
 
