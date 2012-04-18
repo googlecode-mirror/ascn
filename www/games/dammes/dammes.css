@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+
+
+.std-plateau {
+	width: 640px;
+	height: 640px;
+}
+
+.std-case {
+	width: 64px;
+	height: 64px;
+}
+
+.std-case .cliquable {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
