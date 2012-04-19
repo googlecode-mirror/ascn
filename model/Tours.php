@@ -24,18 +24,18 @@
  *  - Gère les timeout des joueurs pour chaque tour
  *
  */
-class Tours extends PartieData {
+class Tours {
 	public static $ALEATOIRE=0;
 	
-	private $tour;
-	private $coup;
+	public $tour;
+	public $coup;
 	
 	/**
 	 * 
 	 * Rotation des joueurs
 	 * @var int $rotation 1 si normal, -1 si inversé
 	 */
-	private $rotation=1;
+	public $rotation=1;
 	
 	
 	
@@ -98,7 +98,14 @@ class Tours extends PartieData {
 		return slot()->position != $this->tour;
 	}
 	
-	
+	public function serial() {
+		$r->coup=$this->getCoup();
+		$r->tour=$this->getTour();
+		$r->rotation=$this->rotation;
+		$r->aMoiDeJouer=$this->aMoiDeJouer();
+		
+		return $r;
+	}
 	
 }
 

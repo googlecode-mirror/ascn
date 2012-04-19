@@ -180,6 +180,8 @@ abstract class Jeu extends DBItem {
 			'data'	=> partie()->getData(),
 		);
 		
+		$r->slot=slot();
+		
 		return $r;
 	}
 	
