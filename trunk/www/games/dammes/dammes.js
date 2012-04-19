@@ -3,6 +3,7 @@
 var dammes = {
 		
 	taille_case: 64,
+	initialized: false,
 	
 	init: function() {
 		$('.std-case .cliquable').click(function() {
@@ -21,7 +22,7 @@ var dammes = {
 		}, 2500);
 		
 		$(window).hashchange(function() {
-			clearInterval(dammes.interval);
+			clearInterval(dammes.update_interval);
 		});
 		
 		Jeux.action('dammes', 'update');
@@ -35,6 +36,8 @@ var dammes = {
 	
 	
 	ajax_update: function(r) {
+		if((parseInt(r.slot.position) != parseInt(r.partie.data.tours.coup)) && dammes.initialized)
+			return;
 		
 		var cases=r.partie.data.partie_data.cases;
 		
@@ -46,22 +49,24 @@ var dammes = {
 				switch(cases[i][j]) {
 					case 1:
 						$('.pion-blanc').eq(blanc_counter).css({
-							top: dammes.taille_case*i+'px',
-							left: dammes.taille_case*j+'px',
+							top: $('#case-'+i+'-'+j).position().top+'px',
+							left: $('#case-'+i+'-'+j).position().left+'px'
 						});
 						blanc_counter++;
 						break;
 						
 					case 2:
 						$('.pion-noir').eq(noir_counter).css({
-							top: dammes.taille_case*i+'px',
-							left: dammes.taille_case*j+'px',
+							top: $('#case-'+i+'-'+j).position().top+'px',
+							left: $('#case-'+i+'-'+j).position().left+'px'
 						});
 						noir_counter++;
 						break;
 				}
 			}
 		}
+		
+		dammes.initialized=true;
 	},
 	
 	
