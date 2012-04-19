@@ -20,6 +20,10 @@ var dammes = {
 			Jeux.action('dammes', 'update');
 		}, 2500);
 		
+		$(window).hashchange(function() {
+			clearInterval(dammes.interval);
+		});
+		
 		Jeux.action('dammes', 'update');
 	},
 	
@@ -31,13 +35,14 @@ var dammes = {
 	
 	
 	ajax_update: function(r) {
+		
 		var cases=r.partie.data.partie_data.cases;
 		
 		var blanc_counter=0;
 		var noir_counter=0;
 		
-		for(var i=0;i<10;i++) {
-			for(var j=0;j<10;j++) {
+		for(var i=0;i<r.partie.data.param.taille_plateau;i++) {
+			for(var j=0;j<r.partie.data.param.taille_plateau;j++) {
 				switch(cases[i][j]) {
 					case 1:
 						$('.pion-blanc').eq(blanc_counter).css({

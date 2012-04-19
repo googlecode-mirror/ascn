@@ -116,7 +116,7 @@ var Modules = {
 		data.appli_name=module_name;
 		data.appli_action=action;
 		
-		$.post('action.php', data, function (r) {
+		$.post('action.php?_module_'+module_name+'_', data, function (r) {
 			Modules.result(module_name, action, r);
 		});
 	},
@@ -194,7 +194,7 @@ var Jeux = {
 		data.slot=Page.getValue('slot');
 		data.partie=Page.getValue('partie');
 		
-		$.post('action.php', data, function (r) {
+		$.post('action.php?_jeux_'+jeu_name+'_', data, function (r) {
 			Jeux.result(jeu_name, action, r);
 		});
 	},
