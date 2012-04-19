@@ -12,6 +12,8 @@ class Partie extends DBItem {
 	private $slots=array();
 	private $singleton_data=null;
 	
+	private $options=null;
+	
 	
 	
 	public function __construct($arg=null) {
@@ -165,8 +167,8 @@ class Partie extends DBItem {
 			}
 		}
 		
-		
-		$this->setData(jeu()->getInitialData());
+		$data=jeu()->getInitialData();
+		$this->setData($data ? $data : new stdClass);
 		$this->etat=Partie::EN_COURS;
 		$this->save();
 	}
@@ -189,6 +191,29 @@ class Partie extends DBItem {
 	}
 	
 	
+	public function getOptions() {
+		if(is_null($this->options)) {
+			$this->options=array();
+			
+			$res=queryTab('
+				select *
+				from opt
+				natural join partie_opt
+				where partie_id='.$this->getID()
+			);
+			
+			foreach($res as $data) {
+				$opt=new Opt($data);
+				$values=$opt->getValues();
+				$this->options[$opt->name] = array(
+					'key'	=> $data['opt_value'],
+					'value'	=> $values[$data['opt_value']]
+				);
+			}
+		}
+		
+		return $this->options;
+	}
 	
 	// Options
 	
@@ -200,20 +225,12 @@ class Partie extends DBItem {
 	 * 				qu'elle a été définie au début de la partie.
 	 */
 	public function option($key) {
-		$data=queryLine('
-			select *
-			from opt
-			natural join partie_opt
-			where jeu_id='.$this->jeu_id.'
-			and opt_name=\''.addslashes($key).'\'
-			and partie_id='.$this->getID()
-		);
-		
-		$opt=new Opt($data);
-		
-		$values=$opt->getValues();
-		
-		return $data['opt_value'];
+		$options=$this->getOptions();
+		return $options[$key]['value'];
+	}
+	public function optionKey($key) {
+		$options=$this->getOptions();
+		return $options[$key]['key'];
 	}
 	
 	
@@ -224,8 +241,8 @@ class Partie extends DBItem {
 		
 		querySimple('
 			delete from partie_opt
-			where opt_id='.$option_id.'
-			and opt_value='.$value_id.'
+			where opt_id=\''.addslashes($option_id).'\'
+			and opt_value=\''.addslashes($value_id).'\'
 			and partie_id='.$this->getID()
 		);
 		
@@ -236,8 +253,8 @@ class Partie extends DBItem {
 				opt_value
 			) values (
 				'.$this->getID().',
-				'.$option_id.',
-				'.$value_id.'
+				\''.$option_id.'\',
+				\''.$value_id.'\'
 			)
 		');
 	}

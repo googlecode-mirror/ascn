@@ -25,6 +25,7 @@ class DB_access extends PDO {
 		// DEBUB :
 		//print $q."<br />\n";
 		//debug_print_backtrace();
+		//file_put_contents(DIR_ROOT.'logs_sql.txt', $q."\n\n", FILE_APPEND);
 	}
 	
 	
