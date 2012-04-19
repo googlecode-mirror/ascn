@@ -4,6 +4,11 @@
 
 class Dammes extends Jeu {
 	
+	private $taille_plateau;
+	
+	
+	
+	
 	
 	public function process() {
 		$this->addJs(WWW_JS.'draggable.min.js');
@@ -29,6 +34,12 @@ class Dammes extends Jeu {
 		}
 		
 		return $data;
+	}
+	
+	
+	
+	public function setRegles() {
+		
 	}
 	
 	

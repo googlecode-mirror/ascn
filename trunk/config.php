@@ -1,7 +1,14 @@
 <?php
 session_start();
 
-
+/*
+set_error_handler(function($type, $msg, $file, $line, $context = array()) {
+	print '<pre>';
+	print '('.$type.') '.$msg.' in <strong>'.$file.'</strong> at line <strong>'.$line.'</strong>';
+	print 'Contexte : ' . print_r($context, true);
+	print'</pre>';
+});
+*/
 //define('SQL_DEBUG', true);
 
 
