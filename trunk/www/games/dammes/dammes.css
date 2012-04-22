@@ -10,11 +10,18 @@
 	height: 64px;
 }
 
-.std-case .cliquable {
-	width: 100%;
-	height: 100%;
-	cursor: pointer;
+
+.std-case.mvt-to {
+	border: 4px solid #5F9AE6;
+	width: 56px;
+	height: 56px;
 }
+.std-case.mvt-from {
+	border: 4px dashed #5F8E62;
+	width: 56px;
+	height: 56px;
+}
+
 
 
 

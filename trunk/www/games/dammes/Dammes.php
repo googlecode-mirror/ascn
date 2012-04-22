@@ -13,7 +13,7 @@ class Dammes extends Jeu {
 	
 	public function process() {
 		$this->setRegles();
-		$this->addJs(WWW_JS.'draggable.min.js');
+		$this->addJs(WWW_JS.'jquery.event.drag-2.0.min.js');
 		smarty()->assign('plateau_inverse', intval(slot()->position)==2);
 		
 		$demi=$this->taille_plateau/2;
