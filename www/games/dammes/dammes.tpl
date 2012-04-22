@@ -14,9 +14,7 @@
 			{assign var='parite' value=(($x%2)==($y%2))}
 			
 			
-			<div id="case-{$x}-{$y}" class="std-case std-case-{if $parite}blanche{else}noire{/if}">
-				<div class="cliquable"></div>
-			</div>
+			<div id="case-{$x}-{$y}" class="std-case std-case-{if $parite}blanche{else}noire{/if}"></div>
 			
 		{/section}
 	{/section}

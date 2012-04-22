@@ -1,7 +1,7 @@
 
 
 var dammes = {
-		
+	
 	taille_case: 64,
 	initialized: false,
 	
@@ -11,12 +11,13 @@ var dammes = {
 			dammes.kik_event(id[1], id[2]);
 		});
 		
-		$('.draggable').Draggable({
-			zIndex: 1000,
-			ghosting: false,
-			opacity: 0.7
-		});
-		
+		$('.draggable').drag(function(ev, dd) {
+			$(this).css({
+				top: dd.offsetY,
+				left: dd.offsetX
+			});
+		},{ relative:true });
+	
 		dammes.update_interval=setInterval(function() {
 			Jeux.action('dammes', 'update');
 		}, 2500);
@@ -26,6 +27,8 @@ var dammes = {
 		});
 		
 		Jeux.action('dammes', 'update');
+		
+		console.log('init OK. 1');
 	},
 	
 	update_interval: null,
