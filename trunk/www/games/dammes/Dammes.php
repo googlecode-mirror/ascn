@@ -78,4 +78,14 @@ class Dammes extends Jeu {
 		);
 	}
 	
+	
+	
+	public function ajax_move() {
+		return AJAXResponse::error(print_r(getValues(), true));
+	}
+	
 }
+
+
+
+
