@@ -46,6 +46,7 @@ var ping = {
 				error: function(x, t, m) {
 					if(t==='timeout') {
 						ping.setPing('red');
+						$('#ping .ping').attr('title', 'ping : >'+ping.pallier_1+'ms');
 					} else {
 						ping.setPing('nan');
 						console.log('erreur bizar : '+t);

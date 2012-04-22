@@ -38,7 +38,6 @@ class Tours {
 	public $rotation=1;
 	
 	
-	
 	/**
 	 * 
 	 * Constructeur
@@ -98,14 +97,6 @@ class Tours {
 		return slot()->position != $this->tour;
 	}
 	
-	public function serial() {
-		$r->coup=$this->getCoup();
-		$r->tour=$this->getTour();
-		$r->rotation=$this->rotation;
-		$r->aMoiDeJouer=$this->aMoiDeJouer();
-		
-		return $r;
-	}
 	
 }
 
