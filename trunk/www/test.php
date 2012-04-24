@@ -1,8 +1,25 @@
 <?php
-require_once '../config.php';
-require_once DIR_GAMES.'awale/Awale.php';
+//require_once '../config.php';
+//require_once DIR_GAMES.'awale/Awale.php';
 
-$j=new Awale();
+class Test {
+	
+	public function __get($key) {
+		print $key;
+		return array();
+	}
+	
+	public function __set($key, $value) {
+		print_r(array($key => $value));
+		return 0;
+	}
+	
+}
 
 
-print_r($j->getOptionsValues());
+$a=new Test;
+
+print_r($a->ju[0]=5);
+
+
+

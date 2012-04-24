@@ -1,4 +1,9 @@
 
+<script type="text/javascript">
+<!--
+var plateau_inverse={if $plateau_inverse}true{else}false{/if};
+//-->
+</script>
 
 <div id="plateau" class="std-plateau" style="width:{$taille_plateau*64}px;height:{$taille_plateau*64}px;">
 	{section name=loop_x start=0 loop=$taille_plateau step=1}

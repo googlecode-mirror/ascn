@@ -4,7 +4,7 @@ var dammes = {
 	
 	taille_case: 64,
 	
-	doUpdate=true,
+	doUpdate: true,
 	
 	init: function() {
 		$('.std-case .cliquable').click(function() {
@@ -18,7 +18,7 @@ var dammes = {
 					left: dd.offsetX,
 					top: dd.offsetY
 				});
-			},{ relative:true })
+			},{ relative: true })
 			.bind('draginit', function(event, drag) {
 				dammes.caseAtPion($(drag.target)).addClass('mvt-from');
 			})
@@ -32,10 +32,8 @@ var dammes = {
 				dammes.move(case_from, case_to);
 			});
 		
-		dammes.update_interval=setInterval(function() {
-			if(dammes.doUpdate)
-				Jeux.action('dammes', 'update');
-			
+		dammes.update_interval = setInterval(function() {
+			dammes.doUpdate && Jeux.action('dammes', 'update');
 		}, 2500);
 		
 		$(window).hashchange(function() {
@@ -69,10 +67,18 @@ var dammes = {
 	},
 	
 	
+	ajax_move: function(r) {
+		dammes.ajax_update(r);
+	},
+	
+	
 	caseAt: function(x, y) {
 		var _x=Math.floor(x/dammes.taille_case);
 		var _y=Math.floor(y/dammes.taille_case);
-		return $('#case-'+_y+'-'+_x);
+		if(!plateau_inverse)
+			return $('#case-'+_y+'-'+_x);
+		else
+			return $('#case-'+(7-_y)+'-'+(7-_x));
 	},
 	
 	caseAtPion: function(pion) {
@@ -111,7 +117,7 @@ var dammes = {
 		}
 		
 		dammes.doUpdate=true;
-	},
+	}
 	
 	
 };
