@@ -133,7 +133,7 @@ class Dammes extends Jeu {
 			return AJAXResponse::error('Ce n\'est pas à vous de jouer.');
 		}
 		
-		// Si la case de départ est la même que celle d'arriver.
+		// Si la case de départ est la même que celle d'arrivée.
 		if(($from_x == $to_x) && ($from_y == $to_y)) {
 			return $this->ajax_update();
 		}
@@ -157,6 +157,12 @@ class Dammes extends Jeu {
 		
 		if(self::distance($from_x, $from_y, $to_x, $to_y) > 1) {
 			return AJAXResponse::error('Mouvements longs non encore gérés.');
+			
+			if(self::memeDiagonale($from_x, $from_y, $to_x, $to_y)) {
+				
+			} else {
+				
+			}
 		}
 		
 		
@@ -188,7 +194,9 @@ class Dammes extends Jeu {
 		
 		return max(abs($x1-$x0), abs($y1-$y0));
 	}
-	
+	private static function memeDiagonale($x0, $y0, $x1, $y1) {
+		return true;
+	}
 	
 	
 }
