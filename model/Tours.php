@@ -67,17 +67,15 @@ class Tours {
 		$this->coup+=$this->rotation;
 		
 		
-		if($this->rotation>0) {
-			while($this->coup > $nbj) {
-				$this->coup-=$nbj;
-				$this->tour++;
-			}
-		} else {
-			while($this->coup < 1) {
-				$this->coup+=$nbj;
-				$this->tour++;
-			}
+		while($this->coup > $nbj) {
+			$this->tour++;
+			$this->coup-=$nbj;
 		}
+		while($this->coup < 1) {
+			$this->tour++;
+			$this->coup+=$nbj;
+		}
+		
 	}
 	
 	
@@ -91,10 +89,21 @@ class Tours {
 	
 	
 	public function aMoiDeJouer() {
-		return slot()->position == $this->tour;
+		return slot()->position == $this->coup;
 	}
 	public function pasAMoiDeJouer() {
-		return slot()->position != $this->tour;
+		return slot()->position != $this->coup;
+	}
+	
+	
+	
+	public static function createFrom($o) {
+		$ret=new Tours();
+		foreach($o as $key=>$value) {
+			$ret->$key=$value;
+		}
+		
+		return $ret;
 	}
 	
 	
