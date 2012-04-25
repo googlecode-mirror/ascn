@@ -168,6 +168,8 @@ class Dammes extends Jeu {
 				
 				$v=$this->_case($milieu->x, $milieu->y);
 				
+				// TODO Manger en arriere ou pas !!
+				
 				if($v==0) {
 					// case sautée vide
 					return AJAXResponse::error('Déplacement non autorisé n°2.');

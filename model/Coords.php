@@ -28,7 +28,7 @@ class Coords {
 	 * 
 	 * @return int nombre de cases dont le pion avance ou recule
 	 * 				en fonction de la position du joueur.
-	 * @throws Exception si slot n'est pas défini.
+	 * @throws EnvException si slot n'est pas défini.
 	 */
 	public static function direction($x0, $y0, $x1, $y1) {
 		Env::requiert('slot');
