@@ -72,12 +72,8 @@ class Partie extends DBItem {
 	 * @return Slot
 	 */
 	public function rejoindre() {
-		if(!joueur()) {
-			throw new Exception('Vous devez être connécté pour rejoindre une partie');
-		}
-		if(!partie()) {
-			throw new Exception('Partie n\'est pas definie dans l\'environnement');
-		}
+		Env::requiert('joueur');
+		Env::requiert('partie');
 		if(partie()->etat!=PARTIE::PREPARATION) {
 			throw new Exception('Trop tard pour rejoindre la partie. (code etat partie : '.partie()->etat.')');
 		}
@@ -104,17 +100,11 @@ class Partie extends DBItem {
 	
 	
 	public function quitter() {
-		if(!joueur()) {
-			throw new Exception('Vous devez être connécté pour rejoindre une partie');
-		}
-		if(!partie()) {
-			throw new Exception('Partie n\'est pas definie dans l\'environnement');
-		}
+		Env::requiert('joueur');
+		Env::requiert('partie');
+		Env::requiert('slot');
 		if(partie()->etat!=PARTIE::PREPARATION) {
 			throw new Exception('Trop tard pour quitter la partie. (code etat partie : '.partie()->etat.')');
-		}
-		if(!slot()) {
-			throw new Exception('Slot doit etre defini en env');
 		}
 		
 		
@@ -136,16 +126,10 @@ class Partie extends DBItem {
 	 * Lancer la partie
 	 */
 	public function lancer() {
-		if(!joueur()) {
-			throw new Exception('Joueur n\'est pas def dans l\'env');
-		}
-		if(!jeu()) {
-			throw new Exception('Jeu n\'est pas def dans l\'env');
-		}
+		Env::requiert('joueur');
+		Env::requiert('jeu');
+		Env::requiert('partie');
 		
-		if($this->etat!=Partie::PREPARATION) {
-			throw new Exception('La partie n\'est pas en cours de préparation');
-		}
 		if(intval($this->host)!=joueur()->getID()) {
 			throw new Exception("Vous n'êtes pas l'hôte de cette partie...");
 		}
@@ -304,8 +288,8 @@ class Partie extends DBItem {
 	 * @return Partie qui vient d'etre crée.
 	 */
 	public static function create($title) {
-		if(is_null(joueur())) throw new Exception('Aucun joueur identifié, meme pas guest');
-		if(is_null(jeu())) throw new Exception('Le jeu n\'est pas defini dans l\'env');
+		Env::requiert('joueur');
+		Env::requiert('jeu');
 		
 		$p=new Partie();
 			$p->jeu_id=jeu()->getID();
