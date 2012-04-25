@@ -145,24 +145,48 @@ class Dammes extends Jeu {
 		
 		// Si il ne déplace pas sur une case déjà occupée.
 		if($to != 0) {
-			return AJAXResponse::error('Cette case n\'est pas vide.');
+			return AJAXResponse::error('Cette case est déjà occupée.');
 		}
 		
 		
 		// Si le déplacement est valide, respect des règles des Dammes.
 		if(!self::bonneCase($to_x, $to_y)) {
-			return AJAXResponse::error('Vous devez vous déplacer en diagonale.');
+			return AJAXResponse::error('Vous devez vous déplacer en diagonale. n°1');
 		}
 		
 		
-		if(self::distance($from_x, $from_y, $to_x, $to_y) > 1) {
-			return AJAXResponse::error('Mouvements longs non encore gérés.');
-			
-			if(self::memeDiagonale($from_x, $from_y, $to_x, $to_y)) {
-				
-			} else {
-				
+		
+		$distance=self::distance($from_x, $from_y, $to_x, $to_y);
+		
+		if($distance == 1) {
+			if(Coords::direction($from_x, $from_y, $to_x, $to_y)<0) {
+				return AJAXResponse::error('Vous ne pouvez pas reculer.');
 			}
+		} else if($distance == 2) {
+			if(Coords::memeDiagonale($from_x, $from_y, $to_x, $to_y)) {
+				$milieu=Coords::milieu($from_x, $from_y, $to_x, $to_y);
+				
+				$v=$this->_case($milieu->x, $milieu->y);
+				
+				if($v==0) {
+					// case sautée vide
+					return AJAXResponse::error('Déplacement non autorisé n°2.');
+				} else if((($v-1)%2) == (2-slot()->position)) {
+					// pièce sautée adverse
+					$this->_case($milieu->x, $milieu->y, 0);
+				} else if((($v-1)%2) == (slot()->position-1)) {
+					// pièce sautée alliée
+					return AJAXResponse::error('Vous ne pouvez pas sauter vos pièces.');
+				}
+			} else {
+				return AJAXResponse::error(
+					'Vous devez vous déplacer en diagonale. n°2'
+				);
+			}
+		} else {
+			return AJAXResponse::error(
+				'Déplacement non autorisé. ('.self::distance($from_x, $from_y, $to_x, $to_y).')'
+			);
 		}
 		
 		
@@ -187,6 +211,7 @@ class Dammes extends Jeu {
 	private static function bonneCase($x, $y) {
 		return (($x+$y)%2) == 0;
 	}
+	
 	private static function distance($x0, $y0, $x1, $y1) {
 		if(!self::bonneCase($x0, $y0) || !self::bonneCase($x1, $y1)) {
 			throw new Exception('Erreur, une case n\'est pas en diagonale.');
@@ -194,9 +219,8 @@ class Dammes extends Jeu {
 		
 		return max(abs($x1-$x0), abs($y1-$y0));
 	}
-	private static function memeDiagonale($x0, $y0, $x1, $y1) {
-		return true;
-	}
+	
+	
 	
 	
 }
