@@ -98,7 +98,7 @@ var dammes = {
 			for(var j=0;j<r.partie.data.param.taille_plateau;j++) {
 				switch(cases[i][j]) {
 					case 1:
-						$('.pion-blanc').eq(blanc_counter).css({
+						$('.pion-blanc').eq(blanc_counter).animate({
 							top: $('#case-'+i+'-'+j).position().top+'px',
 							left: $('#case-'+i+'-'+j).position().left+'px'
 						});
@@ -106,7 +106,7 @@ var dammes = {
 						break;
 						
 					case 2:
-						$('.pion-noir').eq(noir_counter).css({
+						$('.pion-noir').eq(noir_counter).animate({
 							top: $('#case-'+i+'-'+j).position().top+'px',
 							left: $('#case-'+i+'-'+j).position().left+'px'
 						});

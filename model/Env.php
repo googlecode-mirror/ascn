@@ -262,4 +262,29 @@ class Env {
 	
 	
 	
+	public static function requiert($envClassName, $throwsException=true) {
+		if(!($envClassName())) {
+			if($throwsException)
+				throw new EnvException($envClassName);
+			else
+				return false;
+		} else return true;
+	}
+	
+	
 }
+
+
+
+class EnvException extends Exception {
+	public function __construct($s) {
+		parent::__construct($s.' doit être défini.');
+	}
+}
+
+
+
+
+
+
+
