@@ -6,6 +6,8 @@ var dammes = {
 	
 	doUpdate: true,
 	
+	param: null,
+	
 	init: function() {
 		$('.std-case .cliquable').click(function() {
 			var id=$(this).parent().attr('id').split('-');
@@ -71,6 +73,12 @@ var dammes = {
 		dammes.ajax_update(r);
 	},
 	
+	caseAtCoords: function(x, y) {
+		if(!plateau_inverse)
+			return $('#case-'+y+'-'+x);
+		else
+			return $('#case-'+(7-y)+'-'+(7-x));
+	},
 	
 	caseAt: function(x, y) {
 		var _x=Math.floor(x/dammes.taille_case);
@@ -81,24 +89,47 @@ var dammes = {
 			return $('#case-'+(7-_y)+'-'+(7-_x));
 	},
 	
+	
 	caseAtPion: function(pion) {
 		var x=pion.position().left+dammes.taille_case/2;
 		var y=pion.position().top+dammes.taille_case/2;
 		return dammes.caseAt(x, y);
 	},
 	
+	pionAtCase: function(x, y) {
+		var c=dammes.caseAtCoords(x, y).attr('id').split('-');
+		
+		var px=parseInt(c[2])*dammes.taille_case+'px';
+		var py=parseInt(c[1])*dammes.taille_case+'px';
+		
+		
+		for(var i=0;i<dammes.param.nb_pion;i++) {
+			for(var j=1;j<=2;j++) {
+				var pion=$('#pion-'+j+'-'+i);
+				console.log(pion);
+				console.log(pion.css('left')+'=='+px+' && '+pion.css('top')+'=='+py);
+				
+				if(pion.css('left')==px && pion.css('top')==py) {
+					return pion;
+				}
+			}
+		}
+	},
 	
 	ajax_update: function(r) {
-		var cases=r.partie.data.partie_data.cases;
+		dammes.param=r.partie.data.param;
+		
+		var cases=r.partie.data.cases;
 		
 		var blanc_counter=0;
 		var noir_counter=0;
+		
 		
 		for(var i=0;i<r.partie.data.param.taille_plateau;i++) {
 			for(var j=0;j<r.partie.data.param.taille_plateau;j++) {
 				switch(cases[i][j]) {
 					case 1:
-						$('.pion-blanc').eq(blanc_counter).animate({
+						$('.pion-blanc').eq(blanc_counter).css({
 							top: $('#case-'+i+'-'+j).position().top+'px',
 							left: $('#case-'+i+'-'+j).position().left+'px'
 						});
@@ -106,7 +137,7 @@ var dammes = {
 						break;
 						
 					case 2:
-						$('.pion-noir').eq(noir_counter).animate({
+						$('.pion-noir').eq(noir_counter).css({
 							top: $('#case-'+i+'-'+j).position().top+'px',
 							left: $('#case-'+i+'-'+j).position().left+'px'
 						});
@@ -115,6 +146,7 @@ var dammes = {
 				}
 			}
 		}
+		
 		
 		dammes.doUpdate=true;
 	}

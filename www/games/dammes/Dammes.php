@@ -26,7 +26,7 @@ class Dammes extends Jeu {
 	public function getInitialData() {
 		$this->setRegles();
 		$data->tours=new Tours(partie()->option('premier_joueur'));
-		$data->partie_data->cases=array();
+		$data->cases=array();
 		$data->param=$this->getArrayParam();
 		
 		for($i=0;$i<8;$i++) {
@@ -34,7 +34,7 @@ class Dammes extends Jeu {
 			for($j=0;$j<8;$j++) {
 				$line[]=0;
 			}
-			$data->partie_data->cases[]=$line;
+			$data->cases[]=$line;
 		}
 		
 		$t=$this->taille_plateau;
@@ -47,8 +47,8 @@ class Dammes extends Jeu {
 				$y=$j*2+$i%2;
 				julog(print_r(array($x,$y),true));
 				
-				$data->partie_data->cases[$x][$y]=1;
-				$data->partie_data->cases[$t-$x-1][$t-$y-1]=2;
+				$data->cases[$x][$y]=1;
+				$data->cases[$t-$x-1][$t-$y-1]=2;
 			}
 		}
 		
@@ -91,10 +91,10 @@ class Dammes extends Jeu {
 	
 	public function _case($x, $y, $value=null) {
 		if(is_null($value)) {
-			return intval($this->_data()->partie_data->cases[$y][$x]);
+			return intval($this->_data()->cases[$y][$x]);
 		} else {
 			$o=$this->_data();
-			$o->partie_data->cases[$y][$x]=$value;
+			$o->cases[$y][$x]=$value;
 			$this->_data($o);
 			return intval($value);
 		}
