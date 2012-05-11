@@ -56,6 +56,10 @@ class Partie extends DBItem {
 		return new Slot($data);
 	}
 	
+	/*
+	 * @param $slot_position int numéro du slot à retourner, 1 est le premier.
+	 * @return Slot
+	 */
 	public function getSlotNum($slot_position) {
 		$s=$this->getSlots();
 		return $s[$slot_position-1];

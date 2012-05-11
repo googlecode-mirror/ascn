@@ -52,7 +52,7 @@ class Regles {
 	}
 	
 	
-	public function getRegles() {
+	public static function getRegles() {
 		return array(
 			'Francaises',
 			'Anglaises',

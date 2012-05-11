@@ -59,6 +59,7 @@ require_once DIR_MODEL.'Partie.php';
 require_once DIR_MODEL.'Slot.php';
 require_once DIR_MODEL.'Opt.php';
 require_once DIR_MODEL.'Invite.php';
+require_once DIR_MODEL.'Coords.php';
 
 
 
@@ -83,5 +84,4 @@ function jeu()		{ return env()->jeu;	}
 
 // site prefs
 define('SITE_NAME', 'Asynchronous Games');
-
 
