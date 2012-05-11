@@ -15,6 +15,10 @@ class Coords {
 		$this->y=$y;
 	}
 	
+	public function set($x=0, $y=0) {
+		$this->x=$x;
+		$this->y=$y;
+	}
 	
 	
 	public static function memeDiagonale($x0, $y0, $x1, $y1) {
@@ -35,6 +39,18 @@ class Coords {
 		
 		$y_diff=$y1-$y0;
 		return $y_diff*(3-slot()->position*2);
+	}
+	
+	
+	/*
+	 * Renvoi un Coords depuis l'objet $obj.
+	 * @param $obj mixed objet à analyser
+	 * @param $x_attribute String nom de l'attribut x, si différent de 'x'
+	 * @param $y_attribute String nom de l'attribut y, si différent de 'y'
+	 * @return Coords
+	 */
+	public static function createFrom($obj, $x_attribute='x', $y_attribute='y') {
+		return new Coords($obj->$x_attribute, $obj->$y_attribute);
 	}
 	
 	
