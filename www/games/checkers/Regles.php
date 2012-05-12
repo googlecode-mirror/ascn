@@ -32,7 +32,7 @@ class Regles {
 			break;
 			
 			case 'anglaises':
-				$this->taille_plateau = 10;
+				$this->taille_plateau = 8;
 				$this->peut_manger_en_arriere = true;
 				$this->damme_deplacement_long = true;
 				$this->cases_utilisees = 'noires';
