@@ -176,6 +176,10 @@ abstract class Jeu extends DBItem {
 		$r=new AJAXResponse();
 		
 		$r->partie=array(
+			'id'	=> partie()->id,
+			'jeu_id'=> partie()->jeu_id,
+			'host'	=> partie()->host,
+			'title'	=> partie()->title,
 			'etat'	=> partie()->etat,
 			'data'	=> partie()->getData(),
 		);
