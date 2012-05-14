@@ -69,26 +69,15 @@ abstract class Jeu extends DBItem {
 		
 		if(partie()) {
 			smarty()->assign('partie', partie());
-			
 			smarty()->assign('host', new Joueur(partie()->host));
 			
 			switch(partie()->etat) {
 				
-			
 				case Partie::PREPARATION:
 					// en cours de préparation
-					$slot=partie()->rejoindre();
-					$slots=queryTab('
-						select * from slot
-						natural join joueur
-						where partie_id='.partie()->getID().'
-						order by slot_position
-					');
-					
-					smarty()->assign('options', jeu()->getOptions());
-					smarty()->assign('slots', $slots);
-					smarty()->assign('isHost', intval($slot->joueur_id)==intval(partie()->host));
-					smarty()->display(DIR_TPL.'organizegame.tpl');
+					Env()->setSlot(partie()->rejoindre());
+					$page_organize=new OrganizeGame();
+					$page_organize->run();
 					break;
 					
 				case Partie::EN_COURS:
@@ -99,18 +88,9 @@ abstract class Jeu extends DBItem {
 					break;
 				
 				case Partie::TERMINEE:
-					smarty()->assign('slot', slot());
-					$slots=queryTab('
-						select * from slot
-						natural join joueur
-						where partie_id='.partie()->getID().'
-						order by slot_score desc
-					');
-					
-					smarty()->assign('slots', $slots);
-					smarty()->display(DIR_TPL.'scores.tpl');
+					$page_scores=new Scores();
+					$page_scores->run();
 					break;
-					
 					
 				default:
 					throw new Exception('Etat de partie non reconnu : '.partie()->etat);
@@ -119,8 +99,8 @@ abstract class Jeu extends DBItem {
 		
 		} else {
 			// Index & formulaire création partie
-			smarty()->assign('random', rand(100000, 999999));
-			smarty()->display(DIR_TPL.'gameindex.tpl');
+			$page_game_index=new GameIndex();
+			$page_game_index->run();
 		}
 		
 		

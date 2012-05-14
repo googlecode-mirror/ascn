@@ -174,6 +174,9 @@ class Env {
 		}
 	}
 	
+	public function setSlot($slot) {
+		$this->slot=$slot;
+	}
 	
 	
 	
