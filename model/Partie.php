@@ -195,7 +195,7 @@ class Partie extends DBItem {
 				$values=$opt->getValues();
 				$this->options[$opt->name] = array(
 					'key'	=> $data['opt_value'],
-					'value'	=> $values[$data['opt_value']]
+					'value'	=> $values[$data['opt_value']],
 				);
 			}
 		}
