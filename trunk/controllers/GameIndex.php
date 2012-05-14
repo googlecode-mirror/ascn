@@ -1,0 +1,1 @@
+<?phpclass GameIndex extends Page {	public function process() {		smarty()->assign('random', rand(100000, 999999));	}}

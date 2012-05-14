@@ -1,0 +1,1 @@
+<?phpclass Scores extends Page {	public function process() {		smarty()->assign('slot', slot());		$slots=queryTab('			select * from slot			natural join joueur			where partie_id='.partie()->getID().'			order by slot_score desc		');				smarty()->assign('slots', $slots);	}}
