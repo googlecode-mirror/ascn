@@ -8,12 +8,34 @@ var checkers = {
 	
 	isFirstUpdate: true,
 	
-	param: null,
+	regles: null,
+	
+	lastMove: null,
 	
 	init: function() {
 		checkers.update_interval = setInterval(function() {
 			Jeux.action('checkers', 'update');
 		}, 2500);
+		
+		$('.draggable')
+			.drag(function(ev, dd) {
+				$(this).css({
+					left: dd.offsetX,
+					top: dd.offsetY
+				});
+			},{ relative: true })
+			.bind('draginit', function(event, drag) {
+				checkers.caseAtPion($(drag.target)).addClass('mvt-from');
+			})
+			.bind('drag', function(event, drag) {
+				$('.mvt-to').removeClass('mvt-to');
+				checkers.caseAtPion($(drag.target)).addClass('mvt-to');
+			})
+			.bind('dragend', function(event, drag) {
+				var case_from	= $('.mvt-from').removeClass('mvt-from');
+				var case_to		= $('.mvt-to').removeClass('mvt-to');
+				checkers.move(case_from, case_to);
+			});
 		
 		$(window).hashchange(function() {
 			clearInterval(checkers.update_interval);
@@ -32,15 +54,24 @@ var checkers = {
 	move: function(case_from, case_to) {
 		console.log('move '+case_from.attr('id')+' move to '+case_to.attr('id'));
 		
-		var _from	= case_from.attr('id').split('-');
-		var _to		= case_to.attr('id').split('-');
-		
-		var data = {
-			case_from:	{ x: _from[2],	y: _from[1]	},
-			case_to:	{ x: _to[2],	y: _to[1]	}
-		};
-		
-		Jeux.action('checkers', 'move', data);
+		if(!checkers.lastMove) {
+			var _from	= case_from.attr('id').split('-');
+			var _to		= case_to.attr('id').split('-');
+			
+			var data = {
+				case_from:	{ x: _from[2],	y: _from[1]	},
+				case_to:	{ x: _to[2],	y: _to[1]	}
+			};
+			
+			checkers.lastMove = {
+				case_from:	data.case_from,
+				case_to:	data.case_to
+			};
+			
+			Jeux.action('checkers', 'move', data);
+		} else {
+			
+		}
 	},
 	
 	
@@ -68,6 +99,10 @@ var checkers = {
 	},
 	
 	
+	_case: function(x, y) {
+		return $('#case-'+y+'-'+x);
+	},
+	
 	getPionIdFromDom: function(dom) {
 		var classes = dom.attr('class').split(/\s+/);
 		
@@ -82,8 +117,22 @@ var checkers = {
 		return null;
 	},
 	
-	_case: function(x, y) {
-		return $('#case-'+x+'-'+y);
+	caseAt: function(x, y) {
+		var _x = Math.floor(x/checkers.taille_case);
+		var _y = Math.floor(y/checkers.taille_case);
+		
+		var t = checkers.regles.taille_plateau;
+		
+		if(!plateau_inverse)
+			return checkers._case(_x, _y);
+		else
+			return checkers._case(t-_x-1, t-_y-1);
+	},
+	
+	caseAtPion: function(dom) {
+		var x=dom.position().left+checkers.taille_case/2;
+		var y=dom.position().top+checkers.taille_case/2;
+		return checkers.caseAt(x, y);
 	},
 	
 	placerPion: function(id, case_x, case_y) {
@@ -91,17 +140,22 @@ var checkers = {
 		var c = checkers._case(case_x, case_y);
 		
 		pion.animate({
-			top:	(c.position().top)+'px',
-			left:	(c.position().left)+'px'
+			top:	(c.position().left)+'px',
+			left:	(c.position().top)+'px'
 		});
 	},
 	
 	firstUpdate: function(r) {
-		
+	
+	
+		// init checkers.regles
+		checkers.regles = r.partie.data.regles;
 		
 		// init Array pions && placement pion au chargement de la page
 		var counter = new Array();
-		counter[1] = counter[2] = 0;
+		for(var i=1;i<=nb_joueur;i++) {
+			counter[i] = 0;
+		}
 		
 		for(var i=0;i<r.partie.data.plateau.taille_plateau;i++) {
 			for(var j=0;j<r.partie.data.plateau.taille_plateau;j++) {
@@ -114,6 +168,15 @@ var checkers = {
 					checkers.pions[pion.id] = dom;
 					checkers.placerPion(pion.id, pion.coords.x, pion.coords.y); 
 				}
+			}
+		}
+		
+		
+		// supprime pions en trop dans le dom
+		for(var i=1;i<=nb_joueur;i++) {
+			for(var j=counter[i];j<r.partie.data.regles.nb_pion;j++) {
+				var pion = $('#pion-'+i+'-'+j);
+				pion && pion.remove();
 			}
 		}
 	}
