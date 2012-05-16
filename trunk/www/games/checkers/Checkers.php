@@ -21,8 +21,9 @@ class Checkers extends Jeu {
 		$nb_pion = $demi*($demi-1);
 		
 		smarty()->assign(array(
-			'plateau_inverse' => intval(slot()->position)==1,
-			'regles' => $this->regles,
+			'plateau_inverse'	=> intval(slot()->position) == 1,
+			'regles'			=> $this->regles,
+			'nb_joueur'			=> partie()->getNbJoueur(),
 		));
 	}
 	

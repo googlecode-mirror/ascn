@@ -10,9 +10,24 @@ define('DB_user', 'root');
 define('DB_pass', '');
 
 // roots
-define('DIR_ROOT', 'C:/wamp/www/Eclipse_Workspace/ascn2/trunk/');
-define('WWW_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/Eclipse_Workspace/ascn2/trunk/www/');
-
+$host = $_SERVER['HTTP_HOST'];
+switch($host) {
+	case 'juju.lan':
+		define('DIR_ROOT', 'C:/wamp/www/Eclipse_Workspace/ascn2/trunk/');
+		define('WWW_ROOT', 'http://'.$host.'/Eclipse_Workspace/ascn2/trunk/www/');
+	break;
+	
+	case 'villers.lan':
+		define('DIR_ROOT', 'C:/wamp/www/ascn/');
+		define('WWW_ROOT', 'http://'.$host.'/ascn/www/');
+	break;
+	
+	default:
+		print 'attention : host non reconnu : "'.$host.'", config par defaut utilisee.';
+		define('DIR_ROOT', 'C:/wamp/www/ascn/trunk/');
+		define('WWW_ROOT', 'http://'.$host.'/');
+	break;
+}
 
 
 // dirnames
