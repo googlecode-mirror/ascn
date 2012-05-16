@@ -4,13 +4,15 @@ var checkers = {
 	
 	taille_case: 64,
 	
-	doUpdate: true,
+	pions: new Array(),
+	
+	isFirstUpdate: true,
 	
 	param: null,
 	
 	init: function() {
 		checkers.update_interval = setInterval(function() {
-			checkers.doUpdate && Jeux.action('checkers', 'update');
+			Jeux.action('checkers', 'update');
 		}, 2500);
 		
 		$(window).hashchange(function() {
@@ -18,8 +20,6 @@ var checkers = {
 		});
 		
 		Jeux.action('checkers', 'update');
-		
-		console.log('init OK. 1');
 	},
 	
 	update_interval: null,
@@ -50,24 +50,72 @@ var checkers = {
 	
 	
 	ajax_update: function(r) {
+		if(checkers.isFirstUpdate) {
+			checkers.firstUpdate(r);
+			checkers.isFirstUpdate = false;
+		}
+		
 		// r.partie.data.plateau.cases[][];
 		for(var i=0;i<r.partie.data.plateau.taille_plateau;i++) {
 			for(var j=0;j<r.partie.data.plateau.taille_plateau;j++) {
 				var pion = r.partie.data.plateau.cases[i][j];
-				console.log(pion);
 				if(pion) {
 					
 				}
 			}
 		}
 		
-		
-		checkers.doUpdate=true;
 	},
 	
 	
-	placerPion: function(id, x, y) {
+	getPionIdFromDom: function(dom) {
+		var classes = dom.attr('class').split(/\s+/);
+		
+		for(var i = 0; i < classes.length; i++){
+			var classe = classes[i].split('-');
+			
+			if(classe.length == 2 && classe[0] == 'id') {
+				return id = parseInt(classe[1]);
+			}
+		}
+		
+		return null;
+	},
 	
+	_case: function(x, y) {
+		return $('#case-'+x+'-'+y);
+	},
+	
+	placerPion: function(id, case_x, case_y) {
+		var pion = checkers.pions[id];
+		var c = checkers._case(case_x, case_y);
+		
+		pion.animate({
+			top:	(c.position().top)+'px',
+			left:	(c.position().left)+'px'
+		});
+	},
+	
+	firstUpdate: function(r) {
+		
+		
+		// init Array pions && placement pion au chargement de la page
+		var counter = new Array();
+		counter[1] = counter[2] = 0;
+		
+		for(var i=0;i<r.partie.data.plateau.taille_plateau;i++) {
+			for(var j=0;j<r.partie.data.plateau.taille_plateau;j++) {
+				var pion = r.partie.data.plateau.cases[i][j];
+				if(pion) {
+					var dom = $('#pion-'+pion.slot_position+'-'+(counter[pion.slot_position]++));
+					
+					dom.addClass('id-'+pion.id);
+					
+					checkers.pions[pion.id] = dom;
+					checkers.placerPion(pion.id, pion.coords.x, pion.coords.y); 
+				}
+			}
+		}
 	}
 	
 	
