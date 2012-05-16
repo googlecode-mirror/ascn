@@ -48,7 +48,7 @@ abstract class Page {
 		$this->gabarit=new Standard($this);
 		$this->setTitle();
 		
-		$this->addJs(WWW_JS.'jquery-1.7.1.min.js');
+		$this->addJs(WWW_JS.'jquery.min.js');
 		$this->addJs(WWW_JS.'jquery.ba-hashchange.min.js');
 		$this->addJs(WWW_JS.'main.js');
 	}

@@ -15,7 +15,7 @@ class Checkers extends Jeu {
 		$this->initRegles();
 		$this->initPlateau();
 		
-		$this->addJs(WWW_JS.'jquery.event.drag-2.0.min.js');
+		$this->addJs(WWW_JS.'jquery.event.drag.min.js');
 		
 		$demi = $this->regles->taille_plateau/2;
 		$nb_pion = $demi*($demi-1);
@@ -38,6 +38,11 @@ class Checkers extends Jeu {
 		$data->plateau = $this->plateau;
 		
 		return $data;
+	}
+	
+	
+	public function ajax_move() {
+		return AJAXResponse::error('ok');
 	}
 	
 	
