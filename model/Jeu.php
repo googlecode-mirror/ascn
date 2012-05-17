@@ -21,6 +21,8 @@ abstract class Jeu extends DBItem {
 			from jeu
 			where jeu_name=\''.strtolower(get_class($this)).'\'
 		'));
+		
+		
 	}
 
 	

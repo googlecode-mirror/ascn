@@ -9,6 +9,7 @@ class Plateau {
 
 	public function __construct() {
 		$partie_data = partie()->getData();
+		
 		$regles = jeu()->getRegles();
 		
 		$this->taille_plateau=$regles->taille_plateau;
@@ -20,6 +21,7 @@ class Plateau {
 	
 	
 	private function placerPieces($partie_data = null) {
+	
 		if(!isset($partie_data->plateau->cases) || is_null($partie_data->plateau->cases)) {
 			$t=$this->taille_plateau;
 			$demi=$t/2;
@@ -46,10 +48,16 @@ class Plateau {
 				for($j=0;$j<$this->taille_plateau;$j++) {
 					if(!is_null($pion = $partie_data->plateau->cases[$i][$j])) {
 						$this->cases[$i][$j] = new Pion($pion);
+						
 					}
 				}
 			}
 		}
+	}
+	
+	
+	public function _case($x, $y) {
+		return $this->cases[$x][$y];
 	}
 	
 	

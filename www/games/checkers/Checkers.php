@@ -6,8 +6,8 @@ require_once 'Pion.php';
 
 class Checkers extends Jeu {
 	
-	private $regles;
-	private $plateau;
+	private $regles = null;
+	private $plateau = null;
 	
 	
 	
@@ -32,8 +32,6 @@ class Checkers extends Jeu {
 		$this->initRegles();
 		$this->initPlateau();
 		
-		$data = new stdClass();
-		
 		$data->regles = $this->regles;
 		$data->plateau = $this->plateau;
 		
@@ -42,16 +40,25 @@ class Checkers extends Jeu {
 	
 	
 	public function ajax_move() {
-		return AJAXResponse::error('ok');
+		var_dump(jeu());
+		
+		$this->initRegles();
+		$this->initPlateau();
+		
+		var_dump($this->plateau->_case(0,1));
 	}
 	
 	
 	public function initRegles() {
-		$this->regles=new Regles(partie()->option('regles'));
+		if(is_null($this->regles)) {
+			$this->regles=new Regles(partie()->option('regles'));
+		}
 	}
 	
 	public function initPlateau() {
-		$this->plateau=new Plateau();
+		if(is_null($this->plateau)) {
+			$this->plateau=new Plateau();
+		}
 	}
 	
 	
@@ -61,6 +68,13 @@ class Checkers extends Jeu {
 	
 	public function getPlateau() {
 		return $this->plateau;
+	}
+	
+	
+	public static function refus($raison) {
+		$data->refus = true;
+		$data->raison = utf8_encode($raison);
+		return $data;
 	}
 	
 	
