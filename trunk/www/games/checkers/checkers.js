@@ -34,7 +34,7 @@ var checkers = {
 			.bind('dragend', function(event, drag) {
 				var case_from	= $('.mvt-from').removeClass('mvt-from');
 				var case_to		= $('.mvt-to').removeClass('mvt-to');
-				checkers.move(case_from, case_to);
+				checkers.move(case_from, case_to, $(drag.target));
 			});
 		
 		$(window).hashchange(function() {
@@ -51,32 +51,57 @@ var checkers = {
 	},
 	
 	
-	move: function(case_from, case_to) {
+	move: function(case_from, case_to, pion) {
 		console.log('move '+case_from.attr('id')+' move to '+case_to.attr('id'));
 		
-		if(!checkers.lastMove) {
-			var _from	= case_from.attr('id').split('-');
-			var _to		= case_to.attr('id').split('-');
-			
-			var data = {
-				case_from:	{ x: _from[2],	y: _from[1]	},
-				case_to:	{ x: _to[2],	y: _to[1]	}
-			};
-			
-			checkers.lastMove = {
-				case_from:	data.case_from,
-				case_to:	data.case_to
-			};
-			
-			Jeux.action('checkers', 'move', data);
+		if(!case_from.length) {
+			throw ('Erreur, case depart undefined');
+			return;
+		}
+		if(!case_to.length) {
+			checkers.placerPionSur(pion, case_from);
+			return;
+		}
+		
+		
+		var deplacement = case_from.attr('id') != case_to.attr('id');
+		
+		if(deplacement) {
+			if(!checkers.lastMove) {
+				var _from	= case_from.attr('id').split('-');
+				var _to		= case_to.attr('id').split('-');
+				
+				var data = {
+					case_from:	{ x: _from[2],	y: _from[1]	},
+					case_to:	{ x: _to[2],	y: _to[1]	}
+				};
+				
+				checkers.lastMove = {
+					case_from:	case_from,
+					case_to:	case_to,
+					pion:		pion
+				};
+				
+				checkers.placerPionSur(pion, case_to);
+				Jeux.action('checkers', 'move', data);
+			} else {
+				checkers.placerPionSur(pion, case_from);
+			}
 		} else {
-			
+			checkers.placerPionSur(pion, case_from);
 		}
 	},
 	
 	
 	ajax_move: function(r) {
-		checkers.ajax_update(r);
+		if(r.refus) {
+			alert(r.raison);
+			checkers.placerPionSur(checkers.lastMove.pion, checkers.lastMove.case_from);
+			checkers.lastMove = null;
+		} else {
+			checkers.ajax_update(r);
+		}
+		
 	},
 	
 	
@@ -140,9 +165,33 @@ var checkers = {
 		var c = checkers._case(case_x, case_y);
 		
 		pion.animate({
-			top:	(c.position().left)+'px',
-			left:	(c.position().top)+'px'
+			top:	(c.position().left)	+'px',
+			left:	(c.position().top)	+'px'
 		});
+	},
+	
+	placerPionSur: function(pion_dom, case_dom) {
+		var pion_id = checkers.getPionIdFromDom(pion_dom);
+		var coords = checkers.getCaseCoordsFromDom(case_dom);
+		
+		checkers.placerPion(pion_id, coords.x, coords.y);
+	},
+	
+	getCaseCoordsFromDom: function(dom) {
+		var classes = dom.attr('id').split(/\s+/);
+		
+		for(var i = 0; i < classes.length; i++){
+			var classe = classes[i].split('-');
+			
+			if(classe.length == 3 && classe[0] == 'case') {
+				return {
+					x: classe[1],
+					y: classe[2]
+				}
+			}
+		}
+		
+		return null;
 	},
 	
 	firstUpdate: function(r) {
