@@ -96,6 +96,7 @@ class Plateau {
 		return $this->getCouleurCase($x, $y) == jeu()->getRegles()->cases_utilisees;
 	}
 	
+	
 	public function distance($x0, $y0, $x1, $y1) {
 		if(!$this->bonneCouleurCase($x0, $y0) || !self::bonneCouleurCase($x1, $y1)) {
 			throw new Exception('Erreur, une case n\'est pas de la bonne couleur selon les regles.');
@@ -203,6 +204,8 @@ class Plateau {
 							}
 						}
 					}
+				} else {
+					return array('Vous devez vous déplacer en diagonale.');
 				}
 			}
 			
@@ -210,6 +213,8 @@ class Plateau {
 				return array('Vous ne pouvez vous déplacer que d\'une case.');
 			}
 			
+		} else {
+			// TODO : pion promu
 		}
 		
 		
