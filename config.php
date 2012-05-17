@@ -75,6 +75,7 @@ require_once DIR_MODEL.'Slot.php';
 require_once DIR_MODEL.'Opt.php';
 require_once DIR_MODEL.'Invite.php';
 require_once DIR_MODEL.'Coords.php';
+require_once DIR_MODEL.'Color.php';
 require_once DIR_CTRL.'Standard.php';
 require_once DIR_CTRL.'OrganizeGame.php';
 require_once DIR_CTRL.'GameIndex.php';

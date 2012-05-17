@@ -146,22 +146,11 @@ class Env {
 	
 	/**
 	 * 
-	 * Requiert arg jeu_name ou getValue('jeu_name'), ou getValue('jeu') (plus long)
+	 * Requiert arg jeu_name ou rien
 	 */
 	public function initJeu($jeu_name=null) {
-		if(!is_null($jeu_name) || $jeu_name=getValue('jeu_name', false)) {
-			
+		if(!is_null($jeu_name)) {
 			require_once DIR_GAMES.$jeu_name.'/'.$jeu_name.'.php';
-			$this->singleton_jeu=new $jeu_name();
-			
-		} else if($jeu_id=getValue('jeu', false)) {
-			
-			$jeu_id=intval($jeu_id);
-			$jeu_name=queryValue('
-				select jeu_name
-				from jeu
-				where jeu_id='.$jeu_id
-			);
 			$this->singleton_jeu=new $jeu_name();
 		}
 	}
