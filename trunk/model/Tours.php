@@ -27,13 +27,25 @@
 class Tours {
 	public static $ALEATOIRE=0;
 	
+	/**
+	 * Numéro du tour, 1 tour signifie que chaque joueur à joué
+	 * et qu'une boucle est terminée.
+	 * @var $tour int
+	 */
 	public $tour;
+	
+	/**
+	 * Numéro du coup, représente le slot->position du joueur
+	 * actuel à qui c'est de jouer.
+	 * @var $coup int
+	 */
 	public $coup;
+	
 	
 	/**
 	 * 
 	 * Rotation des joueurs
-	 * @var int $rotation 1 si normal, -1 si inversé
+	 * @var int $rotation 1 si normal, -1 si inversé (doit être != 0)
 	 */
 	public $rotation=1;
 	
@@ -42,7 +54,7 @@ class Tours {
 	 * 
 	 * Constructeur
 	 * @param int $first_player (default = 1, premier joueur)
-	 * 		ALEATOIRE : le premier joueur est aléatoire
+	 * 		Tours::ALEATOIRE : le premier joueur est aléatoire
 	 * 		int : numéro du slot qui commence.
 	 */
 	public function __construct($first_player=1) {
@@ -96,7 +108,9 @@ class Tours {
 	}
 	
 	
-	
+	/**
+	 * Copy constructor
+	 */
 	public static function createFrom($o) {
 		$ret=new Tours();
 		foreach($o as $key=>$value) {

@@ -34,18 +34,21 @@ class Checkers extends Jeu {
 		
 		$data->regles = $this->regles;
 		$data->plateau = $this->plateau;
+		$data->tours = new Tours(partie()->option('premier_joueur'));
 		
 		return $data;
 	}
 	
 	
 	public function ajax_move() {
-		var_dump(jeu());
-		
 		$this->initRegles();
 		$this->initPlateau();
 		
-		var_dump($this->plateau->_case(0,1));
+		$err = $this->plateau->canMoveThis();
+		
+		if(count($err)) {
+			return self::refus($err);
+		}
 	}
 	
 	
@@ -71,9 +74,12 @@ class Checkers extends Jeu {
 	}
 	
 	
-	public static function refus($raison) {
+	public static function refus($raisons) {
 		$data->refus = true;
-		$data->raison = utf8_encode($raison);
+		$data->raisons = array();
+		foreach($raisons as $raison) {
+			$data->raisons[] = utf8_encode($raison);
+		}
 		return $data;
 	}
 	

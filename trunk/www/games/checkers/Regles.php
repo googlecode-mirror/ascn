@@ -26,7 +26,7 @@ class Regles {
 				$this->taille_plateau = 10;
 				$this->peut_manger_en_arriere = true;
 				$this->damme_deplacement_long = true;
-				$this->cases_utilisees = 'noires';
+				$this->cases_utilisees = Color::NOIRES;
 				$this->pion_peut_manger_damme = true;
 				$this->forcer_prise = true;
 			break;
@@ -34,9 +34,9 @@ class Regles {
 			case 'anglaises':
 				$this->taille_plateau = 8;
 				$this->peut_manger_en_arriere = true;
-				$this->damme_deplacement_long = true;
-				$this->cases_utilisees = 'noires';
-				$this->pion_peut_manger_damme = false;
+				$this->damme_deplacement_long = false;
+				$this->cases_utilisees = Color::NOIRES;
+				$this->pion_peut_manger_damme = true;
 				$this->forcer_prise = true;
 			break;
 			

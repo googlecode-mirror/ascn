@@ -41,8 +41,8 @@ function appli_dir($appli_type) {
 }
 
 
-function julog($s) {
-	file_put_contents(DIR_ROOT.'log.txt', $s."\n\n======================\n\n", FILE_APPEND);
+function _log($s) {
+	// file_put_contents(DIR_ROOT.'log.txt', "$s\n", FILE_APPEND);
 }
 
 // verifie si $hay commence par $needle

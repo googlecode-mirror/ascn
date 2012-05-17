@@ -95,7 +95,12 @@ var checkers = {
 	
 	ajax_move: function(r) {
 		if(r.refus) {
-			alert(r.raison);
+			var s = '';
+			for(var i = 0;i<r.raisons.length;i++) {
+				s += r.raisons[i]+"\n\n";
+			}
+			alert(s);
+			
 			checkers.placerPionSur(checkers.lastMove.pion, checkers.lastMove.case_from);
 			checkers.lastMove = null;
 		} else {
