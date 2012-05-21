@@ -43,6 +43,12 @@ class TicTacToe extends Jeu {
 		return $r;
 	}
 	
+	public function getOptions() {
+		return array(
+			Option::premierJoueur()
+		);
+	}
+	
 	
 	
 	private $grille=null;

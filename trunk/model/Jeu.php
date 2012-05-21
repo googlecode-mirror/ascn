@@ -45,12 +45,24 @@ abstract class Jeu extends DBItem {
 	public abstract function getInitialData();
 	
 	
+	
+	/**
+	 * 
+	 * Retourner un array d'options avec les valeurs possibles
+	 * definissable lors de la création d'une partie.
+	 * @return array
+	 */
+	public function getOptions() {
+		return array();
+	}
+	
+	
 	/**
 	 * 
 	 * A appeler quand le jeu est terminé.
 	 * @return AJAXResponse
 	 */
-	public function terminer() {
+	public final function terminer() {
 		partie()->terminer();
 		$r=new AJAXResponse();
 		$r->partie_terminee=true;
@@ -65,7 +77,7 @@ abstract class Jeu extends DBItem {
 	 * 
 	 * @throws Exception en cas de non définition de l'environnement.
 	 */
-	public function run() {
+	public final function run() {
 		
 		smarty()->assign('jeu', jeu());
 		
@@ -112,7 +124,7 @@ abstract class Jeu extends DBItem {
 	
 	
 	// Ajax actions :
-	public function ajax_creer_partie() {
+	public final function ajax_creer_partie() {
 		// Formulaire de création de partie recu
 		$r=new AJAXResponse();
 		
@@ -135,7 +147,7 @@ abstract class Jeu extends DBItem {
 	
 	
 	
-	public function ajax_lancer_partie() {
+	public final function ajax_lancer_partie() {
 		// Formulaire de lancement de partie recu
 		$r=new AJAXResponse();
 		
@@ -172,21 +184,6 @@ abstract class Jeu extends DBItem {
 	}
 	
 	
-	public function getOptions() {
-		$res=queryTab('
-			select *
-			from opt
-			where jeu_id='.$this->getID()
-		);
-		
-		$options=array();
-		
-		foreach($res as $data) {
-			$options[]=new Opt($data);
-		}
-		
-		return $options;
-	}
 	
 	
 	
