@@ -5,7 +5,6 @@ $(function() {
 </script>
 
 <h2>Pr&eacute;paration d'une partie de {$jeu->title}</h2>
-
 <h3>Partie {$partie->title}, cr&eacute;&eacute;e par {$host->pseudo}</h3>
 
 
@@ -26,12 +25,11 @@ $(function() {
 	<hr />
 	<form action="games/{$jeu->name}/lancer_partie" class="ajaxaction">
 		<h3>Options de la partie</h3>
-		
-		{foreach from=$options item=option}
+		{foreach from=$options item=option key=key}
 			<p>{$option->title}</p>
-			<select name="option_{$option->id}">
-				{foreach from=$option->getValues() key=key item=value}
-					<option value="{$key}">{$value}</option>
+			<select name="options[{$key}]">
+				{foreach from=$option->values item=value}{$value|print_r}
+					<option value="{$value.key}" {if isset($value.default) && $value.default}selected="true"{/if}>{$value.value}</option>
 				{/foreach}
 			</select>
 		{/foreach}

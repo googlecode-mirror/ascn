@@ -23,12 +23,33 @@ class Awale extends Jeu {
 			array($n,$n,$n,$n,$n,$n)
 		);
 		
-		
-		var_dump(partie()->option('premier_joueur'));
 		$first=intval(partie()->option('premier_joueur'));
 		$r->tour= $first == 0 ? rand(1, 2) : $first;
 		
 		return $r;
+	}
+	
+	public function getOptions() {
+		return array(
+			'premier_joueur'	=> Option::premierJoueur(),
+			'nb_haricot_initial'=> new Option('Nombre de haricot initial',
+				array(
+					array(
+						'key'	=> 3,
+						'value'	=> '3',
+					),
+					array(
+						'key'	=> 4,
+						'value'	=> '4',
+						'default'	=> true,
+					),
+					array(
+						'key'	=> 5,
+						'value'	=> '5',
+					),
+				)
+			),
+		);
 	}
 	
 	

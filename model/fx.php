@@ -42,7 +42,7 @@ function appli_dir($appli_type) {
 
 
 function _log($s) {
-	// file_put_contents(DIR_ROOT.'log.txt', "$s\n", FILE_APPEND);
+	file_put_contents(DIR_ROOT.'log.txt', "$s\n", FILE_APPEND);
 }
 
 // verifie si $hay commence par $needle
@@ -53,6 +53,14 @@ function startswith($hay, $needle) {
 // verifie si deux chaines sont identiques
 function streq($str1, $str2) {
 	return strcmp($str1, $str2)==0;
+}
+
+// fusionne deux objets
+function object_merge($o1, $o2) {
+	return (object) array_merge(
+		(array) $o1,
+		(array) $o2
+	);
 }
 
 

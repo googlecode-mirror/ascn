@@ -57,7 +57,7 @@ class Partie extends DBItem {
 	}
 	
 	/*
-	 * @param $slot_position int numéro du slot à retourner, 1 est le premier.
+	 * @param $slot_position int numÃ©ro du slot Ã  retourner, 1 est le premier.
 	 * @return Slot
 	 */
 	public function getSlotNum($slot_position) {
@@ -78,8 +78,8 @@ class Partie extends DBItem {
 	public function rejoindre() {
 		Env::requiert('joueur');
 		Env::requiert('partie');
-		if(partie()->etat!=PARTIE::PREPARATION) {
-			throw new Exception('Trop tard pour rejoindre la partie. (code etat partie : '.partie()->etat.')');
+		if($this->etat!=PARTIE::PREPARATION) {
+			throw new Exception('Trop tard pour rejoindre la partie. (code etat partie : '.$this->etat.')');
 		}
 		
 		
@@ -91,7 +91,7 @@ class Partie extends DBItem {
 		
 		
 		$s=new Slot();
-			$s->partie_id=partie()->getID();
+			$s->partie_id=$this->getID();
 			$s->joueur_id=joueur()->getID();
 			$s->position=count($this->slots)+1;
 		$s->save();
@@ -107,8 +107,8 @@ class Partie extends DBItem {
 		Env::requiert('joueur');
 		Env::requiert('partie');
 		Env::requiert('slot');
-		if(partie()->etat!=PARTIE::PREPARATION) {
-			throw new Exception('Trop tard pour quitter la partie. (code etat partie : '.partie()->etat.')');
+		if($this->etat!=PARTIE::PREPARATION) {
+			throw new Exception('Trop tard pour quitter la partie. (code etat partie : '.$this->etat.')');
 		}
 		
 		
@@ -130,14 +130,17 @@ class Partie extends DBItem {
 	 * Lancer la partie
 	 */
 	public function lancer() {
+		// env check
 		Env::requiert('joueur');
 		Env::requiert('jeu');
 		Env::requiert('partie');
 		
+		// host check
 		if(intval($this->host)!=joueur()->getID()) {
-			throw new Exception("Vous n'êtes pas l'hôte de cette partie...");
+			throw new Exception("Vous n'Ãªtes pas l'hÃ´te de cette partie...");
 		}
 		
+		// nb player check
 		$nb_joueur=count($this->getSlots());
 		if($nb_joueur<intval(jeu()->nbjoueur_min)) {
 			throw new Exception('Pas assez de joueurs : '.jeu()->nbjoueur_min.' minimum requis.');
@@ -146,17 +149,23 @@ class Partie extends DBItem {
 			throw new Exception('Trop de joueurs : '.jeu()->nbjoueur_min.' maximum possible.');
 		}
 		
+		// init options
+		$data = new stdClass;
+		$options = new stdClass;
 		
-		$vals=getValues();
-		
-		foreach($vals as $key=>$value) {
-			if(startswith($key, 'option_')) {
-				$this->setOption(substr($key, 7), $value);
-			}
+		foreach(getValue('options', array()) as $key=>$value) {
+			$options->$key = $value;
 		}
 		
-		$data=jeu()->getInitialData();
+		$data->partie_option = $options;
+		$this->setData($data);
+		
+		// init data
+		$data = jeu()->getInitialData();
+		$data->partie_option = $options;
 		$this->setData($data ? $data : new stdClass);
+		
+		// start game
 		$this->etat=Partie::EN_COURS;
 		$this->save();
 	}
@@ -167,7 +176,7 @@ class Partie extends DBItem {
 	/**
 	 * 
 	 * Termine la partie. Les scores des slots
-	 * sont ensuite triés pour définir le vainqueur.
+	 * sont ensuite triÃ©s pour dÃ©finir le vainqueur.
 	 */
 	public function terminer() {
 		if($this->etat==Partie::EN_COURS) {
@@ -179,79 +188,32 @@ class Partie extends DBItem {
 	}
 	
 	
-	public function getOptions() {
-		if(is_null($this->options)) {
-			$this->options=array();
-			
-			$res=queryTab('
-				select *
-				from opt
-				natural join partie_opt
-				where partie_id='.$this->getID()
-			);
-			
-			foreach($res as $data) {
-				$opt=new Opt($data);
-				$values=$opt->getValues();
-				$this->options[$opt->name] = array(
-					'key'	=> $data['opt_value'],
-					'value'	=> $values[$data['opt_value']],
-				);
-			}
-		}
-		
-		return $this->options;
-	}
-	
 	// Options
 	
 	/**
 	 * 
-	 * Récuperer la valeur d'une option de la partie
+	 * RÃ©cuperer la valeur d'une option de la partie
 	 * @param String $key nom de l'option
 	 * @return String valeur de cette option telle
-	 * 				qu'elle a été définie au début de la partie.
+	 * 				qu'elle a Ã©tÃ© dÃ©finie au dÃ©but de la partie.
 	 */
 	public function option($key) {
-		$options=$this->getOptions();
-		return $options[$key]['value'];
+		return $this->optionKey($key);
 	}
 	public function optionKey($key) {
-		$options=$this->getOptions();
-		return $options[$key]['key'];
+		return $this->getData()->partie_option->$key;
+	}
+	public function optionValue($key) {
+		$options = jeu()->getOptions();
+		return $options[$key]->title;
 	}
 	
-	
-	public function setOption($option_id, $value_id) {
-		if($this->etat != Partie::PREPARATION) {
-			throw new Exception('Impossible de changer les options de la partie apres son lancement.');
-		}
-		
-		querySimple('
-			delete from partie_opt
-			where opt_id=\''.addslashes($option_id).'\'
-			and opt_value=\''.addslashes($value_id).'\'
-			and partie_id='.$this->getID()
-		);
-		
-		querySimple('
-			insert into partie_opt (
-				partie_id,
-				opt_id,
-				opt_value
-			) values (
-				'.$this->getID().',
-				\''.$option_id.'\',
-				\''.$value_id.'\'
-			)
-		');
-	}
 	
 	
 	/**
 	 * 
 	 * 
-	 * @param Joueur $joueur à tester si il est dans la partie or not
+	 * @param Joueur $joueur Ã  tester si il est dans la partie or not
 	 * @return Slot|null
 	 */
 	public function hasJoueur($joueur) {
@@ -275,10 +237,10 @@ class Partie extends DBItem {
 		
 		return $this->singleton_data;
 	}
-	public function setData($o) {
+	public function setData($o, $auto_save = false) {
 		$this->singleton_data=$o;
 		$this->data=json_encode($o);
-		$this->save();
+		if($auto_save) $this->save();
 	}
 	
 	
@@ -286,10 +248,10 @@ class Partie extends DBItem {
 	
 	/**
 	 * 
-	 * Créer une partie en fonction de l'env.
+	 * CrÃ©er une partie en fonction de l'env.
 	 * 
 	 * @param String $title de la partie
-	 * @return Partie qui vient d'etre crée.
+	 * @return Partie qui vient d'etre crÃ©e.
 	 */
 	public static function create($title) {
 		Env::requiert('joueur');

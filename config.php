@@ -2,32 +2,50 @@
 session_start();
 
 
-// database
-define('DB_host', 'localhost');
-define('DB_port', '3306');
-define('DB_name', 'games');
-define('DB_user', 'root');
-define('DB_pass', '');
-
-// roots
-$host = $_SERVER['HTTP_HOST'];
-switch($host) {
+switch($host = $_SERVER['HTTP_HOST']) {
 	case 'juju.lan':
-		define('DIR_ROOT', 'C:/wamp/www/Eclipse_Workspace/ascn2/trunk/');
-		define('WWW_ROOT', 'http://'.$host.'/Eclipse_Workspace/ascn2/trunk/www/');
+		// database
+		define('DB_host', 'localhost');
+		define('DB_port', '3306');
+		define('DB_name', 'games');
+		define('DB_user', 'root');
+		define('DB_pass', '');
+		
+		// roots
+		define('DIR_ROOT', 'C:/wamp/www/ascn/trunk/');
+		define('WWW_ROOT', 'http://'.$host.'/ascn/trunk/www/');
 	break;
 	
 	case 'villers.lan':
+		// database
+		define('DB_host', 'localhost');
+		define('DB_port', '3306');
+		define('DB_name', 'games');
+		define('DB_user', 'root');
+		define('DB_pass', '');
+		
+		// roots
 		define('DIR_ROOT', 'C:/wamp/www/ascn/');
 		define('WWW_ROOT', 'http://'.$host.'/ascn/www/');
 	break;
 	
 	default:
 		print 'attention : host non reconnu : "'.$host.'", config par defaut utilisee.';
+		
+		// database
+		define('DB_host', 'localhost');
+		define('DB_port', '3306');
+		define('DB_name', 'games');
+		define('DB_user', 'root');
+		define('DB_pass', '');
+		
+		// roots
 		define('DIR_ROOT', 'C:/wamp/www/ascn/trunk/');
 		define('WWW_ROOT', 'http://'.$host.'/');
 	break;
 }
+
+
 
 
 // dirnames
@@ -72,7 +90,7 @@ function __autoload($class_name) {
 require_once DIR_MODEL.'Joueur.php';
 require_once DIR_MODEL.'Partie.php';
 require_once DIR_MODEL.'Slot.php';
-require_once DIR_MODEL.'Opt.php';
+require_once DIR_MODEL.'Option.php';
 require_once DIR_MODEL.'Invite.php';
 require_once DIR_MODEL.'Coords.php';
 require_once DIR_MODEL.'Color.php';

@@ -39,6 +39,26 @@ class Checkers extends Jeu {
 		return $data;
 	}
 	
+	public function getOptions() {
+		return array(
+			'premier_joueur'	=> Option::premierJoueur(),
+			'regles'			=> new Option('Règles',
+				array(
+					array(
+						'key'		=> 'francaises',
+						'value'		=> 'Françaises',
+					),
+					array(
+						'key'		=> 'anglaises',
+						'value'		=> 'Anglaises',
+						'default'	=> true,
+					),
+				)
+			)
+		);
+	}
+
+	
 	
 	public function ajax_move() {
 		$this->initRegles();
