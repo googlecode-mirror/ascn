@@ -57,14 +57,14 @@ class Plateau {
 	}
 	
 	
-	public function canMoveThis() {
+	public function doMoveThis() {
 		$plateau = $this;
 		$from = getValue('case_from', null);
 		$to = getValue('case_to', null);
 		$tours = Tours::createFrom(partie()->getData()->tours);
 		$regles = jeu()->getRegles();
 		
-		$erreurs = self::canMove($plateau, $from, $to, $tours, $regles);
+		$erreurs = self::doMove($plateau, $from, $to, $tours, $regles);
 		
 		return $erreurs;
 	}
@@ -115,7 +115,7 @@ class Plateau {
 	 * 
 	 *	@return array des raison pour lesquelles le mouvement est impossible.
 	 */
-	public static function canMove($plateau = null, $from = null, $to = null, $tours = null, $regles = null) {
+	public static function doMove($plateau = null, $from = null, $to = null, $tours = null, $regles = null) {
 		
 		// definitions
 		if(is_null($plateau)) {
@@ -182,6 +182,7 @@ class Plateau {
 					return array('Vous ne pouvez pas reculer.');
 				} else {
 					// TODO OK, deplacement simple
+					return array('OK, deplacement simple');
 				}
 			}
 			
@@ -201,6 +202,7 @@ class Plateau {
 								return array('Vous ne pouvez pas prendre une damme dans les règles de cette partie.');
 							} else {
 								// TODO OK, deplacement avec prise de $pion_milieu
+								return array('OK, deplacement avec prise de $pion_milieu');
 							}
 						}
 					}
@@ -215,6 +217,7 @@ class Plateau {
 			
 		} else {
 			// TODO : pion promu
+			return array('cas du pion promu');
 		}
 		
 		

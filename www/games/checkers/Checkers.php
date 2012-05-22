@@ -64,7 +64,7 @@ class Checkers extends Jeu {
 		$this->initRegles();
 		$this->initPlateau();
 		
-		$err = $this->plateau->canMoveThis();
+		$err = $this->plateau->doMoveThis();
 		
 		if(count($err)) {
 			return self::refus($err);
