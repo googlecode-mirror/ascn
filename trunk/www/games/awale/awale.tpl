@@ -1,5 +1,9 @@
 {* slot_position : 2=normal 1=retourner *}
 
+<div id="text-top" style="position:absolute">
+	<p class="au-tour-de"></p>
+</div>
+
 <div id="containers">
 
 	<div id="grenier-{if $slot_position==2}left{else}right{/if}" class="grenier">

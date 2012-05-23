@@ -40,6 +40,10 @@ class Pion {
 		}
 	}
 	
+	public function initCoords() {
+		$this->coords = null;
+	}
+	
 	public function getSlot() {
 		return partie()->getSlotNum($this->slot_position);
 	}

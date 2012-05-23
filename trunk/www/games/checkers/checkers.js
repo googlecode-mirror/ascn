@@ -104,7 +104,17 @@ var checkers = {
 			checkers.placerPionSur(checkers.lastMove.pion, checkers.lastMove.case_from);
 			checkers.lastMove = null;
 		} else {
-			checkers.ajax_update(r);
+			checkers.placerPion(
+				r.lastMove.pion.id,
+				r.lastMove.case_to.x,
+				r.lastMove.case_to.y
+			);
+			
+			if(r.lastMove.pion_mange) {
+				checkers.mangerPion(r.lastMove.pion_mange.id);
+			}
+			
+			checkers.lastMove = null;
 		}
 		
 	},
@@ -182,6 +192,8 @@ var checkers = {
 		checkers.placerPion(pion_id, coords.x, coords.y);
 	},
 	
+	
+	
 	getCaseCoordsFromDom: function(dom) {
 		var classes = dom.attr('id').split(/\s+/);
 		
@@ -199,8 +211,13 @@ var checkers = {
 		return null;
 	},
 	
-	firstUpdate: function(r) {
+	mangerPion: function(id) {
+		var dom = $('#pion-'+id);
+		
+		dom.fadeOut();
+	},
 	
+	firstUpdate: function(r) {
 	
 		// init checkers.regles
 		checkers.regles = r.partie.data.regles;
