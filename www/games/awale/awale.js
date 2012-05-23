@@ -25,6 +25,9 @@ var awale = {
 		
 		$(window).hashchange(function() {
 			clearInterval(awale.interval);
+			$('#body').css({
+				opacity: '1'
+			});
 		});
 	},
 
@@ -92,6 +95,20 @@ var awale = {
 			awale.refresh_haricots();
 			$('#grenier-left .score_txt').html(r.slots[0].score);
 			$('#grenier-right .score_txt').html(r.slots[1].score);
+			
+			if(r.data.tour == parseInt(r.slot_position)) {
+				var au_tour_de = 'C\'est à vous de jouer.';
+				$('#body').css({
+					opacity: '1'
+				});
+			} else {
+				var au_tour_de = 'Votre adversaire joue...';
+				$('#body').css({
+					opacity: '0.6'
+				});
+			}
+			
+			$('.au-tour-de').html(au_tour_de);
 		}
 	}
 	

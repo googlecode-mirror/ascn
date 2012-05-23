@@ -44,6 +44,10 @@ function appli_dir($appli_type) {
 function _log($s) {
 	file_put_contents(DIR_ROOT.'log.txt', "$s\n", FILE_APPEND);
 }
+function _logr($s) {
+	file_put_contents(DIR_ROOT.'log.txt', print_r($s, true)."\n", FILE_APPEND);
+}
+
 
 // verifie si $hay commence par $needle
 function startswith($hay, $needle) {

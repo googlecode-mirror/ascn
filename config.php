@@ -30,7 +30,7 @@ switch($host = $_SERVER['HTTP_HOST']) {
 	break;
 	
 	default:
-		print 'attention : host non reconnu : "'.$host.'", config par defaut utilisee.';
+		//print 'attention : host non reconnu : "'.$host.'", config par defaut utilisee.';
 		
 		// database
 		define('DB_host', 'localhost');
@@ -41,7 +41,7 @@ switch($host = $_SERVER['HTTP_HOST']) {
 		
 		// roots
 		define('DIR_ROOT', 'C:/wamp/www/ascn/trunk/');
-		define('WWW_ROOT', 'http://'.$host.'/');
+		define('WWW_ROOT', 'http://'.$host.'/ascn/trunk/www/');
 	break;
 }
 

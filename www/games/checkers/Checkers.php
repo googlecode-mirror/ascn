@@ -2,6 +2,7 @@
 require_once 'Regles.php';
 require_once 'Plateau.php';
 require_once 'Pion.php';
+require_once 'Coup.php';
 
 
 class Checkers extends Jeu {
@@ -64,12 +65,30 @@ class Checkers extends Jeu {
 		$this->initRegles();
 		$this->initPlateau();
 		
-		$err = $this->plateau->doMoveThis();
+		$coup = $this->plateau->doMoveThis();
 		
-		if(count($err)) {
-			return self::refus($err);
+		if(is_array($coup)) {
+			return self::refus($coup);
 		}
+		
+		
+		$coup->execute();
+		
+		$partie_data = partie()->getData();
+		
+		$tours = Tours::createFrom($partie_data->tours);
+		$tours->next();
+		
+		$partie_data->tours = $tours;
+		$partie_data->plateau = $this->plateau;
+		partie()->setData($partie_data, true);
+		
+		$data = $partie_data;
+		$data->lastMove = $coup->export();
+		
+		return $data;
 	}
+	
 	
 	
 	public function initRegles() {

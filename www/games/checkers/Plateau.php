@@ -12,7 +12,7 @@ class Plateau {
 		
 		$regles = jeu()->getRegles();
 		
-		$this->taille_plateau=$regles->taille_plateau;
+		$this->taille_plateau = $regles->taille_plateau;
 		
 		$this->cases = $this->creerCases($this->taille_plateau);
 		
@@ -34,21 +34,18 @@ class Plateau {
 					$ajust = (jeu()->getRegles()->cases_utilisees == Color::BLANCHES) ? 0 : 1 ;
 					$y=$j*2+($i+$ajust)%2;
 					
-					$p = new Pion(1);
-					$p->placerSur($x, $y);
-					$this->cases[$x][$y] = $p;
+					
+					$this->placerPionSur(new Pion(1), $x, $y);
 					
 					if(partie()->getNbJoueur() > 1) {
-						$p = new Pion(2);
-						$p->placerSur($t-$x-1, $t-$y-1);
-						$this->cases[$t-$x-1][$t-$y-1] = $p;
+						$this->placerPionSur(new Pion(2), $t-$x-1, $t-$y-1);
 					}
 				}
 			}
 		} else {
 			for($i=0;$i<$this->taille_plateau;$i++) {
 				for($j=0;$j<$this->taille_plateau;$j++) {
-					if(!is_null($pion = $partie_data->plateau->cases[$i][$j])) {
+					if($pion = $partie_data->plateau->cases[$i][$j]) {
 						$this->cases[$i][$j] = new Pion($pion);
 					}
 				}
@@ -181,8 +178,8 @@ class Plateau {
 				if(Coords::direction($from['x'], $from['y'], $to['x'], $to['y'])<0) {
 					return array('Vous ne pouvez pas reculer.');
 				} else {
-					// TODO OK, deplacement simple
-					return array('OK, deplacement simple');
+					// OK, deplacement simple
+					return new Coup($pion, $to);
 				}
 			}
 			
@@ -201,8 +198,8 @@ class Plateau {
 							if($pion_milieu->est_promu && !$regles->pion_peut_manger_damme) {
 								return array('Vous ne pouvez pas prendre une damme dans les règles de cette partie.');
 							} else {
-								// TODO OK, deplacement avec prise de $pion_milieu
-								return array('OK, deplacement avec prise de $pion_milieu');
+								// OK, deplacement avec prise de $pion_milieu
+								return new Coup($pion, $to, $pion_milieu);
 							}
 						}
 					}
@@ -222,13 +219,27 @@ class Plateau {
 		
 		
 		
-		return array('ok');
+		throw new Exception('Coup non pris en compte...');
 	}
 	
 	
 	
 	
+	public function placerPionSur($pion, $x, $y) {
+		if(!is_null($pion->coords)) {
+			$this->cases[$pion->coords->x][$pion->coords->y] = null;
+		}
+		$pion->placerSur($x, $y);
+		$this->cases[$x][$y] = $pion;
+	}
 	
+	public function retirerPion($pion) {
+		if(!is_null($pion->coords)) {
+			$this->cases[$pion->coords->x][$pion->coords->y] = null;
+		}
+		
+		$pion->initCoords();
+	}
 	
 
 
