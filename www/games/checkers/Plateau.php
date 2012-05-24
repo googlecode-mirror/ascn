@@ -29,10 +29,10 @@ class Plateau {
 			
 			for($i=0;$i<($demi-1);$i++) {
 				for($j=0;$j<$demi;$j++) {
-					$x=$i;
-					
 					$ajust = (jeu()->getRegles()->cases_utilisees == Color::BLANCHES) ? 0 : 1 ;
-					$y=$j*2+($i+$ajust)%2;
+					$x=$j*2+($i+$ajust)%2;
+					
+					$y=$i;
 					
 					
 					$this->placerPionSur(new Pion(1), $x, $y);
@@ -179,6 +179,7 @@ class Plateau {
 					return array('Vous ne pouvez pas reculer.');
 				} else {
 					// OK, deplacement simple
+					//return array($from['x'], $from['y'], $to['x'], $to['y']);
 					return new Coup($pion, $to);
 				}
 			}
@@ -227,15 +228,15 @@ class Plateau {
 	
 	public function placerPionSur($pion, $x, $y) {
 		if(!is_null($pion->coords)) {
-			$this->cases[$pion->coords->x][$pion->coords->y] = null;
+			$this->cases[$pion->coords->y][$pion->coords->x] = null;
 		}
 		$pion->placerSur($x, $y);
-		$this->cases[$x][$y] = $pion;
+		$this->cases[$y][$x] = $pion;
 	}
 	
 	public function retirerPion($pion) {
 		if(!is_null($pion->coords)) {
-			$this->cases[$pion->coords->x][$pion->coords->y] = null;
+			$this->cases[$pion->coords->y][$pion->coords->x] = null;
 		}
 		
 		$pion->initCoords();
