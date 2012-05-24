@@ -88,6 +88,7 @@ var checkers = {
 				checkers.placerPionSur(pion, case_from);
 			}
 		} else {
+			console.log('pas de deplacement');
 			checkers.placerPionSur(pion, case_from);
 		}
 	},
@@ -126,6 +127,8 @@ var checkers = {
 			checkers.isFirstUpdate = false;
 		}
 		
+		checkers.replacerPions(r);
+		/*
 		// r.partie.data.plateau.cases[][];
 		for(var i=0;i<r.partie.data.plateau.taille_plateau;i++) {
 			for(var j=0;j<r.partie.data.plateau.taille_plateau;j++) {
@@ -135,7 +138,30 @@ var checkers = {
 				}
 			}
 		}
+		*/
+	},
+	
+	
+	replacerPions: function(r) {
+		var _tag = 'not_eaten';
+		$('.std-pion').addClass(_tag);
 		
+		for(var i=0;i<r.partie.data.plateau.taille_plateau;i++) {
+			for(var j=0;j<r.partie.data.plateau.taille_plateau;j++) {
+				var pion = r.partie.data.plateau.cases[i][j];
+				if(pion) {
+					var pion_dom = $('.std-pion.id-'+pion.id);
+					var case_dom = checkers._case(pion.coords.x, pion.coords.y);
+					
+					pion_dom.removeClass(_tag);
+					checkers.placerPionSur(pion_dom, case_dom);
+				}
+			}
+		}
+		
+		$('.'+_tag).each(function() {
+			checkers.mangerPion($(this).fadeOut());
+		});
 	},
 	
 	
@@ -180,8 +206,8 @@ var checkers = {
 		var c = checkers._case(case_x, case_y);
 		
 		pion.animate({
-			top:	(c.position().left)	+'px',
-			left:	(c.position().top)	+'px'
+			top:	(c.position().top)	+'px',
+			left:	(c.position().left)	+'px'
 		});
 	},
 	
@@ -202,8 +228,8 @@ var checkers = {
 			
 			if(classe.length == 3 && classe[0] == 'case') {
 				return {
-					x: classe[1],
-					y: classe[2]
+					x: classe[2],
+					y: classe[1]
 				}
 			}
 		}
@@ -212,7 +238,7 @@ var checkers = {
 	},
 	
 	mangerPion: function(id) {
-		var dom = $('#pion-'+id);
+		var dom = $('.std-pion.id-'+id);
 		
 		dom.fadeOut();
 	},

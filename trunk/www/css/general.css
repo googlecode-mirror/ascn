@@ -194,6 +194,33 @@ div#body {
 .std-case-blanche {
 	background: #E3EAF2;
 }
+.std-case.mvt-from {
+	outline: 4px dashed #5F8E62;
+	position: relative;
+	z-index: 10;
+}
+.std-case.mvt-to {
+	outline: 4px solid #5F9AE6;
+	position: relative;
+	z-index: 11;
+}
+
+
+.std-pion {
+	width: 64px;
+	height: 64px;
+	background-position: 8px 8px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	z-index: 20;
+}
+
+.pion-blanc {
+	background-image: url(../img/pion-blanc.png);
+}
+.pion-noir {
+	background-image: url(../img/pion-noir.png);
+}
 
 .draggable {
 	position: absolute;
