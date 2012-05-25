@@ -1,5 +1,5 @@
 <?php
 require_once '../config.php';
-//require_once DIR_GAMES.'awale/Awale.php';
 
-::e;
+
+print_r(Coords::getCoordsIntermediares(5,5, 11,4));

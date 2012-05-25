@@ -12,10 +12,14 @@ var checkers = {
 	
 	lastMove: null,
 	
+	lastUpdateData: null,
+	
+	dragging: false,
+	
 	init: function() {
 		checkers.update_interval = setInterval(function() {
-			Jeux.action('checkers', 'update');
-		}, 2500);
+			checkers.doUpdate() && Jeux.action('checkers', 'update');
+		}, 700);
 		
 		$('.draggable')
 			.drag(function(ev, dd) {
@@ -26,6 +30,7 @@ var checkers = {
 			},{ relative: true })
 			.bind('draginit', function(event, drag) {
 				checkers.caseAtPion($(drag.target)).addClass('mvt-from');
+				checkers.dragging = true;
 			})
 			.bind('drag', function(event, drag) {
 				$('.mvt-to').removeClass('mvt-to');
@@ -35,6 +40,7 @@ var checkers = {
 				var case_from	= $('.mvt-from').removeClass('mvt-from');
 				var case_to		= $('.mvt-to').removeClass('mvt-to');
 				checkers.move(case_from, case_to, $(drag.target));
+				checkers.dragging = false;
 			});
 		
 		$(window).hashchange(function() {
@@ -95,6 +101,8 @@ var checkers = {
 	
 	
 	ajax_move: function(r) {
+		checkers.lastUpdateData = r;
+	
 		if(r.refus) {
 			var s = '';
 			for(var i = 0;i<r.raisons.length;i++) {
@@ -120,8 +128,17 @@ var checkers = {
 		
 	},
 	
+	doUpdate: function() {
+		return !checkers.dragging;
+	},
 	
 	ajax_update: function(r) {
+		checkers.lastUpdateData = r;
+		
+		if(!checkers.doUpdate()) {
+			return;
+		}
+	
 		if(checkers.isFirstUpdate) {
 			checkers.firstUpdate(r);
 			checkers.isFirstUpdate = false;
@@ -139,6 +156,8 @@ var checkers = {
 			}
 		}
 		*/
+		
+		checkers.lastUpdateData = r;
 	},
 	
 	
@@ -155,6 +174,10 @@ var checkers = {
 					
 					pion_dom.removeClass(_tag);
 					checkers.placerPionSur(pion_dom, case_dom);
+					
+					if(pion.est_promu) {
+						pion_dom.addClass('std-pion-promu');
+					}
 				}
 			}
 		}
