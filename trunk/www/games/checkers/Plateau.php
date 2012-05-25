@@ -6,11 +6,13 @@ class Plateau {
 
 	public $cases = null;
 	public $taille_plateau = null;
+	public $regles = null;
 
 	public function __construct() {
 		$partie_data = partie()->getData();
 		
 		$regles = jeu()->getRegles();
+		$this->regles = $regles;
 		
 		$this->taille_plateau = $regles->taille_plateau;
 		
@@ -59,7 +61,7 @@ class Plateau {
 		$from = getValue('case_from', null);
 		$to = getValue('case_to', null);
 		$tours = Tours::createFrom(partie()->getData()->tours);
-		$regles = jeu()->getRegles();
+		$regles = $this->regles;
 		
 		$erreurs = self::doMove($plateau, $from, $to, $tours, $regles);
 		
@@ -179,8 +181,7 @@ class Plateau {
 					return array('Vous ne pouvez pas reculer.');
 				} else {
 					// OK, deplacement simple
-					//return array($from['x'], $from['y'], $to['x'], $to['y']);
-					return new Coup($pion, $to);
+					return new Coup($pion, $to, null, $plateau->getPromotion($pion, $to['y']));
 				}
 			}
 			
@@ -200,7 +201,7 @@ class Plateau {
 								return array('Vous ne pouvez pas prendre une damme dans les règles de cette partie.');
 							} else {
 								// OK, deplacement avec prise de $pion_milieu
-								return new Coup($pion, $to, $pion_milieu);
+								return new Coup($pion, $to, $pion_milieu, $plateau->getPromotion($pion, $to['y']));
 							}
 						}
 					}
@@ -214,8 +215,66 @@ class Plateau {
 			}
 			
 		} else {
-			// TODO : pion promu
-			return array('cas du pion promu');
+		
+			// pour un pion promu
+			
+			if($regles->damme_deplacement_long) {
+			
+				if(Coords::memeDiagonale($from['x'], $from['y'], $to['x'], $to['y'])) {
+					$inters = Coords::getCoordsIntermediares($from['x'], $from['y'], $to['x'], $to['y']);
+					$pions_inter = array();
+					foreach($inters as $inter) {
+						$pion = $plateau->_pion($inter->x, $inter->y);
+						if($pion) {
+							$pions_inter[] = $pion;
+						}
+					}
+					
+					if(count($pions_inter) == 0) {
+						// dame deplacement simple
+						array('OK dammes simple move');
+					} else if(count($pions_inter) == 1) {
+						// dame prise
+						array('OK dammes mange un pion');
+					} else {
+						// damme refus : saute 2 pions en meme temps !
+						array('refus : saute 2 pions en meme temps');
+					}
+				} else {
+					return array('Vous devez vous déplacer en diagonale.');
+				}
+				
+			} else {
+			
+				if($distance == 1) {
+					return new Coup($pion, $to);
+				}
+				
+				if($distance == 2) {
+					if(Coords::memeDiagonale($from['x'], $from['y'], $to['x'], $to['y'])) {
+						$milieu = Coords::milieu($from['x'], $from['y'], $to['x'], $to['y']);
+						
+						$pion_milieu = $plateau->_pion($milieu->x, $milieu->y);
+						
+						if(is_null($pion_milieu)) {
+							return array('Vous ne pouvez vous déplacer que d\'une case.');
+						} else {
+							if($pion_milieu->slot_position == slot()->position) {
+								return array('Vous ne pouvez pas sauter vos propre pièces.');
+							} else {
+								// OK, deplacement avec prise de $pion_milieu
+								return new Coup($pion, $to, $pion_milieu);
+							}
+						}
+					} else {
+						return array('Vous devez vous déplacer en diagonale.');
+					}
+				}
+				
+				if($distance > 2) {
+					return array('Vous ne pouvez vous déplacer que d\'une case.');
+				}
+			}
 		}
 		
 		
@@ -224,6 +283,14 @@ class Plateau {
 	}
 	
 	
+	public function getPromotion($pion, $to_y) {
+		if(
+			$pion->est_promu ||
+			($to_y != 0 && $to_y != ($this->regles->taille_plateau-1))
+		) return false;
+		
+		return $to_y == ((slot()->position == 1) ? ($this->regles->taille_plateau-1) : 0);
+	}
 	
 	
 	public function placerPionSur($pion, $x, $y) {

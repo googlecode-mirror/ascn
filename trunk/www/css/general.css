@@ -209,7 +209,6 @@ div#body {
 .std-pion {
 	width: 64px;
 	height: 64px;
-	background-position: 8px 8px;
 	background-repeat: no-repeat;
 	cursor: pointer;
 	z-index: 20;
@@ -220,6 +219,9 @@ div#body {
 }
 .pion-noir {
 	background-image: url(../img/pion-noir.png);
+}
+.std-pion-promu {
+	background-position: 0 -64px;
 }
 
 .draggable {
