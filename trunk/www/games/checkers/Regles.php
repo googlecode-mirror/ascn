@@ -33,7 +33,7 @@ class Regles {
 			
 			case 'anglaises':
 				$this->taille_plateau = 8;
-				$this->peut_manger_en_arriere = true;
+				$this->peut_manger_en_arriere = false;
 				$this->damme_deplacement_long = false;
 				$this->cases_utilisees = Color::NOIRES;
 				$this->pion_peut_manger_damme = true;

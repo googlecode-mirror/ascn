@@ -19,7 +19,7 @@ var checkers = {
 	init: function() {
 		checkers.update_interval = setInterval(function() {
 			checkers.doUpdate() && Jeux.action('checkers', 'update');
-		}, 700);
+		}, 2500);
 		
 		$('.draggable')
 			.drag(function(ev, dd) {
