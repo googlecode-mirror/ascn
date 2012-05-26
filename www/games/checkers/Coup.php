@@ -32,6 +32,10 @@ class Coup {
 		}
 	}
 	
+	public function aMange() {
+		return !is_null($this->pion_mange);
+	}
+	
 	public function export() {
 		$r->pion = $this->pion;
 		$r->case_to = $this->case_to;

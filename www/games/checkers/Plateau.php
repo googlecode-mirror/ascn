@@ -68,8 +68,19 @@ class Plateau {
 		return $erreurs;
 	}
 	
+	
+	public function _exist($x, $y) {
+		return
+			($x >= 0) &&
+			($y >= 0) &&
+			($x < $this->taille_plateau) &&
+			($y < $this->taille_plateau);
+	}
 	public function _pion($x, $y) {
-		return $this->cases[$y][$x];
+		if(!$this->_exist($x, $y))
+			throw new Exception('Case '.$x.', '.$y.' existe pas');
+		else
+			return $this->cases[$y][$x];
 	}
 	
 	
@@ -114,7 +125,7 @@ class Plateau {
 	 * 
 	 *	@return array des raison pour lesquelles le mouvement est impossible.
 	 */
-	public static function doMove($plateau = null, $from = null, $to = null, $tours = null, $regles = null) {
+	public static function doMove($plateau, $from, $to, $tours, $regles) {
 		
 		// definitions
 		if(is_null($plateau)) {
@@ -289,6 +300,76 @@ class Plateau {
 		
 		
 		return array('Coup non pris en compte...');
+	}
+	
+	
+	
+	/**
+	 * Vérifie si un pion peut manger,
+	 * utile pour double prise et coups soufflés
+	 */
+	public static function peutManger($plateau, $pion, $regles) {
+	
+		// definitions
+		if(is_null($plateau)) {
+			throw new Exception('$plateau non definie');
+		}
+		if(is_null($pion)) {
+			throw new Exception('$pion non definie');
+		}
+		if(is_null($regles)) {
+			throw new Exception('$regles non definie');
+		}
+		
+		
+		if(!$pion->est_promu) {
+			if($pion->slot_position == 1) {
+				
+				if(self::peutMangerVers($plateau, $pion, -1,  1)) return true;
+				if(self::peutMangerVers($plateau, $pion,  1,  1)) return true;
+				
+				if($regles->peut_manger_en_arriere) {
+					if(self::peutMangerVers($plateau, $pion, -1, -1)) return true;
+					if(self::peutMangerVers($plateau, $pion,  1, -1)) return true;
+				}
+				
+			} else {
+				
+				if(self::peutMangerVers($plateau, $pion, -1, -1)) return true;
+				if(self::peutMangerVers($plateau, $pion,  1, -1)) return true;
+				
+				if($regles->peut_manger_en_arriere) {
+					if(self::peutMangerVers($plateau, $pion, -1,  1)) return true;
+					if(self::peutMangerVers($plateau, $pion,  1,  1)) return true;
+				}
+				
+			}
+		} else {
+			// TODO, damme peut manger...
+		}
+		
+		return false;
+		
+	}
+	
+	
+	private static function peutMangerVers($plateau, $pion, $dx, $dy) {
+		$x = $pion->coords->x + $dx;
+		$y = $pion->coords->y + $dy;
+		
+		if($plateau->_exist($x, $y) && !is_null($p = $plateau->_pion($x, $y))) {
+			if($p->slot_position != $pion->slot_position) {
+				
+				$x2 = $pion->coords->x + $dx*2;
+				$y2 = $pion->coords->y + $dy*2;
+				
+				if($plateau->_exist($x2, $y2) && is_null($p = $plateau->_pion($x2, $y2))) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	
