@@ -358,6 +358,10 @@ class Plateau {
 	}
 	
 	
+	/**
+	 * vérifie juste si peut sauter de un vers la direction
+	 * sans prendre compte de Regles::$peut_manger_en_arriere;
+	 */
 	private static function peutMangerVers($plateau, $pion, $regles, $dx, $dy) {
 		$x = $pion->coords->x + $dx;
 		$y = $pion->coords->y + $dy;
