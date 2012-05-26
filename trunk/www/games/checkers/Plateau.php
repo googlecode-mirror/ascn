@@ -323,27 +323,34 @@ class Plateau {
 		if(!$pion->est_promu) {
 			if($pion->slot_position == 1) {
 				
-				if(self::peutMangerVers($plateau, $pion, -1,  1)) return true;
-				if(self::peutMangerVers($plateau, $pion,  1,  1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles, -1,  1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles,  1,  1)) return true;
 				
 				if($regles->peut_manger_en_arriere) {
-					if(self::peutMangerVers($plateau, $pion, -1, -1)) return true;
-					if(self::peutMangerVers($plateau, $pion,  1, -1)) return true;
+					if(self::peutMangerVers($plateau, $pion, $regles, -1, -1)) return true;
+					if(self::peutMangerVers($plateau, $pion, $regles,  1, -1)) return true;
 				}
 				
 			} else {
 				
-				if(self::peutMangerVers($plateau, $pion, -1, -1)) return true;
-				if(self::peutMangerVers($plateau, $pion,  1, -1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles, -1, -1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles,  1, -1)) return true;
 				
 				if($regles->peut_manger_en_arriere) {
-					if(self::peutMangerVers($plateau, $pion, -1,  1)) return true;
-					if(self::peutMangerVers($plateau, $pion,  1,  1)) return true;
+					if(self::peutMangerVers($plateau, $pion, $regles, -1,  1)) return true;
+					if(self::peutMangerVers($plateau, $pion, $regles,  1,  1)) return true;
 				}
 				
 			}
 		} else {
-			// TODO, damme peut manger...
+			if($regles->damme_deplacement_long) {
+				// TODO, dame est forcée de prendre à distance ???
+			} else {
+				if(self::peutMangerVers($plateau, $pion, $regles, -1, -1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles, -1,  1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles,  1, -1)) return true;
+				if(self::peutMangerVers($plateau, $pion, $regles,  1,  1)) return true;
+			}
 		}
 		
 		return false;
@@ -351,18 +358,21 @@ class Plateau {
 	}
 	
 	
-	private static function peutMangerVers($plateau, $pion, $dx, $dy) {
+	private static function peutMangerVers($plateau, $pion, $regles, $dx, $dy) {
 		$x = $pion->coords->x + $dx;
 		$y = $pion->coords->y + $dy;
 		
 		if($plateau->_exist($x, $y) && !is_null($p = $plateau->_pion($x, $y))) {
 			if($p->slot_position != $pion->slot_position) {
+				if(!$p->est_promu || $regles->pion_peut_manger_damme) {
 				
-				$x2 = $pion->coords->x + $dx*2;
-				$y2 = $pion->coords->y + $dy*2;
-				
-				if($plateau->_exist($x2, $y2) && is_null($p = $plateau->_pion($x2, $y2))) {
-					return true;
+					$x2 = $pion->coords->x + $dx*2;
+					$y2 = $pion->coords->y + $dy*2;
+					
+					if($plateau->_exist($x2, $y2) && is_null($p = $plateau->_pion($x2, $y2))) {
+						return true;
+					}
+					
 				}
 			}
 		}
