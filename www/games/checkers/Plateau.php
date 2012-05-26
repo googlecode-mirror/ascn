@@ -200,8 +200,12 @@ class Plateau {
 							if($pion_milieu->est_promu && !$regles->pion_peut_manger_damme) {
 								return array('Vous ne pouvez pas prendre une damme dans les règles de cette partie.');
 							} else {
-								// OK, deplacement avec prise de $pion_milieu
-								return new Coup($pion, $to, $pion_milieu, $plateau->getPromotion($pion, $to['y']));
+								if(Coords::direction($from['x'], $from['y'], $to['x'], $to['y'])<0 && !$regles->peut_manger_en_arriere) {
+									return array('Vous ne pouvez pas manger en arrière dans les règles de cette partie.');
+								} else {
+									// OK, deplacement avec prise de $pion_milieu
+									return new Coup($pion, $to, $pion_milieu, $plateau->getPromotion($pion, $to['y']));
+								}
 							}
 						}
 					}
@@ -222,23 +226,28 @@ class Plateau {
 			
 				if(Coords::memeDiagonale($from['x'], $from['y'], $to['x'], $to['y'])) {
 					$inters = Coords::getCoordsIntermediares($from['x'], $from['y'], $to['x'], $to['y']);
-					$pions_inter = array();
+					$pion_inter = null;
 					foreach($inters as $inter) {
-						$pion = $plateau->_pion($inter->x, $inter->y);
-						if($pion) {
-							$pions_inter[] = $pion;
+						$p = $plateau->_pion($inter->x, $inter->y);
+						if($p) {
+							if(is_null($pion_inter)) {
+								$pion_inter = $p;
+							} else {
+								return array('Vous ne pouvez pas sauter deux pièces en même temps.');
+							}
 						}
 					}
 					
-					if(count($pions_inter) == 0) {
-						// dame deplacement simple
-						array('OK dammes simple move');
-					} else if(count($pions_inter) == 1) {
-						// dame prise
-						array('OK dammes mange un pion');
+					if(is_null($pion_inter)) {
+						// OK, dame deplacement simple
+						return new Coup($pion, $to);
 					} else {
-						// damme refus : saute 2 pions en meme temps !
-						array('refus : saute 2 pions en meme temps');
+						if($pion_inter->slot_position == slot()->position) {
+							return array('Vous ne pouvez pas sauter vos propre pièces.');
+						} else {
+							// OK, prise avec la damme
+							return new Coup($pion, $to, $pion_inter);
+						}
 					}
 				} else {
 					return array('Vous devez vous déplacer en diagonale.');
@@ -279,7 +288,7 @@ class Plateau {
 		
 		
 		
-		throw new Exception('Coup non pris en compte...');
+		return array('Coup non pris en compte...');
 	}
 	
 	
