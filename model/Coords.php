@@ -53,6 +53,65 @@ class Coords {
 		return new Coords($obj->$x_attribute, $obj->$y_attribute);
 	}
 	
+	/*
+	 * Renvoi un array de coords correspondant a chacune
+	 * des coordonnées intermédiaire. Exemple :
+	 *
+	 * getCoordsIntermediares(5, 5, 8, 2)
+	 * returne :
+	 * array(
+	 *  Coords(5, 5),
+	 *  Coords(6, 4),
+	 *  Coords(7, 3),
+	 *  Coords(8, 2),
+	 * )
+	 */
+	public static function getCoordsIntermediares($x0, $y0, $x1, $y1, $bords = false) {
+		
+		$dx = 0;
+		if($x1 > $x0) $dx = 1;
+		if($x1 < $x0) $dx = -1;
+		
+		$dy = 0;
+		if($y1 > $y0) $dy = 1;
+		if($y1 < $y0) $dy = -1;
+		
+		if(($dx == 0) && ($dy == 0)) {
+			if($bords) {
+				return array(
+					new Coords($x0, $y0),
+				);
+			} else {
+				return array();
+			}
+		}
+		
+		$i = $x0;
+		$j = $y0;
+		
+		$inter = array();
+		$secu = 0;
+		
+		while(
+			($dx == 1 ? ($i <= $x1) : ($i >= $x1)) &&
+			($dy == 1 ? ($j <= $y1) : ($j >= $y1))
+		) {
+			$inter[] = new Coords($i, $j);
+			
+			$i += $dx;
+			$j += $dy;
+			
+			if($secu++ > 100) throw new Exception('Erreur boucle trop longue');
+		}
+		
+		if(!$bords) {
+			array_pop($inter);
+			array_shift($inter);
+		}
+		
+		return $inter;
+	}
+	
 	
 	
 	public function __toString() {
