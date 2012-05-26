@@ -87,7 +87,7 @@ class Checkers extends Jeu {
 		
 		
 		$tours = Tours::createFrom($partie_data->tours);
-		if($coup->aMange() && Plateau::peutManger($this->plateau, $coup->pion, $this->regles)) {
+		if($coup->aMange() && !$coup->get_promotion && Plateau::peutManger($this->plateau, $coup->pion, $this->regles)) {
 			// TODO memoriser le pion qui peut encore manger ($coup->pion)
 			$partie_data->prise_multiple = array(
 				'pion'	=> $coup->pion,

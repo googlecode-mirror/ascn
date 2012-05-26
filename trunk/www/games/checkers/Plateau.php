@@ -190,7 +190,7 @@ class Plateau {
 					return array('Vous ne pouvez pas reculer.');
 				} else {
 					// OK, deplacement simple
-					return new Coup($pion, $to, null, $plateau->getPromotion($pion, $to['y']));
+					return new Coup($pion, $to, null, $plateau->getPromotion($pion, $to['x'], $to['y']));
 				}
 			}
 			
@@ -213,7 +213,7 @@ class Plateau {
 									return array('Vous ne pouvez pas manger en arrière dans les règles de cette partie.');
 								} else {
 									// OK, deplacement avec prise de $pion_milieu
-									return new Coup($pion, $to, $pion_milieu, $plateau->getPromotion($pion, $to['y']));
+									return new Coup($pion, $to, $pion_milieu, $plateau->getPromotion($pion, $to['x'], $to['y']));
 								}
 							}
 						}
@@ -304,7 +304,7 @@ class Plateau {
 	
 	/**
 	 * Vérifie si un pion peut manger,
-	 * utile pour double prise et coups soufflés
+	 * utile pour doubles prises et coups soufflés
 	 */
 	public static function peutManger($plateau, $pion, $regles) {
 	
@@ -385,10 +385,14 @@ class Plateau {
 	}
 	
 	
-	public function getPromotion($pion, $to_y) {
+	public function getPromotion($pion, $to_x, $to_y) {
+		$pion_futur = new Pion($pion);
+		$pion_futur->placerSur($to_x, $to_y);
+		
 		if(
 			$pion->est_promu ||
-			($to_y != 0 && $to_y != ($this->regles->taille_plateau-1))
+			($to_y != 0 && $to_y != ($this->regles->taille_plateau-1)) ||
+			(self::peutManger($this, $pion_futur, $this->regles))
 		) return false;
 		
 		return $to_y == ((slot()->position == 1) ? ($this->regles->taille_plateau-1) : 0);
