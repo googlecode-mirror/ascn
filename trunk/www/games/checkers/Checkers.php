@@ -36,6 +36,7 @@ class Checkers extends Jeu {
 		$data->regles = $this->regles;
 		$data->plateau = $this->plateau;
 		$data->tours = new Tours(partie()->option('premier_joueur'));
+		$data->prise_multiple = null;
 		
 		return $data;
 	}
@@ -64,8 +65,18 @@ class Checkers extends Jeu {
 	public function ajax_move() {
 		$this->initRegles();
 		$this->initPlateau();
+
+		$partie_data = partie()->getData();
 		
 		$coup = $this->plateau->doMoveThis();
+		
+		if(!is_null($partie_data->prise_multiple) && $pion = $partie_data->prise_multiple->pion) {
+			if(($pion->id != $coup->pion->id) || (!$coup->aMange())) {
+				return self::refus(array(
+					'Vous devez continuer votre prise multiple',
+				));
+			}
+		}
 		
 		if(is_array($coup)) {
 			return self::refus($coup);
@@ -74,13 +85,16 @@ class Checkers extends Jeu {
 		
 		$coup->execute();
 		
-		$partie_data = partie()->getData();
 		
 		$tours = Tours::createFrom($partie_data->tours);
 		if($coup->aMange() && Plateau::peutManger($this->plateau, $coup->pion, $this->regles)) {
 			// TODO memoriser le pion qui peut encore manger ($coup->pion)
+			$partie_data->prise_multiple = array(
+				'pion'	=> $coup->pion,
+			);
 		} else {
 			$tours->next();
+			$partie_data->prise_multiple = null;
 		}
 		
 		$partie_data->tours = $tours;

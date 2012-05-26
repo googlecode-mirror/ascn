@@ -63,9 +63,7 @@ class Plateau {
 		$tours = Tours::createFrom(partie()->getData()->tours);
 		$regles = $this->regles;
 		
-		$erreurs = self::doMove($plateau, $from, $to, $tours, $regles);
-		
-		return $erreurs;
+		return self::doMove($plateau, $from, $to, $tours, $regles);
 	}
 	
 	

@@ -135,6 +135,10 @@ var checkers = {
 	ajax_update: function(r) {
 		checkers.lastUpdateData = r;
 		
+		
+		checkers.updateAffichageTour(r);
+		
+		
 		if(!checkers.doUpdate()) {
 			return;
 		}
@@ -299,7 +303,26 @@ var checkers = {
 				pion && pion.remove();
 			}
 		}
+	},
+	
+	aMoiDeJouer: function(r) {
+		return parseInt(r.partie.data.tours.coup) == parseInt(r.slot.position);
+	},
+	
+	updateAffichageTour: function(r) {
+		if(checkers.aMoiDeJouer(r)) {
+			$('#plateau').css({
+				opacity: 1
+			});
+			$('.au-tour-de').html('C\'est à vous de jouer.');
+		} else {
+			$('#plateau').css({
+				opacity: 0.75
+			});
+			$('.au-tour-de').html('Votre adversaire joue...');
+		}
 	}
+	
 	
 	
 };
