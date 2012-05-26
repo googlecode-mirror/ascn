@@ -210,7 +210,6 @@ div#body {
 	width: 64px;
 	height: 64px;
 	background-repeat: no-repeat;
-	cursor: pointer;
 	z-index: 20;
 }
 
@@ -226,6 +225,7 @@ div#body {
 
 .draggable {
 	position: absolute;
+	cursor: pointer;
 }
 
 

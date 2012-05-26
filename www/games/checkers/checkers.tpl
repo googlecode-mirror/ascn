@@ -5,6 +5,10 @@ var nb_joueur={$nb_joueur};
 //-->
 </script>
 
+<div id="plateau-header">
+	<p class="au-tour-de">ok header</p>
+</div>
+
 <div id="plateau" class="std-plateau" style="width:{$regles->taille_plateau*64}px;height:{$regles->taille_plateau*64}px;">
 	{section name=loop_x start=0 loop=$regles->taille_plateau step=1}
 		{section name=loop_y start=0 loop=$regles->taille_plateau step=1}
@@ -25,17 +29,24 @@ var nb_joueur={$nb_joueur};
 	<div id="pions">
 		{section name=joueur start=0 loop={$nb_joueur} step=1}
 			{assign var='joueur' value=$smarty.section.joueur.index+1}
+			{assign var='mes_pions' value=($plateau_inverse == ($joueur==1))}
 			{if $joueur==1}
 				{assign var='couleur' value='blanc'}
 			{else}
 				{assign var='couleur' value='noir'}
 			{/if}
 			
+			
 			{section name=pion start=0 loop=$regles->nb_pion step=1}
 				{assign var='pion' value=$smarty.section.pion.index}
-				<div id="pion-{$joueur}-{$pion}" class="std-pion pion-{$couleur} draggable"></div>
+				<div id="pion-{$joueur}-{$pion}" class="std-pion pion-{$couleur} {if $mes_pions}draggable{/if}"></div>
 			{/section}
 		{/section}
 	</div>
 	
 </div>
+
+
+<div id="plateau-footer">
+</div>
+
