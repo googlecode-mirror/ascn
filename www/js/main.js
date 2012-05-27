@@ -3,7 +3,7 @@
 
 $(function() {
 	Page.overrideAjaxButton();
-	Page.refresh();
+	Page.go();
 	Gadget.init();
 });
 
@@ -353,9 +353,9 @@ var Page = {
 	
 	go: function(hash, data) {
 		if(hash) {
-			Page.ajaxLoad(hash, data);
+			Page.go(hash, data);
 		} else {
-			Page.ajaxLoad(Page.hash(), data);
+			Page.ajaxLoad(Page.hash());
 		}
 	},
 	
