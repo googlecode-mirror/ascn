@@ -13,7 +13,7 @@ $(function() {
 
 
 $(window).hashchange(function() {
-	Page.ajaxLoad(Page.hash());
+	Page.go(Page.hash());
 	Page.values=false;
 });
 
@@ -73,10 +73,10 @@ var Gadget = {
 	
 	
 	navEvent: function(e) {
-		e.hasClass('home') && Page.hash('index.php');
-		e.hasClass('explorer') && Page.hash('games-explorer.php');
-		e.hasClass('user') && Page.hash('mon-compte.php');
-		e.hasClass('help') && Page.hash('aide.php');
+		e.hasClass('home') && Page.go('index.php');
+		e.hasClass('explorer') && Page.go('games-explorer.php');
+		e.hasClass('user') && Page.go('mon-compte.php');
+		e.hasClass('help') && Page.go('aide.php');
 		
 		e.addClass('active');
 	}
@@ -237,12 +237,12 @@ var Jeux = {
 		if(r.hasError) {
 			lightbox.show('Erreur lors de la cr&eacute;ation de partie', '...');
 		} else {
-			Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id);
+			Page.go('games/'+r.jeu.name+'?partie='+r.partie.id);
 		}
 	},
 	
 	ajax_lancer_partie: function(r) {
-		Page.hash('games/'+r.jeu.name+'?partie='+r.partie.id+'&slot='+r.slot.id);
+		Page.go('games/'+r.jeu.name+'?partie='+r.partie.id+'&slot='+r.slot.id);
 	},
 	
 	afficher_scores: function(r) {
@@ -265,7 +265,7 @@ var Page = {
 		// ajaxload : charger le contenu d'une page
 		$('a.ajaxload')
 			.click(function () {
-				Page.hash($(this).attr('href'));
+				Page.go($(this).attr('href'));
 				
 				return false;
 			})
@@ -351,6 +351,15 @@ var Page = {
 	},
 	
 	
+	go: function(hash, data) {
+		if(hash) {
+			Page.ajaxLoad(hash, data);
+		} else {
+			Page.ajaxLoad(Page.hash(), data);
+		}
+	},
+	
+	
 
 	ajaxLoad: function(hash, data) {
 		if(hash) {
@@ -375,7 +384,7 @@ var Page = {
 	
 	
 	refresh: function() {
-		Page.ajaxLoad(Page.hash());
+		Page.go();
 	},
 	
 	hash: function(h) {

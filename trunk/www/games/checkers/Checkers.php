@@ -73,7 +73,7 @@ class Checkers extends Jeu {
 		if(!is_null($partie_data->prise_multiple) && $pion = $partie_data->prise_multiple->pion) {
 			if(($pion->id != $coup->pion->id) || (!$coup->aMange())) {
 				return self::refus(array(
-					'Vous devez continuer votre prise multiple',
+					'Vous devez continuer votre prise multiple.',
 				));
 			}
 		}
@@ -82,19 +82,44 @@ class Checkers extends Jeu {
 			return self::refus($coup);
 		}
 		
+		if(!$coup->aMange()) {
+			if(Plateau::slotPeutManger($this->plateau, $coup->pion, $this->regles)) {
+				return self::refus(array(
+					'Vous devez prendre le pion de l\'adversaire.',
+				));
+			}
+		}
+		
 		
 		$coup->execute();
 		
 		
 		$tours = Tours::createFrom($partie_data->tours);
-		if($coup->aMange() && !$coup->get_promotion && Plateau::peutManger($this->plateau, $coup->pion, $this->regles)) {
-			// TODO memoriser le pion qui peut encore manger ($coup->pion)
+		if(
+			$coup->aMange() &&
+			!$coup->get_promotion &&
+			Plateau::peutManger($this->plateau, $coup->pion, $this->regles)
+		) {
 			$partie_data->prise_multiple = array(
 				'pion'	=> $coup->pion,
 			);
 		} else {
 			$tours->next();
 			$partie_data->prise_multiple = null;
+		}
+		
+		switch($res = $this->plateau->partieFinie()) {
+			case 1: // slot 1 gagne
+			case 2: // slot 2 gagne
+				partie()->getSlotNum($res)->addScore(1, true);
+			
+			case -1: // partie nulle
+				partie()->terminer();
+			case 0: // partie en cours
+				break;
+			
+			default:
+				throw new Exception('résultat inattendu ('.$res.')');
 		}
 		
 		$partie_data->tours = $tours;

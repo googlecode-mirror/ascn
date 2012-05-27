@@ -23,30 +23,26 @@ class Slot extends DBItem {
 		}
 	}
 	
-	private function saveIf($bool) {
-		$bool && $this->save();
-	}
-	
 
 	public function addScore($double, $save=false) {
 		$this->checkPartieEnCours();
 		$this->score=''.(floatval($this->score)+floatval($double));
-		$this->saveIf($save);
+		$save && $this->save();
 	}
 	public function subScore($double, $save=false) {
 		$this->checkPartieEnCours();
 		$this->score=''.(floatval($this->score)-floatval($double));
-		$this->saveIf($save);
+		$save && $this->save();
 	}
 	public function mulScore($double, $save=false) {
 		$this->checkPartieEnCours();
 		$this->score=''.(floatval($this->score)*floatval($double));
-		$this->saveIf($save);
+		$save && $this->save();
 	}
 	public function divScore($double, $save=false) {
 		$this->checkPartieEnCours();
 		$this->score=''.(floatval($this->score)/floatval($double));
-		$this->saveIf($save);
+		$save && $this->save();
 	}
 	
 	

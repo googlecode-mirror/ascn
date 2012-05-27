@@ -1,5 +1,11 @@
 <?php
 require_once '../config.php';
 
+$a = 0;
 
-print_r(Coords::getCoordsIntermediares(5,5, 11,4));
+
+if($a) {
+	print 'vrai';
+} else {
+	print 'faux';
+}

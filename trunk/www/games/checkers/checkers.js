@@ -135,6 +135,9 @@ var checkers = {
 	ajax_update: function(r) {
 		checkers.lastUpdateData = r;
 		
+		if(parseInt(r.partie.etat) == 3) {
+			Page.refresh();
+		}
 		
 		checkers.updateAffichageTour(r);
 		
