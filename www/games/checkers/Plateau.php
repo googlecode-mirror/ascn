@@ -302,6 +302,23 @@ class Plateau {
 	
 	
 	
+	public static function slotPeutManger($plateau, $pion, $regles) {
+		for($i=0;$i<$plateau->taille_plateau;$i++) {
+			for($j=0;$j<$plateau->taille_plateau;$j++) {
+				if(!is_null($pion = $plateau->_pion($i, $j))) {
+					if($pion->slot_position == slot()->position) {
+						if(self::peutManger($plateau, $pion, $regles)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	
 	/**
 	 * Vérifie si un pion peut manger,
 	 * utile pour doubles prises et coups soufflés
@@ -415,6 +432,39 @@ class Plateau {
 		$pion->initCoords();
 	}
 	
+	
+	/*
+	 * @return int
+	 *  0 : partie en cours,
+	 *  1 : partie terminée, 1er joueur gagne,
+	 *  2 : partie terminée, 2er joueur gagne,
+	 * -1 : partie terminée, partie nulle
+	 */
+	public function partieFinie() {
+		$has_pion = array(
+			1 => false,
+			2 => false,
+		);
+		
+		for($i=0;$i<$this->taille_plateau;$i++) {
+			for($j=0;$j<$this->taille_plateau;$j++) {
+				if(!is_null($pion = $this->_pion($i, $j))) {
+					$has_pion[intval($pion->slot_position)] = true;
+					if($has_pion[1] && $has_pion[2]) {
+						return 0;
+					}
+				}
+			}
+		}
+		
+		if($has_pion[1] && $has_pion[2]) {
+			return 0;
+		} else if($has_pion[1]) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
 
 
 
