@@ -360,14 +360,10 @@ class Plateau {
 				
 			}
 		} else {
-			if($regles->damme_deplacement_long) {
-				// TODO, dame est forcée de prendre à distance ???
-			} else {
-				if(self::peutMangerVers($plateau, $pion, $regles, -1, -1)) return true;
-				if(self::peutMangerVers($plateau, $pion, $regles, -1,  1)) return true;
-				if(self::peutMangerVers($plateau, $pion, $regles,  1, -1)) return true;
-				if(self::peutMangerVers($plateau, $pion, $regles,  1,  1)) return true;
-			}
+			if(self::peutMangerVers($plateau, $pion, $regles, -1, -1)) return true;
+			if(self::peutMangerVers($plateau, $pion, $regles, -1,  1)) return true;
+			if(self::peutMangerVers($plateau, $pion, $regles,  1, -1)) return true;
+			if(self::peutMangerVers($plateau, $pion, $regles,  1,  1)) return true;
 		}
 		
 		return false;
@@ -380,6 +376,11 @@ class Plateau {
 	 * sans prendre compte de Regles::$peut_manger_en_arriere;
 	 */
 	private static function peutMangerVers($plateau, $pion, $regles, $dx, $dy) {
+		
+		if($pion->est_promu && $regles->damme_deplacement_long) {
+			return self::peutMangerLongVers($plateau, $pion, $regles, $dx, $dy);
+		}
+		
 		$x = $pion->coords->x + $dx;
 		$y = $pion->coords->y + $dy;
 		
@@ -390,12 +391,56 @@ class Plateau {
 					$x2 = $pion->coords->x + $dx*2;
 					$y2 = $pion->coords->y + $dy*2;
 					
-					if($plateau->_exist($x2, $y2) && is_null($p = $plateau->_pion($x2, $y2))) {
-						return true;
-					}
+					return (
+						$plateau->_exist($x2, $y2) &&
+						is_null($p = $plateau->_pion($x2, $y2))
+					);
 					
 				}
 			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * vérifie juste si une dame en deplacement long
+	 * peut manger dans une direction
+	 */
+	private static function peutMangerLongVers($plateau, $pion, $regles, $dx, $dy) {
+		
+		$continue = true;
+		$range = 1;
+		$secu = 0;
+		
+		while($continue) {
+		
+			$x = $pion->coords->x + $dx*$range;
+			$y = $pion->coords->y + $dy*$range;
+			
+			if($plateau->_exist($x, $y)) {
+				if(!is_null($p = $plateau->_pion($x, $y))) {
+					if($p->slot_position != $pion->slot_position) {
+						
+						$x2 = $pion->coords->x + $dx*($range + 1);
+						$y2 = $pion->coords->y + $dy*($range + 1);
+						
+						return (
+							$plateau->_exist($x2, $y2) &&
+							is_null($p = $plateau->_pion($x2, $y2))
+						);
+						
+					} else {
+						$continue = false;
+					}
+				}
+			} else {
+				$continue = false;
+			}
+			
+			$range++;
+			
+			if(($secu++)>100) throw new Exception('Boucle trop longue');
 		}
 		
 		return false;
