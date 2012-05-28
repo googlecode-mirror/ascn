@@ -218,7 +218,7 @@ div#body {
 	background-position: 0 -128px;
 }
 .std-pion-promu.pion-noir {
-	background-position: 0 -384px;
+	background-position: 0 -192px;
 }
 
 .pion-blanc.draggable:HOVER {
@@ -231,7 +231,7 @@ div#body {
 	background-position: -64px -128px;
 }
 .std-pion-promu.pion-noir.draggable:HOVER {
-	background-position: -64px -384px;
+	background-position: -64px -192px;
 }
 
 .pion-blanc.draggable.hold {
@@ -244,7 +244,7 @@ div#body {
 	background-position: -128px -128px;
 }
 .std-pion-promu.pion-noir.draggable.hold {
-	background-position: -128px -384px;
+	background-position: -128px -192px;
 }
 
 
