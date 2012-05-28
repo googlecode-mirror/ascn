@@ -29,18 +29,23 @@ var checkers = {
 				});
 			},{ relative: true })
 			.bind('draginit', function(event, drag) {
-				checkers.caseAtPion($(drag.target)).addClass('mvt-from');
+				var pion = $(drag.target);
+				checkers.caseAtPion(pion).addClass('mvt-from');
+				pion.addClass('hold');
 				checkers.dragging = true;
 			})
 			.bind('drag', function(event, drag) {
+				var pion = $(drag.target);
 				$('.mvt-to').removeClass('mvt-to');
-				checkers.caseAtPion($(drag.target)).addClass('mvt-to');
+				checkers.caseAtPion(pion).addClass('mvt-to');
 			})
 			.bind('dragend', function(event, drag) {
+				var pion = $(drag.target);
 				var case_from	= $('.mvt-from').removeClass('mvt-from');
 				var case_to		= $('.mvt-to').removeClass('mvt-to');
-				checkers.move(case_from, case_to, $(drag.target));
+				checkers.move(case_from, case_to, pion);
 				checkers.dragging = false;
+				$('.hold').removeClass('hold');
 			});
 		
 		$(window).hashchange(function() {
