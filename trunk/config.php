@@ -40,8 +40,8 @@ switch($host = $_SERVER['HTTP_HOST']) {
 		define('DB_pass', '');
 		
 		// roots
-		define('DIR_ROOT', 'C:/wamp/www/ascn/trunk/');
-		define('WWW_ROOT', 'http://'.$host.'/ascn/trunk/www/');
+		define('DIR_ROOT', 'C:/wamp/www/ascn/');
+		define('WWW_ROOT', 'http://'.$host.'/ascn/www/');
 	break;
 }
 
