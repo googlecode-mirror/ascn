@@ -187,13 +187,67 @@ div#body {
 .std-case {
 	display: inline-block;
 	float: left;
-}
-.std-case-noire {
-	background: #263E5B;
+	width: 64px;
+	height: 64px;
+	background-image: url(../img/std/case/64.png);
+	background-repeat: none;
 }
 .std-case-blanche {
-	background: #E3EAF2;
+	background-position: 0 0;
 }
+.std-case-noire {
+	background-position: 0 -64px;
+}
+
+
+.std-pion {
+	width: 64px;
+	height: 64px;
+	background-image: url(../img/std/pion/64.png);
+	background-repeat: no-repeat;
+	z-index: 20;
+}
+
+.pion-blanc {
+	background-position: 0 0;
+}
+.pion-noir {
+	background-position: 0 -64px;
+}
+.std-pion-promu.pion-blanc {
+	background-position: 0 -128px;
+}
+.std-pion-promu.pion-noir {
+	background-position: 0 -384px;
+}
+
+.pion-blanc.draggable:HOVER {
+	background-position: -64px 0;
+}
+.pion-noir.draggable:HOVER {
+	background-position: -64px -64px;
+}
+.std-pion-promu.pion-blanc.draggable:HOVER {
+	background-position: -64px -128px;
+}
+.std-pion-promu.pion-noir.draggable:HOVER {
+	background-position: -64px -384px;
+}
+
+.pion-blanc.draggable.hold {
+	background-position: -128px 0;
+}
+.pion-noir.draggable.hold {
+	background-position: -128px -64px;
+}
+.std-pion-promu.pion-blanc.draggable.hold {
+	background-position: -128px -128px;
+}
+.std-pion-promu.pion-noir.draggable.hold {
+	background-position: -128px -384px;
+}
+
+
 .std-case.mvt-from {
 	outline: 4px dashed #5F8E62;
 	position: relative;
@@ -206,22 +260,10 @@ div#body {
 }
 
 
-.std-pion {
-	width: 64px;
-	height: 64px;
-	background-repeat: no-repeat;
-	z-index: 20;
-}
 
-.pion-blanc {
-	background-image: url(../img/pion-blanc.png);
-}
-.pion-noir {
-	background-image: url(../img/pion-noir.png);
-}
-.std-pion-promu {
-	background-position: 0 -64px;
-}
+
+
+
 
 .draggable {
 	position: absolute;
