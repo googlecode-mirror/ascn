@@ -43,13 +43,6 @@ class TicTacToe extends Jeu {
 		return $r;
 	}
 	
-	public function getOptions() {
-		return array(
-			Option::premierJoueur()
-		);
-	}
-	
-	
 	
 	private $grille=null;
 	
@@ -84,6 +77,14 @@ class TicTacToe extends Jeu {
 				$r->highlight=$winner['highlight'];
 				$r->grid=$this->grille;
 				return $r;
+				
+			case 3:
+				$slots=partie()->getSlots();
+				$r=$this->terminer();
+				$r->highlight=$winner['highlight'];
+				$r->grid=$this->grille;
+				return $r;
+				
 				
 			default:
 				throw new Exception('grille de Tic Tac Toe impossible : '.$winner);
@@ -128,6 +129,7 @@ class TicTacToe extends Jeu {
 	 * 						0 : pas fini
 	 * 						1 : J1 win
 	 * 						2 : J2 win
+	 * 						3 : partie nulle
 	 * 						-1: Erreur : grille impossible
 	 * 					'highlight'
 	 * 						=> Array
@@ -177,8 +179,11 @@ class TicTacToe extends Jeu {
 			}
 		}
 		
-		
-		return array('etat' => 0);
+		if(($nb_red + $nb_blue) == 9) {
+			return array('etat' => 3);
+		} else {
+			return array('etat' => 0);
+		}
 	}
 	
 	
