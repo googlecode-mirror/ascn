@@ -38,7 +38,7 @@ div#wrapper2 {
 
 
 div#content {
-	background: url(../img/gadget-bg.png) no-repeat scroll 10494px 0 transparent;
+	background: url(../img/gadget/gadget-bg.png) no-repeat scroll 10494px 0 transparent;
 	margin: 0 -9999px;
 	padding: 0 9999px;
 	width: 1075px;
@@ -102,7 +102,7 @@ div#body {
 	position: absolute;
 }
 #gadget .ping {
-	background: url(../img/ping.png) no-repeat transparent;
+	background: url(../img/gadget/ping.png) no-repeat transparent;
 	width: 40px;
 	height: 55px;
 }
@@ -127,7 +127,7 @@ div#body {
 	background-position: -162px 0;
 }
 #gadget .nav-btn-container .nav-btn .icon {
-	background: url(../img/icon-gadget.png) no-repeat transparent;
+	background: url(../img/gadget/icon-gadget.png) no-repeat transparent;
 	width: 54px;
 	height: 54px;
 }

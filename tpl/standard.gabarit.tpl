@@ -23,17 +23,16 @@
 				<div id="content">
 					<div id="header">
 					
-						
 					</div>
 					<div id="gadget">
 						<div class="log-container">
 							<div class="log">
-								<div class="log-icon log-right"><img src="img/log-right.png" alt="loggin-left" /></div>
+								<div class="log-icon log-right"><img src="{$www_img}gadget/log-right.png" alt="loggin-left" /></div>
 								<div class="log-content" style="width: 0px">
 									{module name='userview'}
 								</div>
-								<div class="log-icon log-center"><img src="img/log-center.png" alt="loggin-left" /></div>
-								<div class="log-icon log-left"><img src="img/log-left.png" alt="loggin-left" /></div>
+								<div class="log-icon log-center"><img src="{$www_img}gadget/log-center.png" alt="loggin-left" /></div>
+								<div class="log-icon log-left"><img src="{$www_img}gadget/log-left.png" alt="loggin-left" /></div>
 							</div>
 						</div>
 						<div class="ping-container">
