@@ -63,15 +63,19 @@ class Joueur extends DBItem {
 	 * @param String $user username
 	 * @param String $pass password en clair
 	 * @return Joueur|integer 
-	 * 		Joueur qui s'est log� avec succes
+	 * 		Joueur qui s'est logé avec succes
 	 * 		-1 pour mauvais pass
-	 * 		-2 pour user inexistant
+	 * 		-2 pour user inexistant (ou invité)
 	 * 
 	 */
 	public static function testerLogins($user, $pass) {
 		$res=queryLine('select * from joueur where joueur_pseudo=\''.$user.'\'');
 		
 		if($res) {
+			if(intval($res['joueur_invite']) == 1) {
+				return -2;
+			}
+			
 			$hash=self::getHash($pass);
 			if(strcmp($res['joueur_password_hash'], $hash)==0) {
 				return new Joueur($res);
@@ -132,6 +136,30 @@ class Joueur extends DBItem {
 		}
 	}
 	
+	public static function createInvite() {
+		$j = new Joueur();
+			$j->pseudo = self::randomPseudo();
+			$j->invite = 1;
+		$j->save();
+		
+		return $j;
+	}
+	
+	public static function connecterInvite() {
+		$j = self::createInvite();
+		
+		$_SESSION['joueur_id']=$j->id;
+		env()->setJoueur($j);
+		return $j;
+	}
+	
+	
+	private static function randomPseudo($prefix = 'Invité') {
+		while(
+			self::pseudoExists($p = $prefix.' '.rand(100, 999))
+		);
+		return $p;
+	}
 	
 	
 	
