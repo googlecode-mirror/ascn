@@ -4,5 +4,5 @@ require_once '../config.php';
 querySimple('
 	truncate table partie;
 	truncate table slot;
-	truncate table partie_opt;
+	delete from joueur where joueur_invite=1;
 ');

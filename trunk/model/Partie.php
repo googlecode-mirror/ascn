@@ -73,12 +73,16 @@ class Partie extends DBItem {
 	/**
 	 * 
 	 * Le joueur de l'environnement rejoind la partie /!\ SI PAS DEJA FAIT
+	 * ou créer un invité
 	 * @return Slot
 	 */
 	public function rejoindre() {
-		Env::requiert('joueur');
 		Env::requiert('partie');
 		Env::requiert('jeu');
+		
+		if(!joueur()) {
+			Joueur::connecterInvite();
+		}
 		
 		// Refus de rejoindre si la partie n'est plus en préparation et n'est pas une room non plus.
 		if($this->etat!=PARTIE::PREPARATION && !jeu()->isRoom()) {
