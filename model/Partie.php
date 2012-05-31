@@ -78,8 +78,11 @@ class Partie extends DBItem {
 	public function rejoindre() {
 		Env::requiert('joueur');
 		Env::requiert('partie');
-		if($this->etat!=PARTIE::PREPARATION) {
-			throw new Exception('Trop tard pour rejoindre la partie. (code etat partie : '.$this->etat.')');
+		Env::requiert('jeu');
+		
+		// Refus de rejoindre si la partie n'est plus en préparation et n'est pas une room non plus.
+		if($this->etat!=PARTIE::PREPARATION && !jeu()->isRoom()) {
+			throw new Exception('Trop tard pour rejoindre cette partie. (code etat partie : '.$this->etat.')');
 		}
 		
 		

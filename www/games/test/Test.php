@@ -14,6 +14,10 @@ class Test extends Jeu {
 	public function getInitialData() {
 	}
 	
+	public function isRoom() {
+		return partie()->option('is_room') == 1;
+	}
+	
 	public function getOptions() {
 		return array(
 			'option_test' => new Option('Option test',
@@ -45,7 +49,28 @@ class Test extends Jeu {
 					),
 				)
 			),
+			'is_room' => new Option('Mode Room',
+				array(
+					array(
+						'key'	=> 1,
+						'value'	=> 'Oui',
+					),
+					array(
+						'key'	=> 2,
+						'value'	=> 'Non',
+					),
+				)
+			),
 		);
+	}
+	
+	
+	public function ajax_get_players() {
+		$data = new AJAXResponse();
+		
+		$data = partie()->getSlots();
+		
+		return $data;
 	}
 	
 	

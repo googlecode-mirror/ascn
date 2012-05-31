@@ -70,6 +70,15 @@ abstract class Jeu extends DBItem {
 		return $r;
 	}
 	
+	/**
+	 *
+	 * Retourne si on peut rejoindre une partie en cours
+	 * dans ce jeu.
+	 * @return boolean
+	 */
+	public function isRoom() {
+		return false;
+	}
 	
 	
 	/**
@@ -95,7 +104,9 @@ abstract class Jeu extends DBItem {
 					break;
 					
 				case Partie::EN_COURS:
-					if(is_null(slot())) throw new Exception('Erreur : en cours de jeu mais slot non défini');
+					if(is_null(slot())) {
+						env()->slot = partie()->rejoindre();
+					}
 					smarty()->assign('slot', slot());
 					$this->process();
 					$this->display();
