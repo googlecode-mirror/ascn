@@ -8,19 +8,9 @@
 abstract class Module {
 	
 	
-	public $name;
-	
-	
-	public function __construct() {
-		$this->name=get_class($this);
-	}
-	
-	
-	
-	
 	public function display($tpl=null) {
 		if(is_null($tpl))
-			smarty()->display($this->name.'.tpl');
+			smarty()->display(strtolower(get_class($this)).'.tpl');
 		else
 			smarty()->display($tpl);
 	}
