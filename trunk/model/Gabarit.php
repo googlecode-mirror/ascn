@@ -10,7 +10,7 @@ abstract class Gabarit {
 	
 	public function __construct($page) {
 		$tpl=explode('.', get_class($this));
-		$this->name=$tpl[0];
+		$this->name=strtolower($tpl[0]);
 		
 		$this->page=$page;
 	}
