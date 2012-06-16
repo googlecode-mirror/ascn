@@ -46,6 +46,9 @@ var checkers = {
 				checkers.move(case_from, case_to, pion);
 				checkers.dragging = false;
 				$('.hold').removeClass('hold');
+			})
+			.mouseup(function () {
+				$('.hold').removeClass('hold');
 			});
 		
 		$(window).hashchange(function() {
@@ -107,6 +110,10 @@ var checkers = {
 	
 	ajax_move: function(r) {
 		checkers.lastUpdateData = r;
+		
+		if(!checkers.doUpdate()) {
+			return;
+		}
 	
 		if(r.refus) {
 			var s = '';
